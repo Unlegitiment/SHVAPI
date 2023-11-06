@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="script.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="Markers\m_Markers.cpp" />
+    <ClCompile Include="Markers\m_Markers_internal.h" />
+    <ClCompile Include="Utils\DistMath.cpp" />
+    <ClCompile Include="Utils\RGBA.cpp" />
+    <ClCompile Include="Utils\Draw.cpp" />
+    <ClCompile Include="Utils\TXD.cpp" />
+    <ClCompile Include="Utils\UI.cpp" />
+    <ClCompile Include="Scaleform\MP_CELEBRATION.cpp" />
+    <ClCompile Include="Scaleform\internal_scaleform.h" />
+    <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="script.h" />
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="Markers.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Utils\internal_utils.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Scaleform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{fe82bd4a-2d14-486a-8be5-8bf6b50a2414}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
