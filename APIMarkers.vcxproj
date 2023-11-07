@@ -11,6 +11,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
     <ClCompile Include="Markers\m_Markers_internal.h" />
+    <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\internal_scaleform.h" />
     <ClCompile Include="Scaleform\MP_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />

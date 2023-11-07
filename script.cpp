@@ -53,8 +53,8 @@ void main()
     while (true)
     {
        if (IsKeyJustUp(VK_DIVIDE)) {   
-           CelebHandle* celeb = celeb_Intro_Create("Name", "type", "64", CelebType_RACEFLAG,TRUE_, TRUE_, TRUE_, 70);
-           celeb_Draw(celeb);
+           CelebHandle* handle = celeb_Outro_Create("first", "large", "death", (CelebrationTypes)2, 70, -1, -1, -1, -1);
+           CELEB_OUTRO_DRAW(handle);
        }
         WAIT(0);
     }
