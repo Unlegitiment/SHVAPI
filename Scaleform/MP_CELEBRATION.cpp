@@ -597,6 +597,24 @@ void CELEB_PAUSE(int handle, char* wallID, int duration) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(duration);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
+void CELEB_DRAW(int handle, int handle_bg, int handle_fg, int offset, BOOL_t offsetNeg) {
+	if (offsetNeg) {
+		offset = -offset;
+	}
+	int startTime = MISC::GET_GAME_TIMER();
+	int time = CELEB_GET_INT_RESULT(handle);
+	int endTime = startTime + time;
+	while (MISC::GET_GAME_TIMER() < endTime + offset) {
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(handle_bg, handle_fg, 255, 255, 255, 100);
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(handle, 255, 255, 255, 255, 0);
+		HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
+		//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+		WAIT(0);
+	}
+	GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&handle);
+	GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&handle_fg);
+	GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&handle_bg);
+}
 int* CELEB_OUTRO_DRAW(CelebHandle *handle) {
 	MP_CELEB* h = (MP_CELEB*)handle;
 	h->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_BG");
@@ -649,6 +667,60 @@ int* CELEB_OUTRO_DRAW(CelebHandle *handle) {
 	celeb_Destroy(handle);
 	int x = 0;
 	return &x;
+}
+/*
+* Bonus' goes as follows
+* 1 = Just CriminalMasterMind
+* 2 = Just Elite Challenge;
+* 3 = Both
+*/
+void exampleOutro(CelebHandle* handle) {
+	MP_CELEB* a = (MP_CELEB*)handle;
+	if (a == NULL) return;
+	a->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_BG");
+	a->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_FG");
+	a->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION");
+
+	for (int i = 0; i < SCL_LIMIT; i++) {
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(a->scl[i].handle)) WAIT(0);
+		CELEB_CLEANUP(a->scl[i].handle, a->wallID);
+		CELEB_CREATE_STAT_WALL(a->scl[i].handle, a->wallID, "HUD_COLOUR_HSHARD", 100);
+		CELEB_MISS_RESULT(a->scl[i].handle, a->wallID, "HEIST", "PASSED", "");
+		CELEB_CREATE_STAT_TABLE(a->scl[i].handle, a->wallID, "table");
+		CELEB_ADD_STAT_TO_STAT_TABLE(a->scl[i].handle, a->wallID, "table", "Player1", "PLATNUM", TRUE, TRUE, FALSE, FALSE, "HUD_COLOUR_PLATINUM");
+		CELEB_ADD_STAT_TO_STAT_TABLE(a->scl[i].handle, a->wallID, "table", "Player2", "GOLD", TRUE, TRUE, FALSE, FALSE, "HUD_COLOUR_GOLD");
+		CELEB_ADD_STAT_TO_STAT_TABLE(a->scl[i].handle, a->wallID, "table", "Player3", "SILVER", TRUE, TRUE, FALSE, FALSE, "HUD_COLOUR_SILVER");
+		CELEB_ADD_STAT_TO_STAT_TABLE(a->scl[i].handle, a->wallID, "table", "Player4", "BRONZE", TRUE, TRUE, FALSE, FALSE, "HUD_COLOUR_BRONZE");
+		CELEB_ADD_STAT_TABLE_TO_WALL(a->scl[i].handle, a->wallID, "table");
+		CELEB_CREATE_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID");
+		a->outro.startMoney = 0;
+		a->outro.endMoney = 1875000;
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney, a->outro.endMoney, "POTENTIAL TAKE", "", "", 0);
+		a->outro.startMoney = a->outro.endMoney;
+		a->outro.endMoney = 1805205;
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney, a->outro.endMoney, "ACTUAL TAKE", "", "", 0);
+		a->outro.startMoney = a->outro.endMoney;
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney, a->outro.endMoney *= .25, "25% CUT OF TAKE", "", "", 0);
+		a->outro.startMoney = a->outro.endMoney;
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney, a->outro.endMoney, "ELITE CHALLENGE", "COMPLETE IN UNDER 10:15 MINS", "15:26", 2);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney, a->outro.endMoney, "ELITE CHALLENGE", "NOOSE NOT CALLED", "", 2);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney, a->outro.endMoney, "ELITE CHALLENGE", "NOBODY GETS WASTED", "", 1);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney, a->outro.endMoney, "ELITE CHALLENGE INCOMPLETE", "", "", 0);
+		a->outro.startMoney = a->outro.endMoney;
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney, a->outro.endMoney += 999749, "ALL IN ORDER CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES IN ORDER", "", 0);
+		a->outro.startMoney = a->outro.endMoney;
+
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney, a->outro.endMoney += 10000000, "CRIMINAL MASTERMIND CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES, IN ORDER, WITH THE SAME TEAM, WITHOUT LOSING ANY LIVES", "", 0);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney, a->outro.endMoney, "TOTAL CASH EARNED", "", "", 0);
+		CELEB_ADD_INCREMENT_CASH_TO_WALL(a->scl[i].handle, a->wallID, "ID");
+		CELEB_PAUSE(a->scl[i].handle, a->wallID, 5 * 6);
+		CELEB_ADD_JP_TO_WALL(a->scl[i].handle, a->wallID, 15, 1);
+		CELEB_ADD_RP_AND_BAR_TO_WALL(a->scl[i].handle, a->wallID, 200, 1500, 16, 17, 1500, 2000, "RNK", "RNK2");
+		CELEB_ADD_BKG_TO_WALL(a->scl[i].handle, a->wallID, a->opacity, a->type);
+		CELEB_SHOW_STAT_WALL(a->scl[i].handle, a->wallID);
+	}
+	CELEB_DRAW(a->scl[0].handle, a->scl[2].handle, a->scl[1].handle, 2000, FALSE);
+	celeb_Destroy(handle);
 }
 #endif
 #undef NATIVE_H

@@ -38,10 +38,11 @@ void HC_ADD_COMPLETE_MESS_TO_WALL(int handle, char* wallID, char* missionTextLbl
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE); //isMissionTextRaw
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_CREATE_STAT_TABLE(int handle, char* wallID, char* statID) {
+void HC_CREATE_STAT_TABLE(int handle, char* wallID, char* statID, int sfxID) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "CREATE_STAT_TABLE");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(statID);
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(sfxID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
 void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* name, char* val, BOOL_t isTotalRow, BOOL_t isValTime, char* COLID) {
@@ -74,7 +75,7 @@ void CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, char* soundType) {
+void ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_INCREMENTAL_CASH_WON_STEP");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
@@ -84,7 +85,7 @@ void ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int s
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(bottomTxt);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(handStat); // rightHandStat
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(handico); //rightHandIco
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(soundType);
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(soundType);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
 void ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID) {
@@ -189,37 +190,57 @@ void heistceleb_Destroy(HeistCelebHandle* inst) {
 	HeistCelebration* hc = (HeistCelebration*)inst;
 	free(hc);
 }
+void HC_PAUSE(int handle, char* wallID, int duration) {
+	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "PAUSE");
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(wallID);
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(duration);
+	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+}
 void heistceleb_Draw(HeistCelebHandle* inst) {
 	HeistCelebration* h = (HeistCelebration*)inst;
-	h->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_BG");
-	h->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_FG");
-	h->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION");
+	h->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_BG");
+	h->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_FG");
+	h->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION");
 	for (int i = 0; i < 3; i++) {
 		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(h->scl[i].handle)) WAIT(0);
 		CLEANUP(h->scl[i].handle, h->wallID);
 		HC_CREATE_STAT_WALL(h->scl[i].handle, h->wallID, "HUD_COLOUR_HSHARD", 100);
-		ADD_MISS_RESULT(h->scl[i].handle, h->wallID, "HEIST", "PASSED", "");
-		HC_CREATE_STAT_TABLE(h->scl[i].handle, h->wallID, "table");
+		HC_ADD_COMPLETE_MESS_TO_WALL(h->scl[i].handle, h->wallID, "HEIST", "PASSED", "");
+		HC_CREATE_STAT_TABLE(h->scl[i].handle, h->wallID, "table", 3);
 		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player1", "PLATNUM", FALSE, FALSE, "HUD_COLOUR_PLATINUM");
 		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player2", "GOLD", FALSE, FALSE, "HUD_COLOUR_GOLD");
 		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player3", "SILVER", FALSE, FALSE, "HUD_COLOUR_SILVER");
 		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player4", "BRONZE", FALSE, FALSE,  "HUD_COLOUR_BRONZE");
 		ADD_STAT_TABLE_TO_WALL(h->scl[i].handle, h->wallID, "table");
 		CREATE_INCREMENTAL_CASH_ANIM(h->scl[i].handle, h->wallID, "ID");
-		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 75000, 360000, "TOP", "BOTTOM", "HANDSTAT", 3, "NULL");
-		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 75000, 360000, "TOP", "BOTTOM", "HANDSTAT", 2, "NULL");
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 0, 1875000, "POTENTIAL TAKE", "", "", -1, 3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 1875000, 1805205, "ACTUAL TAKE", "", "",-1,3);
+		int x = 1805205 * .25;
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 1805205, x, "25% CUT OF TAKE", "", "", -1,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x, x, "ELITE CHALLENGE", "COMPLETE IN UNDER 10:15 MINS", "15:26", 2,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x, x, "ELITE CHALLENGE", "NOOSE NOT CALLED", "", 2,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x, x, "ELITE CHALLENGE", "NOBODY GETS WASTED", "", 1,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x, x, "ELITE CHALLENGE INCOMPLETE", "", "", -1,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x, x + 999749, "ALL IN ORDER CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES IN ORDER", "", 0,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x + 999749, x + 999749 + 10000000, "CRIMINAL MASTERMIND CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES, IN ORDER, WITH THE SAME TEAM, WITHOUT LOSING ANY LIVES", "", 0,3);
+		ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", x + 999749 + 10000000, x + 999749 + 10000000, "TOTAL CASH EARNED", "", "", -1,3);
 		ADD_INCREMENTAL_CASH_TO_WALL(h->scl[i].handle, h->wallID, "ID");
-		ADD_RP_AND_BAR(h->scl[i].handle, h->wallID, 200, 1500, 16, 17, 1500, 2000, "RNK", "RNK2");
-
-
+		HC_PAUSE(h->scl[i].handle, h->wallID, 5 * 6);
+		ADD_JP(h->scl[i].handle, h->wallID, 15, FALSE);
+		ADD_RP_AND_BAR(h->scl[i].handle, h->wallID, 200, 1500, 16, 17, 1500, 2000, "NICE", "RANKUP!");
 
 		HC_ADD_BKG_TO_WALL(h->scl[i].handle, h->wallID, h->opacity, h->types);
 		SHOW_STAT_WALL(h->scl[i].handle, h->wallID);
+		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(h->scl[i].handle, "createSequence");
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(h->wallID);
+		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 	}
 	int startTime = MISC::GET_GAME_TIMER();
-	int time = GET_TIME(h->scl[0].handle);
+	int time = 48000;
 	int endTime = startTime + time;
-
+	AUDIO::PLAY_SOUND_FRONTEND(-1, "CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", 1);
 	while (MISC::GET_GAME_TIMER() < endTime) {
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(h->scl[2].handle, h->scl[1].handle, 255, 255, 255, 100);
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(h->scl[0].handle, 255, 255, 255, 255, 0);
@@ -231,6 +252,7 @@ void heistceleb_Draw(HeistCelebHandle* inst) {
 	for (int i = 0; i < 3; i++) {
 		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&h->scl[i].handle);
 	}
+	GRAPHICS::ANIMPOSTFX_PLAY("HeistCelebToast", 0, FALSE);
 	heistceleb_Destroy(inst);
 	return;
 }

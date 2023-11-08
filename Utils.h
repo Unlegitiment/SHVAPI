@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+typedef void ListHandle;
 typedef int Entity;
 /*
   ~~~~~~RGB Functions~~~~~~~~
@@ -46,6 +48,11 @@ inline char* util_IntToStr(int i = 0) {
     sprintf(zzzz, "%d", i);
     return zzzz;
 }
+/*
+* Basically the same as std::vector Just wanted to create it in C style.
+*/
 
-
-
+extern ListHandle* lh_CreateList(size_t element_size, void(*free_fn)(void*));
+extern void lh_pushback(ListHandle* handle, void* val);
+extern void* lh_at(ListHandle* handle, size_t index);
+extern void lh_Destroy(ListHandle* handle);

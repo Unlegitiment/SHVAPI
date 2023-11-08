@@ -62,4 +62,5 @@ extern HeistCelebHandle* heistceleb_Create(
 	int endRank = -1);
 extern void heistceleb_Destroy(HeistCelebHandle* inst);
 extern void heistceleb_Draw(HeistCelebHandle *inst);
+extern void exampleOutro(CelebHandle* handle);
 #undef MODE_LIMIT

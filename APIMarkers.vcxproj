@@ -18,6 +18,7 @@
     <ClCompile Include="script.cpp" />
     <ClCompile Include="Utils\DistMath.cpp" />
     <ClCompile Include="Utils\Draw.cpp" />
+    <ClCompile Include="Utils\List.cpp" />
     <ClCompile Include="Utils\RGBA.cpp" />
     <ClCompile Include="Utils\TXD.cpp" />
     <ClCompile Include="Utils\UI.cpp" />

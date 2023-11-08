@@ -53,8 +53,8 @@ void main()
     while (true)
     {
        if (IsKeyJustUp(VK_DIVIDE)) {   
-           CelebHandle* handle = celeb_Outro_Create("first", "large", "death", (CelebrationTypes)2, 70, -1, -1, -1, -1);
-           CELEB_OUTRO_DRAW(handle);
+           HeistCelebHandle* handle = heistceleb_Create("first", "large", "death", (CelebrationTypes)2, 70, -1, -1, -1, -1);
+           heistceleb_Draw(handle);
        }
         WAIT(0);
     }
