@@ -16,6 +16,8 @@
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
     <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
     <ClCompile Include="Utils\List.cpp" />
+    <ClCompile Include="Types\Player.cpp" />
+    <ClCompile Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
