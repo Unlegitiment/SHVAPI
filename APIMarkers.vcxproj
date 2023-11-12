@@ -30,9 +30,18 @@
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Scaleform.h" />
     <ClInclude Include="script.h" />
+    <ClInclude Include="ScriptHookV\enums.h" />
+    <ClInclude Include="ScriptHookV\main.h" />
+    <ClInclude Include="ScriptHookV\nativeCaller.h" />
+    <ClInclude Include="ScriptHookV\natives.h" />
+    <ClInclude Include="ScriptHookV\OGnatives.h" />
+    <ClInclude Include="ScriptHookV\types.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils\internal_utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ScriptHookV\ScriptHookV.lib" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{d9f370ff-e11f-43d5-b263-442614553c5d}</ProjectGuid>
@@ -78,7 +87,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>"E:\ScriptHookV\lib\ScriptHookV.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"ScriptHookV/ScriptHookV.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName).asi" "E:\SteamLibrary\steamapps\common\Grand Theft Auto V"</Command>

@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define NATIVE_H
 #ifdef NATIVE_H
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 #include "..\UI.h"
 void UI_DrawText(char* text, Vector2_t screen) {
     HUD::SET_TEXT_FONT(0);

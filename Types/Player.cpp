@@ -1,4 +1,4 @@
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 #include "..\Types.h"
 #define MAX_PLAYERNAME 64
 typedef struct player_t_{

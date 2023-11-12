@@ -54,7 +54,7 @@ void main()
     {
        if (IsKeyJustUp(VK_DIVIDE)) {   
            HeistCelebHandle* handle = heistceleb_Create("first", "large", "death", (CelebrationTypes)2, 70, -1, -1, -1, -1);
-           heistceleb_Draw(handle);
+           HC_example(handle);
        }
         WAIT(0);
     }

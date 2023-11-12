@@ -133,7 +133,7 @@ int getIndexOfSclFG(CelebHandle* handle) {
 
 #define NATIVE_H
 #ifdef NATIVE_H
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 void displayOorI(CelebHandle* handle, int offset = 0, BOOL_t isOffsetPositive = FALSE_) {
 	MP_CELEB* celeb = (MP_CELEB*)handle;
 	int startTime = MISC::GET_GAME_TIMER();
@@ -312,11 +312,10 @@ void CELEB_MISS_RESULT(int handle, const char* wallId, const char* textLabel, co
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE); //isMissionTextRaw
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-#define cc const char*
 /*
 * @brief NEEDS DOCUMENTATION THIS IS VERY CONFUSING.
 */
-void CELEB_ADD_WINNER_TO_WALL(int handle, const char* wallID, BOOL_t isInFlow, cc largeLabel, cc playerName, cc crewName, cc teamName, int bet) {
+void CELEB_ADD_WINNER_TO_WALL(int handle, const char* wallID, BOOL_t isInFlow, const char* largeLabel, const char* playerName, const char* crewName, const char* teamName, int bet) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_WINNER_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(largeLabel);
@@ -328,7 +327,6 @@ void CELEB_ADD_WINNER_TO_WALL(int handle, const char* wallID, BOOL_t isInFlow, c
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE); //gamerNameLabel
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-#undef cc
 
 void CELEB_ADD_INTRO_CARD(int handle, char* wallid, char* modeName, char* jobName, char* chalPartText, BOOL doExtend, BOOL doChalText) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_INTRO_TO_WALL");
@@ -680,7 +678,6 @@ void exampleOutro(CelebHandle* handle) {
 	a->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_BG");
 	a->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION_FG");
 	a->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_CELEBRATION");
-
 	for (int i = 0; i < SCL_LIMIT; i++) {
 		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(a->scl[i].handle)) WAIT(0);
 		CELEB_CLEANUP(a->scl[i].handle, a->wallID);
