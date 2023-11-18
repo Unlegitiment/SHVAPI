@@ -53,8 +53,16 @@ void main()
     while (true)
     {
        if (IsKeyJustUp(VK_DIVIDE)) {   
-           HeistCelebHandle* handle = heistceleb_Create("first", "large", "death", (CelebrationTypes)2, 70, -1, -1, -1, -1);
-           HC_example(handle);
+           /*
+           * StartRep = CurrentRepLocation
+           * CurrentRank = the Rank You're Currently on
+           * NextRank can be really anything you want both can however ideally it'd be CurrentRank+1
+           * rpToNext = the nessicary rp to the next rank
+           * minNext = if minNext > maxNext rpBar fills completely; if minNext < maxNext completely empty. if minNext == startRep+rpGain 1 bar gets filled
+           * minNext is Better put as a 0. Because this reveals the animation and makes it more seemless.
+           * maxNext = Represents the Maximum amount the bar can represent. It will trigger an animation extension if it goes past it.
+           */
+           HeistCelebHandle* handle = EX_HC_FAILED(500, 99, 100,0, 2000, 200, 1500, 20);
        }
         WAIT(0);
     }

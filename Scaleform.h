@@ -91,7 +91,7 @@ extern void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* na
 extern void HC_ADD_STAT_TABLE_TO_WALL(int handle, char* wallID, char* statId);
 extern void HC_SHOW_STAT_WALL(int handle, char* wallID);
 extern void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID);
-extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType);
+extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, float startDol, float finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType);
 extern void HC_ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID);
 extern void HC_ADD_JP(int handle, char* wallID, int pts, BOOL_t xAlign);
 extern void HC_ADD_RP_AND_BAR(int handle, char* wallID, int repGained, int startRep, int minRepForRank, int maxRepForRank, int currentRank, int nextRank, char* rnk1txt, char* ranktxt2);
@@ -100,6 +100,10 @@ extern void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int
 extern void HC_ADD_CASH_TO_WALL(int handle, char* wallID, float val, BOOL_t xAlign);
 extern void HC_CLEANUP(int handle, char* wallID);
 extern void HC_CREATE_SEQUENCE(int handle, char* wallID, int sfxID, int colourId);
+
+
+HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut = -1, int startRep = 0, int currentRank = 0, int nextRank = 0, int rpToNextRank = 0, int rpGained = 0, int jp = 0);
+HeistCelebHandle* EX_HC_FAILED(int startRep, int currentRank, int nextRank, int minNext, int maxNext, int rpToNext, int rpGain, int jp);
 
 
 

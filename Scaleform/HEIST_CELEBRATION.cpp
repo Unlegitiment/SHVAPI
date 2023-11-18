@@ -75,7 +75,7 @@ void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
+void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, float startDol, float finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_INCREMENTAL_CASH_WON_STEP");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
@@ -214,7 +214,6 @@ HeistCelebHandle* heistceleb_Create(char firstLine[MODE_LIMIT / 4], char largeTe
 	celeb->nextRank = endRank;
 	celeb->startCash = startMoney;
 	celeb->endCash = endMoney;
-
 	return (CelebHandle*)celeb;
 }
 void heistceleb_Destroy(HeistCelebHandle* inst) {
@@ -266,7 +265,6 @@ void HC_example(HeistCelebHandle* inst) {
 		HC_PAUSE(h->scl[i].handle, h->wallID, 5 * 6);
 		HC_ADD_JP(h->scl[i].handle, h->wallID, 15, FALSE);
 		HC_ADD_RP_AND_BAR(h->scl[i].handle, h->wallID, 200, 1500, 16, 17, 1500, 2000, "NICE", "RANKUP!");
-
 		HC_ADD_BKG_TO_WALL(h->scl[i].handle, h->wallID, h->opacity, h->types);
 		HC_SHOW_STAT_WALL(h->scl[i].handle, h->wallID);
 		HC_CREATE_SEQUENCE(h->scl[i].handle, h->wallID, 1,1);
@@ -291,3 +289,116 @@ void HC_example(HeistCelebHandle* inst) {
 	return;
 }
 
+/*No example free(s) the memory after the use case which is why this returns a Handle obj.*/
+HeistCelebHandle* EX_HC_FAILED(int startRep, int currentRank, int nextRank, int minNext, int maxNext, int rpToNext, int rpGain, int jp) {
+	HeistCelebration* h = (HeistCelebration*)heistceleb_Create("HEIST", "FAILED", "", CelebType_SHARD, 70, 0, 0, 0, 0);
+	h->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_BG");
+	h->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_FG");
+	h->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION");
+	for (int i = 0; i < 3; i++) {
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(h->scl[i].handle)) WAIT(0);
+		HC_CLEANUP(h->scl[i].handle, h->wallID);
+		HC_CREATE_STAT_WALL(h->scl[i].handle, h->wallID, "HUD_COLOUR_HSHARD", 1);
+		HC_ADD_COMPLETE_MESS_TO_WALL(h->scl[i].handle, h->wallID, h->firstLine, h->largeTxt, h->deathTxt);
+		HC_ADD_JP(h->scl[i].handle, h->wallID, jp, FALSE);
+		HC_ADD_RP_AND_BAR(h->scl[i].handle, h->wallID, rpGain, startRep, minNext, maxNext, currentRank, nextRank, "NICE", "RANKUP!");
+		HC_ADD_BKG_TO_WALL(h->scl[i].handle, h->wallID, h->opacity, h->types);
+		HC_SHOW_STAT_WALL(h->scl[i].handle, h->wallID);
+		HC_CREATE_SEQUENCE(h->scl[i].handle, h->wallID, 1, 1);
+	}
+	if (startRep + rpGain >= maxNext) {
+		int startTime = MISC::GET_GAME_TIMER();
+		int time = 11200;
+		int endTime = startTime + time;
+		AUDIO::PLAY_SOUND_FRONTEND(-1, "CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", 1);
+		while (MISC::GET_GAME_TIMER() < endTime) {
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(h->scl[2].handle, h->scl[1].handle, 255, 255, 255, 100);
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(h->scl[0].handle, 255, 255, 255, 255, 0);
+			HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
+			//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			WAIT(0);
+		}
+		WAIT(0);
+		for (int i = 0; i < 3; i++) {
+			GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&h->scl[i].handle);
+		}
+		GRAPHICS::ANIMPOSTFX_PLAY("HeistCelebToast", 0, FALSE);
+		heistceleb_Destroy(h);
+		return NULL;
+	}
+	else {
+		int startTime = MISC::GET_GAME_TIMER();
+		int time = 8299;
+		int endTime = startTime + time;
+		AUDIO::PLAY_SOUND_FRONTEND(-1, "CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", 1);
+		while (MISC::GET_GAME_TIMER() < endTime) {
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(h->scl[2].handle, h->scl[1].handle, 255, 255, 255, 100);
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(h->scl[0].handle, 255, 255, 255, 255, 0);
+			HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
+			//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			WAIT(0);
+		}
+		WAIT(0);
+		for (int i = 0; i < 3; i++) {
+			GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&h->scl[i].handle);
+		}
+		GRAPHICS::ANIMPOSTFX_PLAY("HeistCelebToast", 0, FALSE);
+		heistceleb_Destroy(h);
+		return NULL;
+	}
+}
+/*
+*No example free(s) the memory after the use case which is why this returns a Handle obj.
+* Still cleans Scaleform for in game proformance and as well to make sure it doesn't fuck with the next one.
+*/
+HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut , int startRep ,int currentRank, int nextRank, int rpToNextRank, int rpGained, int jp) {
+	HeistCelebration* h = (HeistCelebration*)heistceleb_Create("HEIST", "PASSED", "", CelebType_SHARD, 70, 0, 0, 0, 0);
+	h->scl[2].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_BG");
+	h->scl[1].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION_FG");
+	h->scl[0].handle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("HEIST_CELEBRATION");
+	for (int i = 0; i < 3; i++) {
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(h->scl[i].handle)) WAIT(0);
+		HC_CLEANUP(h->scl[i].handle, h->wallID);
+		HC_CREATE_STAT_WALL(h->scl[i].handle, h->wallID, "HUD_COLOUR_HSHARD", 3);
+		HC_ADD_COMPLETE_MESS_TO_WALL(h->scl[i].handle, h->wallID, "HEIST", "PASSED", "");
+		HC_CREATE_STAT_TABLE(h->scl[i].handle, h->wallID, "table", 3);
+		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player1", "PLATNUM", FALSE, FALSE, "HUD_COLOUR_PLATINUM");
+		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player2", "GOLD", FALSE, FALSE, "HUD_COLOUR_GOLD");
+		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player3", "SILVER", FALSE, FALSE, "HUD_COLOUR_SILVER");
+		HC_ADD_STAT_TO_WALL(h->scl[i].handle, h->wallID, "table", "Player4", "BRONZE", FALSE, FALSE, "HUD_COLOUR_BRONZE");
+		HC_ADD_STAT_TABLE_TO_WALL(h->scl[i].handle, h->wallID, "table");
+		HC_CREATE_INCREMENTAL_CASH_ANIM(h->scl[i].handle, h->wallID, "ID");
+		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 0, potentTake, "POTENTIAL TAKE", "", "", -1, 3);
+		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", potentTake, actualTake, "ACTUAL TAKE", "", "", -1, 3);
+		char* cutpercentinstr = util_IntToStr(cut);
+		cutpercentinstr = (char*)realloc(cutpercentinstr, strlen(cutpercentinstr) + 13);
+		strcat(cutpercentinstr, "% CUT OF TAKE\0");
+		float finalCut = actualTake * (cut / 100);
+		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", actualTake, finalCut, cutpercentinstr, "", "", -1, 3);
+		free(cutpercentinstr);
+		HC_ADD_INCREMENTAL_CASH_TO_WALL(h->scl[i].handle, h->wallID, "ID");
+		HC_ADD_JP(h->scl[i].handle, h->wallID, jp, FALSE);
+		HC_ADD_RP_AND_BAR(h->scl[i].handle, h->wallID, 200, 100, 100, 4000, 199, 200, "NICE", "RANKUP!");
+		HC_ADD_BKG_TO_WALL(h->scl[i].handle, h->wallID, h->opacity, h->types);
+		HC_SHOW_STAT_WALL(h->scl[i].handle, h->wallID);
+		HC_CREATE_SEQUENCE(h->scl[i].handle, h->wallID, 1, 1);
+	}
+	int startTime = MISC::GET_GAME_TIMER();
+	int time = 26600;
+	int endTime = startTime + time;
+	AUDIO::PLAY_SOUND_FRONTEND(-1, "CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", 1);
+	while (MISC::GET_GAME_TIMER() < endTime) {
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(h->scl[2].handle, h->scl[1].handle, 255, 255, 255, 100);
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(h->scl[0].handle, 255, 255, 255, 255, 0);
+		HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
+		//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+		WAIT(0);
+	}
+	WAIT(0);
+	for (int i = 0; i < 3; i++) {
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&h->scl[i].handle);
+	}
+	GRAPHICS::ANIMPOSTFX_PLAY("HeistCelebToast", 0, FALSE);
+	heistceleb_Destroy(h);
+	return NULL;
+}
