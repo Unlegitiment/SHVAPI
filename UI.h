@@ -15,6 +15,8 @@ extern void UI_DrawNotificationI(int i);
 extern void UI_DrawNotificationF(float text, int decimalPlaces = 5);
 extern void UI_DrawNotificationTXD(Notification *noti);
 extern void UI_DrawNotificationTXD_Ex(Notification *noti);
+
+extern void UI_DRAWBOX(RGBA_t rgba, Vector2_t screen, float width, float height);
 /*
 * @param char* title	Typically represented by the NPC's name
 * @param char* header	The actual subject of something if it's a Email

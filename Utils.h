@@ -29,6 +29,9 @@ extern void vec3_Add(Vector3_t* const dest, const Vector3_t* src);
 extern void vec3_Sub(Vector3_t* const dest, const Vector3_t* src);
 extern void vec3_Mult(Vector3_t* const dest, const Vector3_t* src);
 extern void vec3_Divide(Vector3_t* const dest, const Vector3_t* src);
+
+extern Vector2_t vec2_Create(float x, float y);
+extern Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_);
 /*
 * ~~~~~TXD Function & Headshot ~~~~~~
 */

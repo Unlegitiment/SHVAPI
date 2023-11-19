@@ -6,7 +6,7 @@
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
     <ClCompile Include="Markers\m_Markers_internal.h" />
-    <ClCompile Include="Utils\DistMath.cpp" />
+    <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\RGBA.cpp" />
     <ClCompile Include="Utils\Draw.cpp" />
     <ClCompile Include="Utils\TXD.cpp" />
