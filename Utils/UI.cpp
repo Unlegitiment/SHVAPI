@@ -1,11 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define NATIVE_H
 #ifdef NATIVE_H
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 #include "..\UI.h"
 void UI_DrawText(char* text, Vector2_t screen) {
     HUD::SET_TEXT_FONT(0);
-    HUD::SET_TEXT_SCALE(1, 0.352);
+    HUD::SET_TEXT_SCALE(1, 0.552);
     HUD::SET_TEXT_OUTLINE();
     HUD::SET_TEXT_DROP_SHADOW();
     HUD::SET_TEXT_CENTRE(TRUE);
@@ -90,6 +90,10 @@ void UI_DrawNotificationTXD_Ex(Notification* notification) {
     HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(txd, txd, FALSE, 0, notification->TITLE, notification->HEADER);
     HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(FALSE, TRUE);
     PED::UNREGISTER_PEDHEADSHOT(notification->handle);
+}
+void UI_DRAWBOX(RGBA_t rgba, Vector2_t screen, float width, float height)
+{
+    GRAPHICS::DRAW_RECT(screen.x, screen.y, width, height, rgba.r, rgba.g, rgba.b, rgba.a, TRUE);
 }
 Notification* UI_n_CreateM(char* title, char* header, char* msg)
 {

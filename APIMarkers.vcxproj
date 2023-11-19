@@ -16,7 +16,9 @@
     <ClCompile Include="Scaleform\MP_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
     <ClCompile Include="script.cpp" />
-    <ClCompile Include="Utils\DistMath.cpp" />
+    <ClCompile Include="Types.h" />
+    <ClCompile Include="Types\Player.cpp" />
+    <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\Draw.cpp" />
     <ClCompile Include="Utils\List.cpp" />
     <ClCompile Include="Utils\RGBA.cpp" />

@@ -4,7 +4,7 @@
 			(C) Alexander Blade 2015
 */
 
-#include "E:\ScriptHookV\inc\main.h"
+#include "ScriptHookV/main.h"
 #include "script.h"
 #include "keyboard.h"
 

@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "E:\ScriptHookV\inc\nativeCaller.h"
+#include "../ScriptHookV/nativeCaller.h"
 #undef TRUE
 #undef FALSE
 #include "..\utils.h"
@@ -43,7 +43,7 @@ BOOL_t txd_isRequested(const TXD* tPtr) {
 }
 #define NATIVE_H
 #ifdef NATIVE_H
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 TXD* GetHeadShot(Entity e)
 {
 	int handle = PED::REGISTER_PEDHEADSHOT(e);

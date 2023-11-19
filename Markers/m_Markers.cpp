@@ -39,7 +39,7 @@ void m_Destroy(MissionMarker* ptr) {
 
 #define NATIVE_H
 #ifdef NATIVE_H
-#include "E:\ScriptHookV\inc\natives.h"
+#include "../ScriptHookV/natives.h"
 /*
 * @brief -Draws the Marker Data if within proximity 
   @brief -Default Prox = 7 units;
