@@ -48,7 +48,7 @@ float distanceTo(Vector3 vec1) {
 }
 void DisableEclipse() {
     while (true) {
-            HUD::THEFEED_FLUSH_QUEUE();
+        HUD::THEFEED_FLUSH_QUEUE();
         
         GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
         INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
