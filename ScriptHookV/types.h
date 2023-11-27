@@ -45,5 +45,4 @@ typedef struct
 	float z;
 	DWORD _paddingz;
 } Vector3;
-
 #pragma pack(pop)

@@ -75,3 +75,13 @@ void vec3_Divide(Vector3_t* const dest, const Vector3_t* src) {
 	dest->z = dest->z / src->z;
 	return;
 }
+
+Vector2_t vec2_Create(float x, float y)
+{
+	return Vector2_t{x, 0UL, y, 0UL};
+}
+
+Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_)
+{
+	return Vector2_t{x, _paddingX_, y, _paddingY_};
+}

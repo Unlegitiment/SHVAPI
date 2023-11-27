@@ -16,7 +16,6 @@ ListHandle* lh_CreateList(size_t element_size, void(*free_fn)(void*)) {
 	lh->free_fn = free_fn;
 	return (ListHandle*)lh;
 }
-
 void lh_pushback(ListHandle* handle, void* val) {
 	ListInternal* lst = (ListInternal*)handle;
 	if (lst == NULL) return;
@@ -59,4 +58,9 @@ void lh_Destroy(ListHandle* handle) {
 	list->data		= NULL;
 	list->size		= 0;
 	list->compacity = 0;
+}
+size_t lh_Size(ListHandle* handle) {
+	if (handle == NULL) return -1;
+	ListInternal* list = (ListInternal*)handle;
+	return list->size;
 }

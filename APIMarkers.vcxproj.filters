@@ -18,6 +18,8 @@
     <ClCompile Include="Utils\List.cpp" />
     <ClCompile Include="Types\Player.cpp" />
     <ClCompile Include="Types.h" />
+    <ClCompile Include="UI_menu\UI_Menu.cpp" />
+    <ClCompile Include="UI_menu\FirstStep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -27,12 +29,13 @@
     <ClInclude Include="Utils\internal_utils.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Scaleform.h" />
-    <ClInclude Include="ScriptHookV\enums.h" />
-    <ClInclude Include="ScriptHookV\main.h" />
-    <ClInclude Include="ScriptHookV\nativeCaller.h" />
-    <ClInclude Include="ScriptHookV\natives.h" />
-    <ClInclude Include="ScriptHookV\OGnatives.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="ScriptHookV\types.h" />
+    <ClInclude Include="ScriptHookV\OGnatives.h" />
+    <ClInclude Include="ScriptHookV\natives.h" />
+    <ClInclude Include="ScriptHookV\nativeCaller.h" />
+    <ClInclude Include="ScriptHookV\main.h" />
+    <ClInclude Include="ScriptHookV\enums.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

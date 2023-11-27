@@ -63,3 +63,4 @@ extern ListHandle* lh_CreateList(size_t element_size, void(*free_fn)(void*));
 extern void lh_pushback(ListHandle* handle, void* val);
 extern void* lh_at(ListHandle* handle, size_t index);
 extern void lh_Destroy(ListHandle* handle);
+extern size_t lh_Size(ListHandle* handle);

@@ -14,7 +14,7 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 	{
 	case DLL_PROCESS_ATTACH:
 		scriptRegister(hInstance, ScriptMain);
-		//scriptRegisterAdditionalThread(hInstance, );
+		scriptRegisterAdditionalThread(hInstance, THREAD_MAIN_2);
 		keyboardHandlerRegister(OnKeyboardMessage);
 		break;
 	case DLL_PROCESS_DETACH:

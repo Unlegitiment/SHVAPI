@@ -13,3 +13,5 @@
 #include "ScriptHookV/main.h"
 
 void ScriptMain();
+
+void THREAD_MAIN_2();
