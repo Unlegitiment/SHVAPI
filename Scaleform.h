@@ -1,5 +1,6 @@
 #pragma once
 #include "utils.h"
+#include "Scaleform/HUD_COLOUR.h"
 typedef void CelebHandle;
 typedef void HeistCelebHandle;
 typedef void TableHandle;
@@ -74,9 +75,18 @@ extern void HC_CLEANUP(int handle, char* wallID);
 extern void HC_CREATE_SEQUENCE(int handle, char* wallID, int sfxID, int colourId);
 
 
-HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut = -1, int startRep = 0, int currentRank = 0, int nextRank = 0, int rpToNextRank = 0, int rpGained = 0, int jp = 0);
-HeistCelebHandle* EX_HC_FAILED(int startRep, int currentRank, int nextRank, int minNext, int maxNext, int rpToNext, int rpGain, int jp);
+extern HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut = -1, int startRep = 0, int currentRank = 0, int nextRank = 0, int rpToNextRank = 0, int rpGained = 0, int jp = 0);
+extern HeistCelebHandle* EX_HC_FAILED(int startRep, int currentRank, int nextRank, int minNext, int maxNext, int rpToNext, int rpGain, int jp);
 
 
+
+/*
+* MidSizedMessage Scaleform Commands (Does Not Include Native Scaleform Pushs rather a wrapper around it.
+*/
+
+extern MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, BOOL_t useCondensed, BOOL_t useDarkerColour);
+extern void mz_Destroy(MidSizedHandle* handle);
+extern void mz_ApplyBridgeAndKnife(MidSizedHandle* handle, char* info, int totalTodo, int totalComplete);
+extern void mz_Tick(MidSizedHandle* scl);
 
 #undef MODE_LIMIT

@@ -32,6 +32,7 @@
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Scaleform.h" />
+    <ClInclude Include="Scaleform\HUD_COLOUR.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="ScriptHookV\enums.h" />
     <ClInclude Include="ScriptHookV\main.h" />

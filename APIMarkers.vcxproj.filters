@@ -36,6 +36,7 @@
     <ClInclude Include="ScriptHookV\nativeCaller.h" />
     <ClInclude Include="ScriptHookV\main.h" />
     <ClInclude Include="ScriptHookV\enums.h" />
+    <ClInclude Include="Scaleform\HUD_COLOUR.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

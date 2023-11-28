@@ -434,6 +434,11 @@ void main()
 
 void THREAD_2() {
     for (;;) {
+        MidSizedHandle* handle = mz_Create("BIGGER TEXT", "NIGGA WAHT", HUD_COLOUR_ADVERSARY, FALSE, FALSE);
+        if (IsKeyDown(VK_RETURN)) {
+            mz_Tick(handle);
+            mz_Destroy(handle);
+        }
         WAIT(0);
     }
 }
