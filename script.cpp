@@ -7,6 +7,7 @@
 #include <string>
 #include <ctime>
 
+
 void main();
 void THREAD_2();
 #pragma warning(disable : 4244 4305) // double <-> float conversions
@@ -304,7 +305,7 @@ BOOL_t isPointInsideBox( float x, float y, BoxUI* box) {
 * maxNext = Represents the Maximum amount the bar can represent. It will trigger an animation extension if it goes past it.
 */
 
-float h = 0.1F, w = 0.1F;
+
 #define CHARZ "CHAR_ALL_PLAYERS_CONF"
 void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
     box->drawPos = newPosition;
@@ -325,38 +326,81 @@ void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
     box->bottomRight.y = box->topRight.y + box->height;
     return;
 }
-
+void nullFunc() {
+    HUD::THEFEED_FLUSH_QUEUE();
+    HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+    HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Unimplemented Item!");
+    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
+    return;
+}
+void menuAction() {
+    STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY("ADDER"));
+    VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY("ADDER"), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).x, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).y, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).z, 0.0F, TRUE, TRUE, FALSE);
+}
+void menuAction2() {
+    if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 1)) {
+        ENTITY::SET_ENTITY_COORDS(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), -2477, 3265, 32, 1, 0, 0, 1);
+        VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), 0.0F);
+    }
+    else {
+        ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), -2477, 3265, 32, TRUE, FALSE, FALSE, TRUE);
+    }
+    return;
+}
+float h = 0.034F, w = 0.2249F;
 void menu_Tick() {
     while (true) {
         static BOOL z = FALSE;
         if (IsKeyJustUp(VK_DIVIDE)) z = TRUE;
         if (IsKeyJustUp(VK_DIVIDE) && z == TRUE) z = FALSE;
         while (z) {
-            float scale = w + (h / 1.5F);
+            float scale = w + (h/0.25F);
             int SCRx = 0, SCRy = 0;
             GRAPHICS::GET_SCREEN_RESOLUTION(&SCRx, &SCRy);
 
+            /*Whatever the middle button is determines the background's draw position*/
+            Vector2_t base = vec2_Create(0.163F, 0.201F);
+            //Vector2_t base = vec2_Create(0.363F, 0.201F);
 
-            Vector2_t base = vec2_Create(0.5F, 0.5F);
-            BoxUI b = box_Create(rgb_Create(255.0F, 0.0F, 0.0F, 100.0F), { base.x, 0UL, base.y, 0UL }, w, h);
-            BoxUI b1 = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), b.topLeft, 0.01F, h / 10.0F);
-            BoxUI b2 = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), b.topRight, 0.01F, h / 10.0F);
-            BoxUI b3 = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), b.bottomLeft, 0.01F, h / 10.0F);
-            BoxUI b4 = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), b.bottomRight, 0.01F, h / 10.0F);
+            BoxUI b = box_Create(rgb_Create(0.0F, 0.0F, 0.0F, 0.0F), { base.x, 0UL, base.y-h, 0UL }, w, h);
+            BoxUI b1 = box_Create(rgb_Create(0, 0, 0, 0), { base.x, 0UL, (base.y) + 0.004F, 0UL }, w, h);
+            BoxUI b2 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b1.drawPos.y + h, 0UL }, w, h);
+            BoxUI b3 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b2.drawPos.y + h, 0UL }, w, h);
+            BoxUI b4 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b3.drawPos.y + h, 0UL }, w, h);
+            BoxUI b5 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b4.drawPos.y + h, 0UL }, w, h);
+            BoxUI background = box_Create(rgb_Create(0, 0, 0, 125), { base.x, 0UL, b2.drawPos.y + (h/2.0F), 0UL}, w, ((h * 6)));
 
-            BoxUI addFirst = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.019F, 0.013F);
-            BoxUI addSecond = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.013F, 0.019F);
+            //BoxUI addFirst = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.019F, 0.013F);
+            //BoxUI addSecond = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.013F, 0.019F);
 
             BoxUI temp = b;
             HUD::SET_MOUSE_CURSOR_THIS_FRAME();
             float x = PAD::GET_CONTROL_NORMAL(0, 239);
             float y = PAD::GET_CONTROL_NORMAL(0, 240);
-            std::string str = "X :" + std::to_string(SCRx) + " :Y: " + std::to_string(SCRy);
-            TextUI* t = t_Create((char*)str.c_str(), 0, base, rgb_Create(255, 255, 255, 255), (0.1 + (0.1 / 1.5F)) * 2.5F, FALSE, FALSE, FALSE);
+            std::string str = "Spawn Adder";
+            TextUI* t = t_Create((char*)str.c_str(), 0, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
+            TextUI* b2Text = t_Create("Teleport to Zancudo", 1, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
+
             //t->position = vec2_Create(base.x - (strlen(t->text)/2.0F)/100.0F, base.y);
             //w = (t->position.x + (w *0.503F));
-            BoxUI* bS[6] = { &b, &b1, &b2, &b3, &b4, &temp };
-            Button newButton = { t, t,&b, FALSE };
+
+            Button newButton = { t, t,&b, FALSE, menuAction};
+            Button newButton2 = { b2Text, b2Text,&b1, FALSE, menuAction2};
+            Button newButton3 = { t_Create("third",2, base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b2, FALSE, nullFunc };
+            Button newButton4 = { t_Create("fourth",4,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b3, FALSE, nullFunc };
+            Button newButton5 = { t_Create("fifth",7,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b4, FALSE, nullFunc };
+            /*Third Font Seems to be a symbol Table? Of various null bytes and various default representations of characters like [] > < ^ (down) etc.*/
+            Button newButton6 = { t_Create(util_IntToStr(25),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b5, FALSE, nullFunc};
+            
+            ButtonList wrapper = list_Create(6, sizeof(Button));
+            list_Add(&wrapper, &newButton);
+            list_Add(&wrapper, &newButton2);
+            list_Add(&wrapper, &newButton3);
+            list_Add(&wrapper, &newButton4);
+            list_Add(&wrapper, &newButton5);
+            list_Add(&wrapper, &newButton6);
+
+            Button* bS[6] = { &newButton, &newButton2, &newButton3, &newButton4, &newButton5, &newButton6 };
 
             PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
             PAD::ENABLE_CONTROL_ACTION(0, 239, FALSE);
@@ -364,50 +408,46 @@ void menu_Tick() {
             Vector2_t start = { 0 };
             Vector2_t diff = { 0 };
 
-            for (int i = 1; i < 5; i++) {
-                char* temp = t->text;
-                if (isPointInsideBox(x, y, bS[i])) {
+            for (int i = 0; i < wrapper.size; i++) {
+                char* temp = wrapper.array[i].leftText->text;
+                if (isPointInsideBox(x, y, wrapper.array[i].box)) {
+                    t_Draw(t_Create(util_IntToStr(i), 0, {0.3F,0UL, 0.3F, 0UL}, {255,255,255,255},0.5,TRUE, FALSE, FALSE));
+                    if (wrapper.array[i].onClickInteraction == nullFunc) {
+                        strncpy(wrapper.array[i].leftText->text, "Unimplemented Item\0", 64);
+                    }
                     if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
-                        start = { x, 0UL, y, 0UL };
+                        wrapper.array[i].onClickInteraction();
+                        //z = FALSE;
                     }
-                    if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 237)) {
-                        diff.x = (x + start.x) / 2.0F;
-                        diff.y = (y + start.y) / 2.0F;
-                        w = diff.x;
-                        h = diff.y;
-                    }
-
-                    RGBA_Mod(&bS[i]->colour, RGBA_G, 0.0F);
-                    RGBA_Mod(&bS[i]->colour, RGBA_B, 255.0F);
+                    wrapper.array[i].box->colour = { 255,255,255,255 };
+                    wrapper.array[i].leftText->colour = { 0,0,0,255 };
                 }
                 else {
-
-                    RGBA_Mod(&bS[i]->colour, RGBA_G, 255.0F);
-                    RGBA_Mod(&bS[i]->colour, RGBA_B, 0.0f);
+                    strncpy(wrapper.array[i].leftText->text, temp, 64);
                 }
             }
-
+            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(5);
+            box_Draw(background);
             GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(6);
             //box_Draw(b1);
             //box_Draw(b2);
             //box_Draw(b3);
             //box_Draw(b4);
-            button_Text_Draw(newButton, FALSE);
-            button_Text_Draw(newButton, TRUE);
-            box_Draw(*newButton.box);
+            
 
-
+            for (int i = 0; i < wrapper.size; i++) {
+                box_Draw(*wrapper.array[i].box);
+                button_Text_Draw(wrapper.array[i], FALSE);
+            }
             //box_Draw(temp);
 
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(5);
 
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(6);
             //t_Draw(t_Create("Middle", 0, { b.topLeft.x + (b.width / 2.0F), 0UL, b.topLeft.y + (b.height / 2.5F), 0UL}, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, TRUE));
             //t_Draw(t_Create("< None >", 0, { b.topLeft.x * scale * 2.5F , 0UL, b.topLeft.y + (b.height / 2.5F), 0UL }, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, FALSE));
 
             if (IsKeyJustUp(VK_DIVIDE) && z) {
-                h = 0.1F;
-                w = 0.1F;
+                h = 0.034F;
+                w = 0.2249F;
                 z = FALSE;
             }
             if (IsKeyJustUp(VK_ADD)) {
@@ -428,17 +468,27 @@ void main()
     while (true)
     {   
         menu_Tick();
+
         WAIT(0);
     }
 }
 
+void PUSH_GFX(char* sParam0)//Position - 0x947C
+{
+    GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING(sParam0);
+    GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
+}
+int switchIndex = 0;
+int SCL_HANDLE = 0;
+int timer = 0 ;
 void THREAD_2() {
     for (;;) {
-        MidSizedHandle* handle = mz_Create("BIGGER TEXT", "NIGGA WAHT", HUD_COLOUR_ADVERSARY, FALSE, FALSE);
-        if (IsKeyDown(VK_RETURN)) {
-            mz_Tick(handle);
-            mz_Destroy(handle);
-        }
+        //if (IsKeyDown(VK_RETURN)) {
+        //    BigMsgHandle* handle = BIGMSG_Create("PURCHASED", "P");
+        //    BIGMSG_ApplyWeapon(handle, "NAME", MISC::GET_HASH_KEY("WEAPON_PISTOL"), (char*)VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(MISC::GET_HASH_KEY("WEAPON_PISTOL")));
+        //    BIGMSG_Tick(handle);
+        //    BIGMSG_Free(handle);
+        //}
         WAIT(0);
     }
 }
@@ -451,6 +501,72 @@ void ScriptMain()
 {
     srand(GetTickCount());
     main();
-    
 }
 
+/*
+*  t_Draw(t_Create(util_IntToStr(switchIndex), 0, { 0.17F, 0UL, 0.2F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        t_Draw(t_Create(util_IntToStr(SCL_HANDLE), 0, { 0.17F, 0UL, 0.23F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        t_Draw(t_Create(util_IntToStr(timer), 0, { 0.17F, 0UL, 0.26F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        if (IsKeyJustUp(VK_ACCEPT)) {
+            switchIndex = 0 ;
+        } 
+        switch (switchIndex)
+        {
+        case 0: //Set up Draw
+            SCL_HANDLE = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
+            timer = MISC::GET_GAME_TIMER() + 3000;
+            switchIndex = 1;
+            break;
+
+        case 1: //Set up SCL
+            if (MISC::GET_GAME_TIMER() > timer)
+            {
+                if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+                {
+                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "SHOW_MISSION_PASSED_MESSAGE");
+                    PUSH_GFX("M_FB4P3_P" /* GXT: ~y~Mission Passed );
+                    PUSH_GFX("M_FB4P3" /* GXT: Getaway Vehicle );
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(100);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+                    timer = MISC::GET_GAME_TIMER() + 10000;
+                    switchIndex = 2;
+                }
+            }
+            break;
+
+        case 2: // Draw
+            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+            {
+                if (MISC::GET_GAME_TIMER() < timer)
+                {
+                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+                }
+                else if (MISC::GET_GAME_TIMER() < timer + 100)
+                {
+                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "TRANSITION_OUT");
+                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+                    timer = (timer - 100);
+                }
+                else if (MISC::GET_GAME_TIMER() < timer + 500)
+                {
+                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+                }
+                else
+                {
+                    switchIndex = 3;
+                }
+            }
+            break;
+
+        case 3: // CleanUp
+
+            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+            {
+                GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&SCL_HANDLE);
+            }
+            break;
+        }
+*/

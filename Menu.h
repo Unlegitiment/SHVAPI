@@ -1,8 +1,10 @@
 #pragma once
 #include "utils.h"
-#define MAX_BUFF 64
+#define BASE_TEXT_BUFF 64
+
+
 typedef struct {
-	char text[MAX_BUFF];
+	char text[BASE_TEXT_BUFF];
 	Vector2_t position;
 	float size;
 	int font;
@@ -21,11 +23,13 @@ typedef struct {
 	RGBA_t colour;
 	float height, width;
 }BoxUI;
+typedef void(*MenuAction)();
 typedef struct {
 	TextUI* leftText;
 	TextUI* rightText;
 	BoxUI* box;
 	BOOL_t isSelected;
+	MenuAction onClickInteraction;
 }Button;
 
 typedef void TextHandle;
@@ -54,4 +58,15 @@ extern void button_Draw(Button ptr);
 extern void button_Destroy(ButtonHandle* handle);
 
 extern void button_Text_Draw(Button b, BOOL_t isRight);
+
+typedef struct listBase {
+	size_t compacity;
+	size_t size;
+	size_t stride;
+	Button* array;
+}ButtonList;
+extern ButtonList list_Create(size_t compacity, size_t stride);
+extern void list_Add(ButtonList* list, Button* data);
+extern size_t list_Size(const ButtonList* list);
+extern size_t list_Compacity(const ButtonList* list);
 #undef MAX_BUFF

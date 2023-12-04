@@ -7,6 +7,8 @@ typedef void TableHandle;
 
 
 typedef void MidSizedHandle;
+typedef void BigMsgHandle;
+
 typedef enum {
 	CM_INTRO = 0,
 	CM_OUTRO = 1,
@@ -88,5 +90,54 @@ extern MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, 
 extern void mz_Destroy(MidSizedHandle* handle);
 extern void mz_ApplyBridgeAndKnife(MidSizedHandle* handle, char* info, int totalTodo, int totalComplete);
 extern void mz_Tick(MidSizedHandle* scl);
+
+/*
+* MP_BIG_MESSAGE_FREEMODE Scaleform (Internals Not Documented For Final Release) 
+*/
+
+typedef enum VehicleHash {
+	VEH_HASH_BUZZARD = 788747387,
+	VEH_HASH_NOKOTA = 1036591958,
+	VEH_HASH_SAVAGE = 4212341271,
+	VEH_HASH_LAZER = 3013282534,
+	VEH_HASH_HUNTER = 4252008158,
+	VEH_HASH_AKULA = 1181327175,
+	VEH_HASH_HYDRA = 970385471,
+	VEH_HASH_PYRO = 2908775872,
+	VEH_HASH_MOLOTOK = 1565978651,
+	VEH_HASH_THRUSTER = 1489874736,
+	VEH_HASH_ROGUE = 3319621991
+}IcoVehHash;
+extern BigMsgHandle* BIGMSG_Create(char* bigText, char* msgTxt);
+extern void BIGMSG_ApplyWeapon(BigMsgHandle* handle, char* weapName, int weapHash, char* weapDesc);
+extern void BIGMSG_ApplyPlane(BigMsgHandle* handle, char* planeName, VehicleHash planeHash);
+extern void BIGMSG_Tick(const BigMsgHandle* handle);
+extern void BIGMSG_Free(BigMsgHandle* handle);
+
+extern void __MPBMF_SHOW_BUSTED_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_WASTED_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_RANKUP_MP_MESSAGE(int handle, char* bigText);
+extern void __MPBMF_SHOW_CREW_RANKUP_MP_MESSAGE(int handle, char* titleStr, char* msgStr, int rankNumber, char* emblemTXD, char* emblemTXN, int alpha);
+extern void __MPBMF_SHOW_LOCKED_UP_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_MISSION_END_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_MISSION_FAILED_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_MISSION_PASSED_MESSAGE(int handle);
+extern void __MPBMF_SHOW_WEAPON_PURCHASED(int handle, char* bigMsg, char* weaponName, int weaponHash, char* weaponDesc, int alpha);
+extern void __MPBMF_SHOW_PLANE_MESSAGE(int handle, char* bigMessage, char* planeName, int planeHash);
+extern void __MPBMF_SHOW_TERRITORY_CHANGE_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_MP_MESSAGE_TOP(int handle);
+extern void __MPBMF_SHOW_CENTERED_MP_MESSAGE_LARGE(int handle);
+extern void __MPBMF_SHOW_CENTERED_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_CENTERED_TOP_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_BIG_MP_MESSAGE_WITH_STRAP_AND_RANK(int handle);
+extern void __MPBMF_SHOW_BIG_MP_MESSAGE_WITH_STRAP(int handle);
+extern void __MPBMF_SHOW_BIG_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_SHARD_CENTERED_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_SHARD_CENTERED_MP_MESSAGE_LARGE(int handle);
+extern void __MPBMF_SHOW_SHARD_WASTED_MP_MESSAGE(int handle, char* bigTxt, char* msgTxt, HudColour colID, BOOL_t unusedBool, BOOL_t darkenBackground);
+extern void __MPBMF_SHOW_SHARD_CENTERED_TOP_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_SHARD_RANKUP_MP_MESSAGE(int handle);
+extern void __MPBMF_SHOW_SHARD_CREW_RANKUP_MP_MESSAGE(int handle);
+
 
 #undef MODE_LIMIT

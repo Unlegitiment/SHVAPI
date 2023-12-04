@@ -7,12 +7,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Alpha Items\Blips.cpp" />
+    <ClCompile Include="GenericList\List.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
     <ClCompile Include="Markers\m_Markers_internal.h" />
     <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\internal_scaleform.h" />
+    <ClCompile Include="Scaleform\MP_BIG_MESSAGE_FREEMODE.cpp" />
     <ClCompile Include="Scaleform\MP_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
     <ClCompile Include="script.cpp" />
@@ -22,15 +25,16 @@
     <ClCompile Include="UI_menu\UI_Menu.cpp" />
     <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\Draw.cpp" />
-    <ClCompile Include="Utils\List.cpp" />
     <ClCompile Include="Utils\RGBA.cpp" />
     <ClCompile Include="Utils\TXD.cpp" />
     <ClCompile Include="Utils\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Alpha Items\Blips.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Scaleform Decompilation\CelebBar.cpp" />
     <ClInclude Include="Scaleform.h" />
     <ClInclude Include="Scaleform\HUD_COLOUR.h" />
     <ClInclude Include="script.h" />

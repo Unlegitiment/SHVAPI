@@ -1,7 +1,7 @@
 #include "..\Menu.h"
 #include "../ScriptHookV/natives.h"
 #include "../ScriptHookV/enums.h"
-#define MAX_BUFF 64
+#define BASE_TEXT_BUFF 64
 typedef float f32;
 typedef double f64;
 /*
@@ -186,10 +186,10 @@ void button_Text_Draw(Button b, BOOL_t isRight) {
 	if (isRight) {
 		HUD::SET_TEXT_WRAP(b.box->drawPos.x, b.box->drawPos.x + (b.box->width/2.0F));
 		HUD::SET_TEXT_JUSTIFICATION(2);
-		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(b.box->topRight.x, b.box->topRight.y + (b.box->height /2.19F), 1);
+		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(b.box->topRight.x, b.box->topRight.y + (b.box->height /5.0F), 1);
 	}
 	else {
-		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(b.box->topLeft.x, b.box->topLeft.y + (b.box->height /2.19F),1);
+		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(b.box->topLeft.x, b.box->topLeft.y + (b.box->height / 5.0F),1);
 	}
 	return;
 }
@@ -211,7 +211,9 @@ void button_Destroy(ButtonHandle* handle) {
 }
 
 /*We need to create a ButtonArray and use pointer arth to prob determine stuff That or make a static list at first for the UI_Menu item(s)*/
+typedef struct {
 
+};
 typedef struct {
 	Button* b[10]; // Defines a array of 10 buttons
 	int currentIndex;
@@ -239,4 +241,3 @@ MenuHandle* menu_Create(ButtonHandle* firstButton) {
 void menu_AddOption(MenuHandle* handle, ButtonHandle* bHandle) {
 
 }
-

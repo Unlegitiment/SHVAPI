@@ -15,11 +15,13 @@
     <ClCompile Include="Scaleform\internal_scaleform.h" />
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
     <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
-    <ClCompile Include="Utils\List.cpp" />
     <ClCompile Include="Types\Player.cpp" />
     <ClCompile Include="Types.h" />
     <ClCompile Include="UI_menu\UI_Menu.cpp" />
     <ClCompile Include="UI_menu\FirstStep.cpp" />
+    <ClCompile Include="Scaleform\MP_BIG_MESSAGE_FREEMODE.cpp" />
+    <ClCompile Include="Alpha Items\Blips.cpp" />
+    <ClCompile Include="GenericList\List.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -37,6 +39,8 @@
     <ClInclude Include="ScriptHookV\main.h" />
     <ClInclude Include="ScriptHookV\enums.h" />
     <ClInclude Include="Scaleform\HUD_COLOUR.h" />
+    <ClInclude Include="Alpha Items\Blips.h" />
+    <ClInclude Include="Scaleform Decompilation\CelebBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

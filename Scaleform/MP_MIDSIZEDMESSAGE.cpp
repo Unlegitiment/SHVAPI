@@ -62,7 +62,7 @@ void mz_ApplyBridgeAndKnife(MidSizedHandle* handle, char* info, int totalTodo, i
 	ptr->BridgeAndKnife.totalTodo					= totalTodo;
 	ptr->BridgeAndKnife.totalComplete				= totalComplete;
 	ptr->mz_TYPE									= mz_Type_Bridge;
-	strncpy(ptr->BridgeAndKnife.infoText, info, MAX_BUFF-2);
+	strncpy(ptr->BridgeAndKnife.infoText, info, MAX_BUFF -2);
 	ptr->BridgeAndKnife.infoText[MAX_BUFF - 1]		= '\0';
 	return;
 }
