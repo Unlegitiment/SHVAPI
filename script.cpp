@@ -368,6 +368,7 @@ void menu_Tick() {
             BoxUI b3 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b2.drawPos.y + h, 0UL }, w, h);
             BoxUI b4 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b3.drawPos.y + h, 0UL }, w, h);
             BoxUI b5 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b4.drawPos.y + h, 0UL }, w, h);
+            BoxUI b6 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b5.drawPos.y + h, 0UL }, w, h);
             BoxUI background = box_Create(rgb_Create(0, 0, 0, 125), { base.x, 0UL, b2.drawPos.y + (h/2.0F), 0UL}, w, ((h * 6)));
 
             //BoxUI addFirst = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.019F, 0.013F);
@@ -391,14 +392,16 @@ void menu_Tick() {
             Button newButton5 = { t_Create("fifth",7,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b4, FALSE, nullFunc };
             /*Third Font Seems to be a symbol Table? Of various null bytes and various default representations of characters like [] > < ^ (down) etc.*/
             Button newButton6 = { t_Create(util_IntToStr(25),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b5, FALSE, nullFunc};
+            Button newButton7 = { t_Create(util_IntToStr(25),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b6, FALSE, nullFunc};
             
-            ButtonList wrapper = list_Create(6, sizeof(Button));
+            ButtonList wrapper = list_Create(1,sizeof(Button*));
             list_Add(&wrapper, &newButton);
             list_Add(&wrapper, &newButton2);
             list_Add(&wrapper, &newButton3);
             list_Add(&wrapper, &newButton4);
             list_Add(&wrapper, &newButton5);
             list_Add(&wrapper, &newButton6);
+            list_Add(&wrapper, &newButton7);
 
             Button* bS[6] = { &newButton, &newButton2, &newButton3, &newButton4, &newButton5, &newButton6 };
 
@@ -409,21 +412,21 @@ void menu_Tick() {
             Vector2_t diff = { 0 };
 
             for (int i = 0; i < wrapper.size; i++) {
-                char* temp = wrapper.array[i].leftText->text;
-                if (isPointInsideBox(x, y, wrapper.array[i].box)) {
+                char* temp = wrapper.array[i]->leftText->text;
+                if (isPointInsideBox(x, y, wrapper.array[i]->box)) {
                     t_Draw(t_Create(util_IntToStr(i), 0, {0.3F,0UL, 0.3F, 0UL}, {255,255,255,255},0.5,TRUE, FALSE, FALSE));
-                    if (wrapper.array[i].onClickInteraction == nullFunc) {
-                        strncpy(wrapper.array[i].leftText->text, "Unimplemented Item\0", 64);
+                    if (wrapper.array[i]->onClickInteraction == nullFunc) {
+                        strncpy(wrapper.array[i]->leftText->text, "Unimplemented Item\0", 64);
                     }
                     if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
-                        wrapper.array[i].onClickInteraction();
+                        wrapper.array[i]->onClickInteraction();
                         //z = FALSE;
                     }
-                    wrapper.array[i].box->colour = { 255,255,255,255 };
-                    wrapper.array[i].leftText->colour = { 0,0,0,255 };
+                    wrapper.array[i]->box->colour = { 255,255,255,255 };
+                    wrapper.array[i]->leftText->colour = { 0,0,0,255 };
                 }
                 else {
-                    strncpy(wrapper.array[i].leftText->text, temp, 64);
+                    strncpy(wrapper.array[i]->leftText->text, temp, 64);
                 }
             }
             GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(5);
@@ -436,8 +439,8 @@ void menu_Tick() {
             
 
             for (int i = 0; i < wrapper.size; i++) {
-                box_Draw(*wrapper.array[i].box);
-                button_Text_Draw(wrapper.array[i], FALSE);
+                box_Draw(*wrapper.array[i]->box);
+                button_Text_Draw(*wrapper.array[i], FALSE);
             }
             //box_Draw(temp);
 

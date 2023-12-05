@@ -63,10 +63,13 @@ typedef struct listBase {
 	size_t compacity;
 	size_t size;
 	size_t stride;
-	Button* array;
+	Button** array;
 }ButtonList;
 extern ButtonList list_Create(size_t compacity, size_t stride);
 extern void list_Add(ButtonList* list, Button* data);
+extern void list_Remove(ButtonList* wrapper, int index);
+typedef void(*ListFunc)();
+extern void list_Iterate(ButtonList* wrapper, ListFunc function);
 extern size_t list_Size(const ButtonList* list);
 extern size_t list_Compacity(const ButtonList* list);
 #undef MAX_BUFF
