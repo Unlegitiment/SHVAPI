@@ -283,17 +283,17 @@ BOOL DisableAllApartments(BOOL zxd) {
     }
     return NULL;
 }
-BOOL_t isPointInsideBox( float x, float y, BoxUI* box) {
-    // Check if the point's x-coordinate is within the box's x-range
-    if (x >= box->topLeft.x && x <= box->bottomRight.x) {
-        // Check if the point's y-coordinate is within the box's y-range
-        if (y >= box->topLeft.y && y <= box->bottomRight.y) {
-            // The point is inside the box
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
+//BOOL_t isPointInsideBox( float x, float y, BoxUI* box) {
+//    // Check if the point's x-coordinate is within the box's x-range
+//    if (x >= box->topLeft.x && x <= box->bottomRight.x) {
+//        // Check if the point's y-coordinate is within the box's y-range
+//        if (y >= box->topLeft.y && y <= box->bottomRight.y) {
+//            // The point is inside the box
+//            return TRUE;
+//        }
+//    }
+//    return FALSE;
+//}
 
 /*
 * StartRep = CurrentRepLocation
@@ -326,13 +326,13 @@ void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
     box->bottomRight.y = box->topRight.y + box->height;
     return;
 }
-void nullFunc() {
-    HUD::THEFEED_FLUSH_QUEUE();
-    HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
-    HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Unimplemented Item!");
-    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
-    return;
-}
+//void nullFunc() {
+//    HUD::THEFEED_FLUSH_QUEUE();
+//    HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+//    HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Unimplemented Item!");
+//    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
+//    return;
+//}
 void menuAction() {
     STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY("ADDER"));
     VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY("ADDER"), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).x, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).y, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).z, 0.0F, TRUE, TRUE, FALSE);
@@ -347,131 +347,201 @@ void menuAction2() {
     }
     return;
 }
+/*
+So Intotal what I should do definitely is basically when I create a button we add it to the list. (NO)
+So we apply the button to the menu maybe so that we can have buttons that are shared across a potential List. 
+So like apply the button to the menu and create specific instances of a menu?
+*/
+
 float h = 0.034F, w = 0.2249F;
-void menu_Tick() {
-    while (true) {
-        static BOOL z = FALSE;
-        if (IsKeyJustUp(VK_DIVIDE)) z = TRUE;
-        if (IsKeyJustUp(VK_DIVIDE) && z == TRUE) z = FALSE;
-        while (z) {
-            float scale = w + (h/0.25F);
-            int SCRx = 0, SCRy = 0;
-            GRAPHICS::GET_SCREEN_RESOLUTION(&SCRx, &SCRy);
+//void menu_Tick() {
+//    while (true) {
+//        static BOOL z = FALSE;
+//        if (IsKeyJustUp(VK_DIVIDE)) z = TRUE;
+//        if (IsKeyJustUp(VK_DIVIDE) && z == TRUE) z = FALSE;
+//        float scale = w + (h / 0.25F);
+//        Vector2_t base = vec2_Create(0.163F, 0.201F);
+//
+//        BoxUI b = box_Create(rgb_Create(0.0F, 0.0F, 0.0F, 0.0F), { base.x, 0UL, base.y - h, 0UL }, w, h);
+//        BoxUI b1 = box_Create(rgb_Create(0, 0, 0, 0), { base.x, 0UL, (base.y) + 0.004F, 0UL }, w, h);
+//        BoxUI b2 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b1.drawPos.y + h, 0UL }, w, h);
+//        BoxUI b3 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b2.drawPos.y + h, 0UL }, w, h);
+//        BoxUI b4 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b3.drawPos.y + h, 0UL }, w, h);
+//        BoxUI b5 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b4.drawPos.y + h, 0UL }, w, h);
+//        BoxUI b6 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b5.drawPos.y + h, 0UL }, w, h);
+//        BoxUI b7 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b6.drawPos.y + h, 0UL }, w, h);
+//        std::string str = "<Quick GPS>";
+//        TextUI* t = t_Create((char*)str.c_str(), 0, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
+//        TextUI* b2Text = t_Create("Teleport to Zancudo", 0, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
+//        Button newButton = { t, t,&b, FALSE, menuAction };
+//        Button newButton2 = { b2Text, b2Text,&b1, FALSE, menuAction2 };
+//        Button newButton3 = { t_Create("third",0, base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b2, FALSE, menuAction };
+//        Button newButton4 = { t_Create("fourth",0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b3, FALSE, menuAction };
+//        Button newButton5 = { t_Create("fifth",0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b4, FALSE, menuAction };
+//        /*Third Font Seems to be a symbol Table? Of various null bytes and various default representations of characters like [] > < ^ (down) etc.*/
+//        Button newButton6 = { t_Create(util_IntToStr(1),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b5, FALSE, menuAction };
+//        Button newButton7 = { t_Create(util_IntToStr(2),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b6, FALSE, menuAction };
+//        Button newButton8 = { t_Create(util_IntToStr(2),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b7, FALSE, menuAction };
+//
+//        while (z) {
+//            
+//            int SCRx = 0, SCRy = 0;
+//            GRAPHICS::GET_SCREEN_RESOLUTION(&SCRx, &SCRy);
+//
+//            /*Whatever the middle button is determines the background's draw position*/
+//            //Vector2_t base = vec2_Create(0.363F, 0.201F);
+//
+//
+//
+//
+//            //BoxUI addFirst = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.019F, 0.013F);
+//            //BoxUI addSecond = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.013F, 0.019F);
+//
+//            BoxUI temp = b;
+//            HUD::SET_MOUSE_CURSOR_THIS_FRAME();
+//            float x = PAD::GET_CONTROL_NORMAL(0, 239);
+//            float y = PAD::GET_CONTROL_NORMAL(0, 240);
+//
+//
+//
+//            //t->position = vec2_Create(base.x - (strlen(t->text)/2.0F)/100.0F, base.y);
+//            //w = (t->position.x + (w *0.503F));
+//
+//            
+//            List wrapper = list_Create(1,sizeof(Button*));
+//            list_Add(&wrapper, &newButton);
+//            list_Add(&wrapper, &newButton2);
+//            list_Add(&wrapper, &newButton3);
+//            list_Add(&wrapper, &newButton4);
+//            list_Add(&wrapper, &newButton5);
+//            list_Add(&wrapper, &newButton6);
+//            list_Add(&wrapper, &newButton7);
+//            list_Add(&wrapper, &newButton8);
+//            BoxUI background;
+//            Button** ptr = (Button**)wrapper.array;
+//            if (wrapper.size % 2) {
+//                background = box_Create(rgb_Create(0, 0, 0, 125), { base.x, 0UL, ptr[wrapper.size/2-1]->box->drawPos.y + (h), 0UL}, w, ((h * wrapper.size)));
+//            }
+//            else {
+//                background = box_Create(rgb_Create(0, 0, 0, 125), { base.x, 0UL, ptr[wrapper.size / 2 - 1]->box->drawPos.y + (h/2.0F), 0UL }, w, ((h * wrapper.size)));
+//
+//            }
+//            PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+//            PAD::ENABLE_CONTROL_ACTION(0, 239, FALSE);
+//            PAD::ENABLE_CONTROL_ACTION(0, 240, FALSE);
+//            Vector2_t start = { 0 };
+//            Vector2_t diff = { 0 };
+//            static int index = 0;
+//            BoxUI selectionBox = box_Create({ 255,255,255,0 }, {0,0,0,0},0,0);
+//            TextUI* selectedText = t_Create("NULL", 0, { 0,0,0,0 }, { 0,0,0,0 }, 0, FALSE, FALSE, FALSE);
+//
+//            for (int i = 0; i < wrapper.size; i++) {
+//                char* temp = ptr[i]->leftText->text;
+//                if (IsKeyJustUp(VK_DOWN)) {
+//                    index++;
+//                }
+//                if (index > wrapper.size || index == wrapper.size) {
+//                    index = 0;
+//                }
+//                if (IsKeyJustUp(VK_UP)) {
+//                    if (index == 0) {
+//                        index = wrapper.size;
+//                    }
+//                    index--;
+//                }
+//                if (IsKeyJustUp(VK_RETURN)) {
+//                    ptr[index]->onClickInteraction();
+//                }
+//                selectionBox = box_Create({ 255,255,255,200 }, ptr[index]->box->drawPos, w, h);
+//                selectedText = t_Create(ptr[index]->leftText->text, ptr[index]->leftText->font, ptr[index]->leftText->position, { 0,0,0,255 }, ptr[index]->leftText->size, ptr[index]->leftText->hasOutline, ptr[index]->leftText->hasDropshadow, ptr[index]->leftText->isCenter);
+//
+//            }
+//            for (int i = 0; i < wrapper.size; i++) {
+//
+//                char* temp = ptr[i]->leftText->text;
+//                if (isPointInsideBox(x, y, ptr[i]->box)) {
+//                    t_Draw(t_Create(util_IntToStr(i), 0, {0.3F,0UL, 0.3F, 0UL}, {255,255,255,255},0.5,TRUE, FALSE, FALSE));
+//                    //if (ptr[i]->onClickInteraction == nullFunc) {
+//                    //    strncpy(ptr[i]->leftText->text, "Unimplemented Item\0", 64);
+//                    //}
+//                    if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
+//                        ptr[i]->onClickInteraction();
+//                        //z = FALSE;
+//                    }
+//                    GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(6);
+//                    selectionBox = box_Create({ 255,255,255,200 }, ptr[i]->box->drawPos, w, h);
+//                    selectedText = t_Create(ptr[i]->leftText->text, ptr[i]->leftText->font, ptr[i]->leftText->position, {0,0,0,255}, ptr[i]->leftText->size, ptr[i]->leftText->hasOutline, ptr[i]->leftText->hasDropshadow, ptr[i]->leftText->isCenter);
+//                }
+//                else {
+//                    strncpy(ptr[i]->leftText->text, temp, 64);
+//                }
+//            }
+//            Button selectedButton = { selectedText, NULL, &selectionBox, FALSE, NULL };
+//            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(5);
+//            box_Draw(background);
+//            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(6);
+//            //box_Draw(b1);
+//            //box_Draw(b2);
+//            //box_Draw(b3);
+//            //box_Draw(b4);
+//            for (int i = 0; i < wrapper.size; i++) {
+//                box_Draw(*ptr[i]->box);
+//                GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(7);
+//                button_Text_Draw(*ptr[i], FALSE);
+//            }
+//            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(8);
+//            box_Draw(*selectedButton.box);
+//            button_Text_Draw(selectedButton, FALSE);
+//            
+//            //box_Draw(temp);
+//
+//
+//            //t_Draw(t_Create("Middle", 0, { b.topLeft.x + (b.width / 2.0F), 0UL, b.topLeft.y + (b.height / 2.5F), 0UL}, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, TRUE));
+//            //t_Draw(t_Create("< None >", 0, { b.topLeft.x * scale * 2.5F , 0UL, b.topLeft.y + (b.height / 2.5F), 0UL }, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, FALSE));
+//
+//            if (IsKeyJustUp(VK_DIVIDE) && z) {
+//                h = 0.034F;
+//                w = 0.2249F;
+//                index = 0;
+//                list_Clear(&wrapper);
+//                z = FALSE;
+//            }
+//            if (IsKeyJustUp(VK_ADD)) {
+//                h += 0.1F;
+//            }
+//            if (IsKeyJustUp(VK_MULTIPLY)) {
+//                w += 0.1F;
+//            }
+//            WAIT(0);
+//        }
+//        WAIT(0);
+//    }
+//}
 
-            /*Whatever the middle button is determines the background's draw position*/
-            Vector2_t base = vec2_Create(0.163F, 0.201F);
-            //Vector2_t base = vec2_Create(0.363F, 0.201F);
-
-            BoxUI b = box_Create(rgb_Create(0.0F, 0.0F, 0.0F, 0.0F), { base.x, 0UL, base.y-h, 0UL }, w, h);
-            BoxUI b1 = box_Create(rgb_Create(0, 0, 0, 0), { base.x, 0UL, (base.y) + 0.004F, 0UL }, w, h);
-            BoxUI b2 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b1.drawPos.y + h, 0UL }, w, h);
-            BoxUI b3 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b2.drawPos.y + h, 0UL }, w, h);
-            BoxUI b4 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b3.drawPos.y + h, 0UL }, w, h);
-            BoxUI b5 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b4.drawPos.y + h, 0UL }, w, h);
-            BoxUI b6 = box_Create({ 0,0,0,0 }, { base.x, 0UL, b5.drawPos.y + h, 0UL }, w, h);
-            BoxUI background = box_Create(rgb_Create(0, 0, 0, 125), { base.x, 0UL, b2.drawPos.y + (h/2.0F), 0UL}, w, ((h * 6)));
-
-            //BoxUI addFirst = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.019F, 0.013F);
-            //BoxUI addSecond = box_Create(rgb_Create(0.0F, 255.0F, 0.0F, 55.0F), { SCRx + 0.0F, 0UL, SCRy + 0.0F , 0UL }, 0.013F, 0.019F);
-
-            BoxUI temp = b;
-            HUD::SET_MOUSE_CURSOR_THIS_FRAME();
-            float x = PAD::GET_CONTROL_NORMAL(0, 239);
-            float y = PAD::GET_CONTROL_NORMAL(0, 240);
-            std::string str = "Spawn Adder";
-            TextUI* t = t_Create((char*)str.c_str(), 0, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
-            TextUI* b2Text = t_Create("Teleport to Zancudo", 1, base, { 255,255,255,255 }, scale, FALSE, FALSE, FALSE);
-
-            //t->position = vec2_Create(base.x - (strlen(t->text)/2.0F)/100.0F, base.y);
-            //w = (t->position.x + (w *0.503F));
-
-            Button newButton = { t, t,&b, FALSE, menuAction};
-            Button newButton2 = { b2Text, b2Text,&b1, FALSE, menuAction2};
-            Button newButton3 = { t_Create("third",2, base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b2, FALSE, nullFunc };
-            Button newButton4 = { t_Create("fourth",4,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b3, FALSE, nullFunc };
-            Button newButton5 = { t_Create("fifth",7,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b4, FALSE, nullFunc };
-            /*Third Font Seems to be a symbol Table? Of various null bytes and various default representations of characters like [] > < ^ (down) etc.*/
-            Button newButton6 = { t_Create(util_IntToStr(25),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b5, FALSE, nullFunc};
-            Button newButton7 = { t_Create(util_IntToStr(25),3,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), t,&b6, FALSE, nullFunc};
-            
-            ButtonList wrapper = list_Create(1,sizeof(Button*));
-            list_Add(&wrapper, &newButton);
-            list_Add(&wrapper, &newButton2);
-            list_Add(&wrapper, &newButton3);
-            list_Add(&wrapper, &newButton4);
-            list_Add(&wrapper, &newButton5);
-            list_Add(&wrapper, &newButton6);
-            list_Add(&wrapper, &newButton7);
-
-            Button* bS[6] = { &newButton, &newButton2, &newButton3, &newButton4, &newButton5, &newButton6 };
-
-            PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-            PAD::ENABLE_CONTROL_ACTION(0, 239, FALSE);
-            PAD::ENABLE_CONTROL_ACTION(0, 240, FALSE);
-            Vector2_t start = { 0 };
-            Vector2_t diff = { 0 };
-
-            for (int i = 0; i < wrapper.size; i++) {
-                char* temp = wrapper.array[i]->leftText->text;
-                if (isPointInsideBox(x, y, wrapper.array[i]->box)) {
-                    t_Draw(t_Create(util_IntToStr(i), 0, {0.3F,0UL, 0.3F, 0UL}, {255,255,255,255},0.5,TRUE, FALSE, FALSE));
-                    if (wrapper.array[i]->onClickInteraction == nullFunc) {
-                        strncpy(wrapper.array[i]->leftText->text, "Unimplemented Item\0", 64);
-                    }
-                    if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
-                        wrapper.array[i]->onClickInteraction();
-                        //z = FALSE;
-                    }
-                    wrapper.array[i]->box->colour = { 255,255,255,255 };
-                    wrapper.array[i]->leftText->colour = { 0,0,0,255 };
-                }
-                else {
-                    strncpy(wrapper.array[i]->leftText->text, temp, 64);
-                }
-            }
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(5);
-            box_Draw(background);
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(6);
-            //box_Draw(b1);
-            //box_Draw(b2);
-            //box_Draw(b3);
-            //box_Draw(b4);
-            
-
-            for (int i = 0; i < wrapper.size; i++) {
-                box_Draw(*wrapper.array[i]->box);
-                button_Text_Draw(*wrapper.array[i], FALSE);
-            }
-            //box_Draw(temp);
-
-
-            //t_Draw(t_Create("Middle", 0, { b.topLeft.x + (b.width / 2.0F), 0UL, b.topLeft.y + (b.height / 2.5F), 0UL}, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, TRUE));
-            //t_Draw(t_Create("< None >", 0, { b.topLeft.x * scale * 2.5F , 0UL, b.topLeft.y + (b.height / 2.5F), 0UL }, rgb_Create(255, 255, 255, 255), scale * 2.5F, FALSE, FALSE, FALSE));
-
-            if (IsKeyJustUp(VK_DIVIDE) && z) {
-                h = 0.034F;
-                w = 0.2249F;
-                z = FALSE;
-            }
-            if (IsKeyJustUp(VK_ADD)) {
-                h += 0.1F;
-            }
-            if (IsKeyJustUp(VK_MULTIPLY)) {
-                w += 0.1F;
-            }
-            WAIT(0);
-        }
-        WAIT(0);
-    }
-}
 void main()
 {
     
     // Tick. 
     while (true)
     {   
-        menu_Tick();
+        //menu_Tick();
+        Vector2_t base = vec2_Create(0.163F, 0.201F);
+        float scale = w + (h / 0.25F);
 
+        BoxUI b1 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, base.y), w, h);
+        BoxUI b2 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, base.y + h), w, h);
+        BoxUI b3 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, b2.drawPos.y + h), w, h);
+        Button button = { t_Create("TEXT", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction};
+        Button button2 = { t_Create("Different Text", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
+        Button button3 = { t_Create("third", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
+        MenuUI* menu = menu_Create();
+        list_Add(&menu->b, &button);
+        list_Add(&menu->b, &button2);
+        list_Add(&menu->b, &button3);
+        if (IsKeyJustUp(VK_DIVIDE)) {
+            menu_Draw(menu, VK_DIVIDE);
+            //UI_DrawNotificationSTR("reached");
+        }
         WAIT(0);
     }
 }

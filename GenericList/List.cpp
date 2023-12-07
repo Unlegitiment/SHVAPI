@@ -2,35 +2,32 @@
 #include "..\Menu.h"
 #include "..\UI.h"
 
-void list_Extend(ButtonList* list) {
+void list_Extend(List* list) {
 	if (list == NULL) return;
 	if (list->array == NULL) return;
 	if (list->compacity <= list->size) {
-		UI_DrawNotificationSTR("reallocing");
-		Button** newList = (Button**)realloc(list->array, sizeof(Button*) * list->compacity * 2);
+		void** newList = (void**)realloc(list->array, list->stride * list->compacity * 2);
 		if (newList == NULL) {
 			return;
-			UI_DrawNotificationSTR("Realloc failed");
 		}
-		UI_DrawNotificationSTR("~g~Reallocing success");
 		list->array = newList;
 		list->compacity *= 2;
 	}
 	return;
 }
-ButtonList list_Create(size_t compacity, size_t stride) {
+List list_Create(size_t compacity, size_t stride) {
 	if (compacity < 0) {
-		ButtonList emptyWrapper = { 0 };
+		List emptyWrapper = { 0 };
 		return emptyWrapper;
 	}
 	if (stride < 0) {
-		ButtonList emptyWrapper = { 0 };
+		List emptyWrapper = { 0 };
 		return emptyWrapper;
 	}
-	ButtonList wrapper = { 0 };
-	wrapper.array = (Button**)malloc(compacity*sizeof(Button));
+	List wrapper = { 0 };
+	wrapper.array = (void**)malloc(compacity*stride);
 	if (wrapper.array == NULL) {
-		ButtonList empty = { 0 };
+		List empty = { 0 };
 		return empty;
 	}
 	wrapper.compacity = compacity;
@@ -38,13 +35,13 @@ ButtonList list_Create(size_t compacity, size_t stride) {
 	wrapper.stride = stride;
 	return wrapper;
 }
-size_t list_Size(const ButtonList* list) {
+size_t list_Size(const List* list) {
 	return list->size;
 }
-size_t list_Compacity(const ButtonList* list) {
+size_t list_Compacity(const List* list) {
 	return list->compacity;
 }
-void list_Add(ButtonList* wrapper, Button* data) {
+void list_Add(List* wrapper, void* data) {
 	if (wrapper == NULL || data == NULL) return;
 	if (wrapper->array == NULL) return;
 	list_Extend(wrapper);
@@ -60,23 +57,21 @@ void list_Add(ButtonList* wrapper, Button* data) {
 		wrapper->size++;
 		return;
 	}
-
-
 }
-void list_Remove(ButtonList* wrapper, int index) {
+void list_Remove(List* wrapper, int index) {
 	if (wrapper == NULL || index < -1) return;
 	if (index > wrapper->size - 1) return;
 	memset(&wrapper->array[index], 0, wrapper->stride);
 	wrapper->size--;
 	return;
 }
-void list_Clear(ButtonList* wrapper) {
+void list_Clear(List* wrapper) {
 	wrapper->size = 0;
 	wrapper->stride = 0;
 	wrapper->compacity = 0;
 	free(wrapper->array);
 }
-void list_Iterate(ButtonList* wrapper, ListFunc function) {
+void list_Iterate(List* wrapper, ListFunc function) {
 	if (wrapper == NULL) return;
 	if (wrapper->array == NULL) return;
 	for (int i = 0; i < wrapper->size; i++) {
