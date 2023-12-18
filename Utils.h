@@ -29,6 +29,8 @@ extern void vec3_Divide(Vector3_t* const dest, const Vector3_t* src);
 
 extern Vector2_t vec2_Create(float x, float y);
 extern Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_);
+extern BOOL_t vec2_Comp(Vector2_t vec, Vector2_t vec2);
+extern const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding);
 /*
 * ~~~~~TXD Function & Headshot ~~~~~~
 */
@@ -52,6 +54,10 @@ inline char* util_IntToStr(int i = 0) {
     sprintf(zzzz, "%d", i);
     return zzzz;
 }
-/*
-* Basically the same as std::vector Just wanted to create it in C style.
-*/
+inline char* util_FloatToStr(float i = 0.0F) {
+    char* zzzz = (char*)malloc(sizeof(char) * 64);
+    if (zzzz == NULL) return NULL;
+    sprintf(zzzz, "%f", i);
+    return zzzz;
+}
+#undef _CRT_SECURE_NO_WARNINGS

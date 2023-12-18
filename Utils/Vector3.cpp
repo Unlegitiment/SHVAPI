@@ -3,7 +3,7 @@ typedef unsigned long long DWORD;
 Vector3_t vec3_Create(float x, float y, float z) {
 	return Vector3_t{ x,0,y,0,z,0 };
 }
-Vector3_t vec3_Create_EX(float x, DWORD _paddingX_, float y, DWORD _paddingY_, float z, DWORD _paddingZ_) {
+Vector3_t vec3_Create_EX(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_, float z, DWORD_t _paddingZ_) {
 	return Vector3_t{ x, (unsigned long long)_paddingX_, y, (unsigned long long)_paddingY_, z, (unsigned long long)_paddingZ_ };
 }
 /*
@@ -41,13 +41,13 @@ void vec3_Change(Vector3_t* ptr, float newNum, Vector3Type toChange) {
 		ptr->z = newNum;
 		break;
 	case 0x45:
-		ptr->_paddingX_ = newNum;
+		ptr->_paddingX_ = (unsigned long long)newNum;
 		break;
 	case 0x46:
-		ptr->_paddingY_ = newNum;
+		ptr->_paddingY_ = (unsigned long long)newNum;
 		break;
 	case 0x47:
-		ptr->_paddingZ_ = newNum;
+		ptr->_paddingZ_ = (unsigned long long)newNum;
 		break;
 	}
 }
@@ -84,4 +84,23 @@ Vector2_t vec2_Create(float x, float y)
 Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_)
 {
 	return Vector2_t{x, _paddingX_, y, _paddingY_};
+}
+const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding) {
+	//char buff[64];
+	//memset(buff, 0, sizeof(*buff));
+	//	char* x = util_FloatToStr(vec.x);
+	//	char* y = util_FloatToStr(vec.y);
+	//if (usePadding) {
+	//	char* _paddingX_ = util_IntToStr(vec._paddingX_);
+	//	char* _paddingY_ = util_IntToStr(vec._paddingY_);
+	//	strcat(buff, x);
+	//	strcat(buff, y);
+	//}
+}
+BOOL_t vec2_Comp(Vector2_t vec, Vector2_t vec2) {
+	if (vec.x == vec2.x &&
+		vec.y == vec2.y) {
+		return TRUE_;
+	}
+	else { return FALSE_; }
 }

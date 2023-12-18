@@ -517,35 +517,64 @@ float h = 0.034F, w = 0.2249F;
 //        WAIT(0);
 //    }
 //}
-
 void main()
 {
-    
+
     // Tick. 
     while (true)
     {   
         //menu_Tick();
-        Vector2_t base = vec2_Create(0.163F, 0.201F);
-        float scale = w + (h / 0.25F);
-
-        BoxUI b1 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, base.y), w, h);
-        BoxUI b2 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, base.y + h), w, h);
-        BoxUI b3 = box_Create({ 0,0,0,200 }, vec2_Create(base.x, b2.drawPos.y + h), w, h);
-        Button button = { t_Create("TEXT", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction};
-        Button button2 = { t_Create("Different Text", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
-        Button button3 = { t_Create("third", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
-        MenuUI* menu = menu_Create();
-        list_Add(&menu->b, &button);
-        list_Add(&menu->b, &button2);
-        list_Add(&menu->b, &button3);
         if (IsKeyJustUp(VK_DIVIDE)) {
+
+            Vector2_t base = vec2_Create(0.163F, 0.201F);
+            float scale = w + (h / 0.25F);
+            BoxUI b1 = box_Create({ 0,0,0,0 }, base, w, h);
+            BoxUI b2 = box_Create({ 0,0,0,0 }, base, w, h);
+            BoxUI b3 = box_Create({ 0,0,0,0 }, base, w, h);
+            BoxUI b4 = box_Create({ 0,0,0,0 }, base, w, h);
+            Button button = { t_Create("TEXT", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
+            Button button2 = { t_Create("Different Text", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
+            Button button3 = { t_Create("third", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
+            Button button4 = { t_Create("fourth", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b4, FALSE,  menuAction2 };
+
+            MenuUI* menu = menu_Create();
+            menu_AddOption(menu, &button);  //  1    Index: 0
+            menu_AddOption(menu, &button2); //  2    Index: 1
+            menu_AddOption(menu, &button3); //  3    Index: 2
+            menu_AddOption(menu, &button4); //  4    Index: 3
+
             menu_Draw(menu, VK_DIVIDE);
-            //UI_DrawNotificationSTR("reached");
         }
         WAIT(0);
     }
 }
 
+
+
+float easeInOut(float t, float b, float c, float d) {
+    return (-c) / 2 * (cos(3.141592653589793 * t / d) - 1) + b;
+}
+
+void DrawBox(float x, float y, float width, float height) {
+    GRAPHICS::DRAW_RECT(x, y, width, height, 0, 0, 255, 100,TRUE);
+}
+
+void AnimateBox(float startTime, float duration, float startX, float endX) {
+    float endTime = MISC::GET_GAME_TIMER() - startTime;
+    if (endTime > duration)
+        endTime = duration;
+
+    float currentX = easeInOut(endTime, startX, endX - startX, duration);
+    float currentY = SYSTEM::SIN(endTime * 0.15F);
+    float normalizedY = fabs((currentY));
+    
+    UI_DrawText(util_FloatToStr(currentX), { 0.8,0,0.5,0 });
+    UI_DrawText(util_FloatToStr(currentY), { 0.8,0,0.55,0 });
+    UI_DrawText(util_FloatToStr(normalizedY), { 0.8,0,0.6,0 });
+    //DrawBox(currentX, 0.5F, w, h);
+    
+    GRAPHICS::DRAW_RECT(currentX, normalizedY, 0.16, 0.16F, 0, 0, 255, 125, TRUE);
+}
 void PUSH_GFX(char* sParam0)//Position - 0x947C
 {
     GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING(sParam0);
@@ -554,14 +583,66 @@ void PUSH_GFX(char* sParam0)//Position - 0x947C
 int switchIndex = 0;
 int SCL_HANDLE = 0;
 int timer = 0 ;
+void deNormalizeONSCR(Vector2_t conversion, float* x, float *y) {
+    int SCRx = 0;
+    int SCRy = 0;
+    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRx, &SCRy);
+    *x = conversion.x * SCRx;
+    *y = conversion.y * SCRy;
+    return;
+}
+void normalizeScr(Vector2_t conversion, float *x, float* y){
+    int SCRX = 0;
+    int SCRY = 0;
+    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
+    *x = conversion.x / SCRX;
+    *y = conversion.y / SCRY;
+    return;
+}
+/* Just Random Stuff to do with the API.
+  PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+  PAD::ENABLE_CONTROL_ACTION(0, 239, FALSE);
+  PAD::ENABLE_CONTROL_ACTION(0, 240, FALSE);
+  PAD::ENABLE_CONTROL_ACTION(0, 237, FALSE);
+  PAD::ENABLE_CONTROL_ACTION(0, 238, FALSE);
+  HUD::SET_MOUSE_CURSOR_THIS_FRAME();
+  float x = PAD::GET_CONTROL_NORMAL(0, 239);
+  float y = PAD::GET_CONTROL_NORMAL(0, 240);
+  float click = PAD::GET_CONTROL_NORMAL(0, 237);
+  float cancel = PAD::GET_CONTROL_NORMAL(0, 238);
+  float unNormalx = 0.0F;
+  float unNormaly = 0.0F;
+  deNormalizeONSCR({ x + 0.0F, 0, y + 0.0F, 0 }, &unNormalx, &unNormaly);
+  std::string str = "Base: (" + std::to_string(x) + "," + std::to_string(y) + ")" + "\nUnN: (" + std::to_string(unNormalx) + "," + std::to_string(unNormaly) + ")";
+  std::string str2 = "Click: " + std::to_string(click) + "\nCancel:" + std::to_string(cancel);
+  float lmfaoso = lmfao(1,,)
+  Button b = { t_Create((char*)str.c_str(), 0, {x, 0, y + 0.04F, 0}, {255,255,255,255},0.512, FALSE, FALSE, FALSE), NULL, box_Create({0,0,0,120}, {x , 0, y - 0.2F, 0},0.3F, 0.15F), FALSE, NULL };
+  Button b1 = { t_Create((char*)str2.c_str(), 0, {x, 0, y + 0.04F, 0}, {255,255,255,255},0.512, FALSE, FALSE, FALSE), NULL, box_Create({0,0,0,120}, {b.box.drawPos.x , 0, b.box.drawPos.y + b.box.height , 0},0.3F, 0.15F), FALSE, NULL };
+  box_Draw(b.box);
+  button_Text_Draw(b, FALSE);  
+  box_Draw(b1.box);
+  button_Text_Draw(b1, FALSE);
+*/
 void THREAD_2() {
+    BOOL z = FALSE;
+    float startTime = MISC::GET_GAME_TIMER();
+    float duration = 2550.0f;
+    float startX = 0.0F;
+    float endX = 1.0F;
+    Vector2_t clickPos[4] = { { 0,0,0,0 }, { 0,0,0,0 }, { 0,0,0,0 }, { 0,0,0,0 } };
     for (;;) {
-        //if (IsKeyDown(VK_RETURN)) {
-        //    BigMsgHandle* handle = BIGMSG_Create("PURCHASED", "P");
-        //    BIGMSG_ApplyWeapon(handle, "NAME", MISC::GET_HASH_KEY("WEAPON_PISTOL"), (char*)VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(MISC::GET_HASH_KEY("WEAPON_PISTOL")));
-        //    BIGMSG_Tick(handle);
-        //    BIGMSG_Free(handle);
-        //}
+
+        if (IsKeyJustUp(VK_ADD)) {
+            startTime = MISC::GET_GAME_TIMER();
+            z = TRUE;
+        }
+        while (z) {
+
+            if (IsKeyJustUp(VK_ADD)) {
+                z = FALSE;
+            }
+            WAIT(0);
+        }
         WAIT(0);
     }
 }

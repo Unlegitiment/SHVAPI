@@ -239,10 +239,10 @@ void BIGMSG_ApplyWeapon(BigMsgHandle* handle, char* weapName, int weapHash, char
 	ptr->WEAPON.weaponHash = weapHash;
 
 	strncpy(ptr->WEAPON.weaponName, weapName, TITLE_SEQ_BUFF - 2);
-	ptr->WEAPON.weaponName[TITLE_SEQ_BUFF - 1] = ' \0';
+	ptr->WEAPON.weaponName[TITLE_SEQ_BUFF - 1] = '\0';
 
 	strncpy(ptr->WEAPON.weaponDesciption, weapDesc, BASE_TEXT_BUFF - 2);
-	ptr->WEAPON.weaponDesciption[BASE_TEXT_BUFF - 1] = '\0';
+	ptr->WEAPON.weaponDesciption[BASE_TEXT_BUFF - 1] ='\0';
 
 	return;
 }

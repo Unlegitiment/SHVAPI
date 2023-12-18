@@ -1,5 +1,6 @@
 #include "../ScriptHookV/natives.h"
 #include "..\Types.h"
+#define _CRT_SECURE_NO_WARNINGS
 #define MAX_PLAYERNAME 64
 typedef struct player_t_{
 	int handle;
@@ -18,3 +19,4 @@ Player_H* __INIT_PLAYER__(Player player) {
 	strncpy(s->networkName, NETWORK::NETWORK_PLAYER_GET_NAME(player),sizeof(s->networkName));
 	return (Player_H*)s;
 }
+#undef _CRT_SECURE_NO_WARNINGS

@@ -93,7 +93,7 @@ void UI_DrawNotificationTXD_Ex(Notification* notification) {
 }
 void UI_DRAWBOX(RGBA_t rgba, Vector2_t screen, float width, float height)
 {
-    GRAPHICS::DRAW_RECT(screen.x, screen.y, width, height, rgba.r, rgba.g, rgba.b, rgba.a, TRUE);
+    GRAPHICS::DRAW_RECT(screen.x, screen.y, width, height, (int)rgba.r, (int)rgba.g, (int)rgba.b, (int)rgba.a, TRUE);
 }
 Notification* UI_n_CreateM(char* title, char* header, char* msg)
 {

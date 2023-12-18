@@ -75,12 +75,12 @@ void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, float startDol, float finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
+void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_INCREMENTAL_CASH_WON_STEP");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(startDol); //startVal
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(finishDol); //finVal
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(startDol); //startVal
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(finishDol); //finVal
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(topTxt);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(bottomTxt);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(handStat); // rightHandStat
@@ -97,19 +97,19 @@ void HC_ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID) {
 void HC_ADD_JP(int handle, char* wallID, int pts, BOOL_t xAlign) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_JOB_POINTS_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(pts);
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(pts);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(xAlign);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
 void HC_ADD_RP_AND_BAR(int handle, char* wallID, int repGained, int startRep, int minRepForRank, int maxRepForRank, int currentRank, int nextRank, char* rnk1txt, char* ranktxt2) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_REP_POINTS_AND_RANK_BAR_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID); // wallid
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(repGained); //repGain
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(startRep); //start
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(minRepForRank);  //minRepForRank
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(maxRepForRank);  //maxRepForRank
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(currentRank);  //currentRank
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(nextRank);  //nextRank
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(repGained); //repGain
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(startRep); //start
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(minRepForRank);  //minRepForRank
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(maxRepForRank);  //maxRepForRank
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(currentRank);  //currentRank
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(nextRank);  //nextRank
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(rnk1txt); // rnktxt1
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(ranktxt2);// rnktxt2
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
@@ -223,7 +223,7 @@ void heistceleb_Destroy(HeistCelebHandle* inst) {
 void HC_PAUSE(int handle, char* wallID, int duration) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "PAUSE");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(wallID);
-	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(duration);
+	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(duration);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
 void HC_CREATE_SEQUENCE(int handle, char* wallID, int sfxID, int colourId) {
@@ -356,11 +356,11 @@ HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut , int sta
 		HC_CREATE_INCREMENTAL_CASH_ANIM(h->scl[i].handle, h->wallID, "ID");
 		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 0, potentTake, "POTENTIAL TAKE", "", "", -1, 3);
 		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", potentTake, actualTake, "ACTUAL TAKE", "", "", -1, 3);
-		char* cutpercentinstr = util_IntToStr(cut);
+		char* cutpercentinstr = util_FloatToStr(cut);
 		cutpercentinstr = (char*)realloc(cutpercentinstr, strlen(cutpercentinstr) + 13);
 		strcat(cutpercentinstr, "% CUT OF TAKE\0");
 		float finalCut = actualTake * (cut / 100);
-		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", actualTake, finalCut, cutpercentinstr, "", "", -1, 3);
+		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", actualTake, (int)finalCut, cutpercentinstr, "", "", -1, 3);
 		free(cutpercentinstr);
 		HC_ADD_INCREMENTAL_CASH_TO_WALL(h->scl[i].handle, h->wallID, "ID");
 		HC_ADD_JP(h->scl[i].handle, h->wallID, jp, FALSE);

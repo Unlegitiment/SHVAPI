@@ -1,7 +1,9 @@
 #pragma once
 #include "utils.h"
 #define BASE_TEXT_BUFF 64
-
+typedef enum __menu_input_base__ {
+	controller_ARROWS = 2, controller_MOUSE = 4, controller_ARROWS_AND_MOUSE = 8
+}MenuInputType;
 
 typedef struct {
 	char text[BASE_TEXT_BUFF];
@@ -38,12 +40,15 @@ typedef struct listBase {
 	void** array;
 }List;
 typedef struct{
+	char title[16];
+	char description[64];
 	//__menu_utils__** subMenus;
 	List b; // Defines a buttonList
 	Button	selectionButton;
 	int currentIndex;
 	int prevIndex;
 	int nextIndex;
+	MenuInputType controllerType;
 	BOOL_t doesHaveArrows;
 	BOOL_t doesHaveHeader;
 	BOOL_t isVisible;
@@ -57,7 +62,6 @@ typedef void MenuHandle;
 
 extern void selButton_Custom(MenuUI* ptr, TextUI* text, BoxUI box);
 
-
 extern MenuUI* menu_Create();
 extern void menu_AddOption(MenuUI* handle, Button* bHandle);
 extern void menu_Switch(MenuUI* primaryMenu, MenuUI* newMenu);
@@ -67,7 +71,9 @@ extern void menu_CancelDraw(MenuUI* ptr);
 extern TextUI* t_Create(char* text, int font, Vector2_t position, RGBA_t textColour, float size, BOOL_t doesOutline, BOOL_t hasDropShadow, BOOL_t isCentered);
 extern void t_Draw(TextUI* handle);
 extern void t_Destroy(TextUI* handle);
-
+/*
+* @brief If you are using this function for creating boxes for menus if I never wrap it. the box's Position can be the same as the previous box because I implemented a fix in  menu_AddOption().
+*/
 extern BoxUI box_Create(RGBA_t boxColour, Vector2_t boxPosition = { NULL, NULL, NULL, NULL }, float width = 0.0F, float height = 0.0F);
 extern void box_Draw(BoxUI box);
 extern void box_Destroy(BoxHandle* handle);

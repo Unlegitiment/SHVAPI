@@ -66,7 +66,7 @@ extern void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* na
 extern void HC_ADD_STAT_TABLE_TO_WALL(int handle, char* wallID, char* statId);
 extern void HC_SHOW_STAT_WALL(int handle, char* wallID);
 extern void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID);
-extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, float startDol, float finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType);
+extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType);
 extern void HC_ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID);
 extern void HC_ADD_JP(int handle, char* wallID, int pts, BOOL_t xAlign);
 extern void HC_ADD_RP_AND_BAR(int handle, char* wallID, int repGained, int startRep, int minRepForRank, int maxRepForRank, int currentRank, int nextRank, char* rnk1txt, char* ranktxt2);
@@ -108,6 +108,7 @@ typedef enum VehicleHash {
 	VEH_HASH_THRUSTER = 1489874736,
 	VEH_HASH_ROGUE = 3319621991
 }IcoVehHash;
+
 extern BigMsgHandle* BIGMSG_Create(char* bigText, char* msgTxt);
 extern void BIGMSG_ApplyWeapon(BigMsgHandle* handle, char* weapName, int weapHash, char* weapDesc);
 extern void BIGMSG_ApplyPlane(BigMsgHandle* handle, char* planeName, VehicleHash planeHash);
