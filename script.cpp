@@ -333,11 +333,11 @@ void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
 //    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
 //    return;
 //}
-void menuAction() {
+void menuAction(Button* ptr) {
     STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY("ADDER"));
     VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY("ADDER"), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).x, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).y, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).z, 0.0F, TRUE, TRUE, FALSE);
 }
-void menuAction2() {
+void menuAction2(Button* ptr) {
     if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 1)) {
         ENTITY::SET_ENTITY_COORDS(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), -2477, 3265, 32, 1, 0, 0, 1);
         VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), 0.0F);
@@ -532,6 +532,9 @@ void main()
             BoxUI b2 = box_Create({ 0,0,0,0 }, base, w, h);
             BoxUI b3 = box_Create({ 0,0,0,0 }, base, w, h);
             BoxUI b4 = box_Create({ 0,0,0,0 }, base, w, h);
+            /*menuAction Takes a pointer to a Button because say if you wanted to modify the button's text to change the buttons colour or others you'd need this. This only works with the current indexed button that the user has selected and does NOT apply to anything else.*/
+            /*To as well preface. Ideally as well you should probably do a union inside the structure that can be used to represent different types of interactions like for example handling a menu change to a newly created menu etc. */
+            
             Button button = { t_Create("TEXT", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
             Button button2 = { t_Create("Different Text", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
             Button button3 = { t_Create("third", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };

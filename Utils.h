@@ -1,5 +1,6 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
+
 #include "Utils/internal_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
