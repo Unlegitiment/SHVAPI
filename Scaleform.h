@@ -1,6 +1,7 @@
 #pragma once
 #include "utils.h"
 #include "Scaleform/HUD_COLOUR.h"
+
 typedef void CelebHandle;
 typedef void HeistCelebHandle;
 typedef void TableHandle;
@@ -97,7 +98,7 @@ extern void mz_Tick(MidSizedHandle* scl);
 
 typedef enum VehicleHash {
 	VEH_HASH_BUZZARD = 788747387,
-	VEH_HASH_NOKOTA = 1036591958,
+	VEH_HASH_NOKOTA = 1036591958, 
 	VEH_HASH_SAVAGE = 4212341271,
 	VEH_HASH_LAZER = 3013282534,
 	VEH_HASH_HUNTER = 4252008158,

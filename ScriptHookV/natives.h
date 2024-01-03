@@ -3002,7 +3002,7 @@ namespace GRAPHICS
 	// 
 	// The total number of rectangles to be drawn in one frame is apparently limited to 399.
 	// 
-	NATIVE_DECL void DRAW_RECT(float x, float y, float width, float height, int r, int g, int b, int a, BOOL p8) { invoke<Void>(0x3A618A217E5154F0, x, y, width, height, r, g, b, a, p8); } // 0x3A618A217E5154F0 0xDD2BFC77 b323
+	NATIVE_DECL void DRAW_RECT(float x, float y, float width, float height, int r, int g, int b, int a, BOOL bSterio) { invoke<Void>(0x3A618A217E5154F0, x, y, width, height, r, g, b, a, bSterio); } // 0x3A618A217E5154F0 0xDD2BFC77 b323
 	// Sets a flag defining whether or not script draw commands should continue being drawn behind the pause menu. This is usually used for TV channels and other draw commands that are used with a world render target.
 	NATIVE_DECL void SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(BOOL toggle) { invoke<Void>(0xC6372ECD45D73BCD, toggle); } // 0xC6372ECD45D73BCD 0xF8FBCC25 b323
 	// Sets the draw order for script draw commands.
@@ -3659,7 +3659,7 @@ namespace GRAPHICS
 	NATIVE_DECL void SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT(int scaleformHandle, BOOL toggle) { invoke<Void>(0x32F34FF7F617643B, scaleformHandle, toggle); } // 0x32F34FF7F617643B b573
 	// This native is used in some casino scripts to fit the scaleform in the rendertarget.
 	NATIVE_DECL void SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT(int scaleformHandle, BOOL toggle) { invoke<Void>(0xE6A9F00D4240B519, scaleformHandle, toggle); } // 0xE6A9F00D4240B519 b877
-	NATIVE_DECL void DRAW_SCALEFORM_MOVIE(int scaleformHandle, float x, float y, float width, float height, int red, int green, int blue, int alpha, int p9) { invoke<Void>(0x54972ADAF0294A93, scaleformHandle, x, y, width, height, red, green, blue, alpha, p9); } // 0x54972ADAF0294A93 0x48DA6A58 b323
+	NATIVE_DECL void DRAW_SCALEFORM_MOVIE(int scaleformHandle, float x, float y, float width, float height, int red, int green, int blue, int alpha, int StereoFlag) { invoke<Void>(0x54972ADAF0294A93, scaleformHandle, x, y, width, height, red, green, blue, alpha, StereoFlag); } // 0x54972ADAF0294A93 0x48DA6A58 b323
 	// unk is not used so no need
 	NATIVE_DECL void DRAW_SCALEFORM_MOVIE_FULLSCREEN(int scaleform, int red, int green, int blue, int alpha, int p5) { invoke<Void>(0x0DF606929C105BE1, scaleform, red, green, blue, alpha, p5); } // 0x0DF606929C105BE1 0x7B48E696 b323
 	NATIVE_DECL void DRAW_SCALEFORM_MOVIE_FULLSCREEN_MASKED(int scaleform1, int scaleform2, int red, int green, int blue, int alpha) { invoke<Void>(0xCF537FDE4FBD4CE5, scaleform1, scaleform2, red, green, blue, alpha); } // 0xCF537FDE4FBD4CE5 0x9C59FC06 b323

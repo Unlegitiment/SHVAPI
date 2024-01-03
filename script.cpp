@@ -6,7 +6,7 @@
 #include "Menu.h"
 #include <string>
 #include <ctime>
-
+#include "UIPlayerList/PlayerList.h"
 
 void main();
 void THREAD_2();
@@ -333,26 +333,56 @@ void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
 //    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
 //    return;
 //}
-void menuAction() {
-    STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY("ADDER"));
-    VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY("ADDER"), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).x, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).y, ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1).z, 0.0F, TRUE, TRUE, FALSE);
-}
-void menuAction2() {
-    if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 1)) {
-        ENTITY::SET_ENTITY_COORDS(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), -2477, 3265, 32, 1, 0, 0, 1);
-        VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), 1), 0.0F);
-    }
-    else {
-        ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), -2477, 3265, 32, TRUE, FALSE, FALSE, TRUE);
-    }
+void menu_Action_TIMER(Button* ptr) {
     return;
+}
+void button_CanBeSelected(Button* ptr, int duration) {
+    int endTime = MISC::GET_GAME_TIMER() + duration;
+    RGBA_t preChangeColour = ptr->leftText->colour;
+    void(*PreChangeButtonFunc)(Button*) = ptr->OnClickInteraction;
+    ptr->OnClickInteraction = menu_Action_TIMER;
+    ptr->leftText->colour = {64,64,64,255};
+    if (MISC::GET_GAME_TIMER() > endTime-1) {
+        ptr->leftText->colour = preChangeColour;
+        ptr->OnClickInteraction = PreChangeButtonFunc;
+    }
+}
+void invert_Colours(Button* ptr) {
+    ptr->leftText->colour = { 0,0,0,255 };
+    ptr->box.colour = {0,0,156,ptr->box.colour.a};
+    return;
+}
+void timeCycleModifier(Button* ptr) {
+
+    GRAPHICS::SET_TIMECYCLE_MODIFIER("DLC_Island_main_hanger");
+    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(1);
+    
+    
+    return;
+}
+void menuAction(Button* ptr) {
+    SCRIPT::REQUEST_SCRIPT("fm_content_drug_vehicle");
+    
+    if (SCRIPT::HAS_SCRIPT_LOADED("fm_content_drug_vehicle")) {
+        int reqID = SYSTEM::START_NEW_SCRIPT("fm_content_drug_vehicle", 5000);
+        ptr->box.colour = { 0,255,0,255 };
+        //strncpy(ptr->leftText->text, util_IntToStr(reqID), 64);
+        //ptr->leftText->text = util_FloatToStr(reqID);
+        WAIT(0);
+        return;
+    }
+    ptr->box.colour = { 255,0,0,255 };
+    
+}
+void menuAction2(Button* ptr) {
+    DLC::ON_ENTER_MP();
 }
 /*
 So Intotal what I should do definitely is basically when I create a button we add it to the list. (NO)
 So we apply the button to the menu maybe so that we can have buttons that are shared across a potential List. 
 So like apply the button to the menu and create specific instances of a menu?
 */
-
+constexpr int MAX_LOBBY_SIZE = 30;
 float h = 0.034F, w = 0.2249F;
 //void menu_Tick() {
 //    while (true) {
@@ -532,16 +562,30 @@ void main()
             BoxUI b2 = box_Create({ 0,0,0,0 }, base, w, h);
             BoxUI b3 = box_Create({ 0,0,0,0 }, base, w, h);
             BoxUI b4 = box_Create({ 0,0,0,0 }, base, w, h);
-            Button button = { t_Create("TEXT", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
-            Button button2 = { t_Create("Different Text", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
+            BoxUI b5 = box_Create({ 0,0,0,0 }, base, w, h);
+            /*menuAction Takes a pointer to a Button because say if you wanted to modify the button's text to change the buttons colour or others you'd need this. This only works with the current indexed button that the user has selected and does NOT apply to anything else.*/
+            /*To as well preface. Ideally as well you should probably do a union inside the structure that can be used to represent different types of interactions like for example handling a menu change to a newly created menu etc. */
+            
+            Button button;
+            for (int i = 0; i < MAX_LOBBY_SIZE; i++) {
+                if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i)) {
+
+                     button = { t_Create((char*)PLAYER::GET_PLAYER_NAME(i), 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
+                }
+            }
+            Button button2 = { t_Create("Activate Online Native", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
             Button button3 = { t_Create("third", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
             Button button4 = { t_Create("fourth", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b4, FALSE,  menuAction2 };
+            Button button5 = { t_Create("Time Modifier", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b5, FALSE,  timeCycleModifier };
+
 
             MenuUI* menu = menu_Create();
+            
             menu_AddOption(menu, &button);  //  1    Index: 0
             menu_AddOption(menu, &button2); //  2    Index: 1
             menu_AddOption(menu, &button3); //  3    Index: 2
             menu_AddOption(menu, &button4); //  4    Index: 3
+            menu_AddOption(menu, &button5); //  5    Index: 4
 
             menu_Draw(menu, VK_DIVIDE);
         }
@@ -623,24 +667,33 @@ void normalizeScr(Vector2_t conversion, float *x, float* y){
   box_Draw(b1.box);
   button_Text_Draw(b1, FALSE);
 */
+
 void THREAD_2() {
-    BOOL z = FALSE;
-    float startTime = MISC::GET_GAME_TIMER();
-    float duration = 2550.0f;
-    float startX = 0.0F;
-    float endX = 1.0F;
-    Vector2_t clickPos[4] = { { 0,0,0,0 }, { 0,0,0,0 }, { 0,0,0,0 }, { 0,0,0,0 } };
-    for (;;) {
+    while (true) {
+        static BOOL isActive;
+        CListPlayer player;
+        CPlayerList playerList;
+        //isActive = TRUE;
+        if (IsKeyJustUp(VK_MULTIPLY)) {
 
-        if (IsKeyJustUp(VK_ADD)) {
-            startTime = MISC::GET_GAME_TIMER();
-            z = TRUE;
+            UI_DrawText((char*)player.toStr().c_str(), { 0.3,0,0.5,0 });
+            isActive = TRUE;
         }
-        while (z) {
-
-            if (IsKeyJustUp(VK_ADD)) {
-                z = FALSE;
+        while (isActive) {
+            if (IsKeyJustUp(VK_MULTIPLY)) {
+                isActive = FALSE;
             }
+            player = CListPlayer(PLAYER::GET_PLAYER_NAME(PLAYER::PLAYER_ID()), CCrewTag());
+            playerList = CPlayerList();
+            player.relationtoPlayer = "C";
+            playerList.m_Players.add(player);
+            playerList.m_Players.add(player);
+            playerList.m_Players.add(player);
+            playerList.m_Players.add(player);
+            playerList.m_Players.add(player);
+            player.m_Name = "NULL";
+            playerList.m_Players.replace(playerList.m_Players.getSize(), player);
+            playerList.Update();
             WAIT(0);
         }
         WAIT(0);

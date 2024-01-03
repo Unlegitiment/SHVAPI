@@ -22,6 +22,11 @@
     <ClCompile Include="Scaleform\MP_BIG_MESSAGE_FREEMODE.cpp" />
     <ClCompile Include="Alpha Items\Blips.cpp" />
     <ClCompile Include="GenericList\List.cpp" />
+    <ClCompile Include="UIPlayerList\ListPlayer.cpp" />
+    <ClCompile Include="UIPlayerList\CrewTag.cpp" />
+    <ClCompile Include="UIPlayerList\PlayerList.cpp" />
+    <ClCompile Include="Scaleform\BaseScaleform.cpp" />
+    <ClCompile Include="UIPlayerList\PlayerListScaleform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -41,6 +46,12 @@
     <ClInclude Include="Scaleform\HUD_COLOUR.h" />
     <ClInclude Include="Alpha Items\Blips.h" />
     <ClInclude Include="Scaleform Decompilation\CelebBar.cpp" />
+    <ClInclude Include="UIPlayerList\ListPlayer.h" />
+    <ClInclude Include="UIPlayerList\CrewTag.h" />
+    <ClInclude Include="UIPlayerList\PlayerList.h" />
+    <ClInclude Include="GenericList\CList.h" />
+    <ClInclude Include="Scaleform\BaseScaleform.h" />
+    <ClInclude Include="UIPlayerList\PlayerListScaleform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

@@ -13,6 +13,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
     <ClCompile Include="Markers\m_Markers_internal.h" />
+    <ClCompile Include="Scaleform\BaseScaleform.cpp" />
     <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\internal_scaleform.h" />
     <ClCompile Include="Scaleform\MP_BIG_MESSAGE_FREEMODE.cpp" />
@@ -21,6 +22,10 @@
     <ClCompile Include="script.cpp" />
     <ClCompile Include="Types.h" />
     <ClCompile Include="Types\Player.cpp" />
+    <ClCompile Include="UIPlayerList\CrewTag.cpp" />
+    <ClCompile Include="UIPlayerList\ListPlayer.cpp" />
+    <ClCompile Include="UIPlayerList\PlayerList.cpp" />
+    <ClCompile Include="UIPlayerList\PlayerListScaleform.cpp" />
     <ClCompile Include="UI_menu\FirstStep.cpp" />
     <ClCompile Include="UI_menu\UI_Menu.cpp" />
     <ClCompile Include="Utils\Vector3.cpp" />
@@ -31,11 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alpha Items\Blips.h" />
+    <ClInclude Include="GenericList\CList.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Scaleform Decompilation\CelebBar.cpp" />
     <ClInclude Include="Scaleform.h" />
+    <ClInclude Include="Scaleform\BaseScaleform.h" />
     <ClInclude Include="Scaleform\HUD_COLOUR.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="ScriptHookV\enums.h" />
@@ -45,6 +52,10 @@
     <ClInclude Include="ScriptHookV\OGnatives.h" />
     <ClInclude Include="ScriptHookV\types.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="UIPlayerList\CrewTag.h" />
+    <ClInclude Include="UIPlayerList\ListPlayer.h" />
+    <ClInclude Include="UIPlayerList\PlayerList.h" />
+    <ClInclude Include="UIPlayerList\PlayerListScaleform.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils\internal_utils.h" />
   </ItemGroup>

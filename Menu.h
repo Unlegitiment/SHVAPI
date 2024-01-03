@@ -84,6 +84,7 @@ extern void button_TextModify(ButtonHandle* handle, TextUI* newText, BOOL_t isRi
 extern void button_Draw(Button ptr);
 extern void button_Destroy(ButtonHandle* handle);
 
+
 extern void button_Text_Draw(Button b, BOOL_t isRight);
 extern BOOL_t isPointInsideBox(float x, float y, BoxUI* box);
 

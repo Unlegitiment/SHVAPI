@@ -91,7 +91,6 @@ BoxUI box_Create(RGBA_t boxColour, Vector2_t boxPosition, float width, float hei
 	box.bottomRight.x = box.topRight.x;
 	box.bottomRight.y = box.topRight.y + box.height;
 
-
 	return box;
 }
 void box_Draw(BoxUI box) {
@@ -230,30 +229,31 @@ void UI_DrawVector(Vector2_t vec) {
 }
 #include "..\UI.h"
 void menu_UpdateBoxPositions(Button* ptr, Vector2_t newPosition) {
-	ptr->box.drawPos = newPosition;
-	ptr->box.topLeft.x =		ptr->box.drawPos.x - (ptr->box.width / 2.0F);
-	ptr->box.topLeft.y =		ptr->box.drawPos.y - (ptr->box.height / 2.0F);
-	ptr->box.bottomLeft.x =		ptr->box.topLeft.x;
-	ptr->box.bottomLeft.y =		ptr->box.topLeft.y + ptr->box.height;
-	ptr->box.topRight.x =		ptr->box.topLeft.x + ptr->box.width;
-	ptr->box.topRight.y =		ptr->box.topLeft.y;
-	ptr->box.bottomRight.x =	ptr->box.topRight.x;
-	ptr->box.bottomRight.y =	ptr->box.topRight.y + ptr->box.height;
+	ptr->box.drawPos			= newPosition;
+	ptr->box.topLeft.x			= ptr->box.drawPos.x - (ptr->box.width / 2.0F);
+	ptr->box.topLeft.y			= ptr->box.drawPos.y - (ptr->box.height / 2.0F);
+	ptr->box.bottomLeft.x		= ptr->box.topLeft.x;
+	ptr->box.bottomLeft.y		= ptr->box.topLeft.y + ptr->box.height;
+	ptr->box.topRight.x			= ptr->box.topLeft.x + ptr->box.width;
+	ptr->box.topRight.y			= ptr->box.topLeft.y;
+	ptr->box.bottomRight.x		= ptr->box.topRight.x;
+	ptr->box.bottomRight.y		= ptr->box.topRight.y + ptr->box.height;
 }
 void menu_AddOption(MenuUI* handle, Button* bHandle) {
 	Button** buttons = (Button**)handle->b.array;
 	int i = 0;
 	for (; i < handle->b.size; i++) {
 		if (vec2_Comp(bHandle->box.drawPos, buttons[i]->box.drawPos)) {
-			menu_UpdateBoxPositions(bHandle, { buttons[i]->box.drawPos.x, 0UL, buttons[i]->box.drawPos.y + bHandle->box.height, 0UL });
+			menu_UpdateBoxPositions(bHandle, { buttons[i]->box.drawPos.x, 0UL, buttons[i]->box.drawPos.y + bHandle->box.height, 0UL } );
 		}
 	}
-	
 	list_Add(&handle->b, bHandle);
 	return;
 }
+/*Unimplemented Now. Test.*/
 void menu_Switch(MenuUI* primaryMenu, MenuUI* newMenu) {
-	primaryMenu = newMenu;
+	primaryMenu->isVisible = FALSE; //cancel previous's draw.
+	menu_Draw(newMenu, NULL); // switch Draw.
 	return;
 }
 static int index;
@@ -400,11 +400,13 @@ void menu_Draw(MenuUI* ptr, DWORD_t toggleKey) {
 			button_Text_Draw(*buttons[i], TRUE);
 		}
 		GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(8);
+
 		box_Draw(ptr->selectionButton.box);
 		button_Text_Draw(ptr->selectionButton, FALSE);
 		button_Text_Draw(ptr->selectionButton, TRUE);
 		/*CleanUp*/
-		if (IsKeyJustUp((DWORD)toggleKey)) {
+
+		if (IsKeyJustUp((DWORD)toggleKey) || IsKeyJustUp(VK_BACK) || IsKeyJustUp(VK_ESCAPE)) {
 			ptr->currentIndex = 0;
 			for (int i = 0; i < ptr->b.size; i++) {
 				free(buttons[i]->leftText);
