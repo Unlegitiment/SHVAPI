@@ -25,13 +25,32 @@ typedef struct {
 	RGBA_t colour;
 	float height, width;
 }BoxUI;
-typedef void(*MenuAction)();
-typedef struct {
+/*
+	12/17/23 ~ Unlegitiment
+	Important Note.
+	All of the PlayerInteractions are not yet seen through as in that they are not recognised by the program yet. 
+	All require a rewrite of the base functionality that as of yet is not ready to be implemented. 
+*/
+typedef struct __button_internal__{
 	TextUI* leftText;
 	TextUI* rightText;
 	BoxUI box;
 	BOOL_t isSelected;
-	MenuAction onClickInteraction;
+	union PlayerInteractions{
+		struct NoButtonChange{
+			void(*ClickInteraction)();
+			void(*HoverInteraction)();
+		};
+		struct ButtonChange{
+			void(*ButtonModifyClick)(__button_internal__*);
+			void(*ButtonModifyHover)(__button_internal__*);
+		};
+		struct MenuModify {
+			void(*_UNIMPLEMENTED_FEATURE_CLICK)();
+			void(*_UNIMPLEMENTED_FEATURE_HOVER)();
+		};
+	};
+	void(*OnClickInteraction)(__button_internal__*);
 }Button;
 typedef struct listBase {
 	size_t compacity;
@@ -44,7 +63,7 @@ typedef struct{
 	char description[64];
 	//__menu_utils__** subMenus;
 	List b; // Defines a buttonList
-	Button	selectionButton;
+	Button selectionButton;
 	int currentIndex;
 	int prevIndex;
 	int nextIndex;
@@ -53,7 +72,6 @@ typedef struct{
 	BOOL_t doesHaveHeader;
 	BOOL_t isVisible;
 }MenuUI;
-
 typedef void TextHandle;
 typedef void BoxHandle;
 typedef void ButtonHandle;

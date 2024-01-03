@@ -209,6 +209,7 @@ MenuUI* menu_Create(){
 	menu->doesHaveHeader = FALSE;
 	menu->isVisible = FALSE;
 	menu->selectionButton = { t_Create("NULL", 0, { 0,0,0,0 }, { 0,0,0,0 }, 0, FALSE, FALSE, FALSE) ,t_Create("NULL", 0, { 0,0,0,0 }, { 0,0,0,0 }, 0, FALSE, FALSE, FALSE), box_Create({ 255,255,255,0}, {0,0,0,0},0,0), FALSE, NULL};
+	
 	return menu;
 }
 void UI_DrawVector(Vector2_t vec) {
@@ -257,7 +258,7 @@ void menu_Switch(MenuUI* primaryMenu, MenuUI* newMenu) {
 	return;
 }
 static int index;
-void nullFunc() {
+void nullFunc(Button* ptr) {
 	HUD::THEFEED_FLUSH_QUEUE();
 	HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Unimplemented Item!");
@@ -296,7 +297,7 @@ void menu_Logic(MenuUI* ptr, MenuInputType controller) {
 				ptr->currentIndex--;
 			}
 			if (IsKeyJustUp(VK_RETURN)) {
-				buttons[ptr->currentIndex]->onClickInteraction();
+				buttons[ptr->currentIndex]->OnClickInteraction(buttons[ptr->currentIndex]);
 			}
 		}
 			ptr->selectionButton.box = box_Create({ 255,255,255,200 }, buttons[ptr->currentIndex]->box.drawPos, buttons[ptr->currentIndex]->box.width, buttons[ptr->currentIndex]->box.height);
@@ -313,11 +314,11 @@ void menu_Logic(MenuUI* ptr, MenuInputType controller) {
 			Button button = {};
 			if (isPointInsideBox(x, y, &buttons[i]->box)) {
 				ptr->currentIndex = i;
-				if (buttons[ptr->currentIndex]->onClickInteraction == nullFunc) {
+				if (buttons[ptr->currentIndex]->OnClickInteraction == nullFunc) {
 					strncpy(buttons[ptr->currentIndex]->leftText->text, "Unimplemented Item\0", 64);
 				}
 				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
-					buttons[ptr->currentIndex]->onClickInteraction();
+					buttons[ptr->currentIndex]->OnClickInteraction(buttons[ptr->currentIndex]);
 				}
 				ptr->selectionButton.box = box_Create({ 255,255,255,200 }, buttons[ptr->currentIndex]->box.drawPos, buttons[0]->box.width, buttons[0]->box.height);
 				ptr->selectionButton.leftText = t_Create(buttons[ptr->currentIndex]->leftText->text, buttons[ptr->currentIndex]->leftText->font, buttons[ptr->currentIndex]->leftText->position, { 0,0,0,255 }, buttons[ptr->currentIndex]->leftText->size, buttons[ptr->currentIndex]->leftText->hasOutline, buttons[ptr->currentIndex]->leftText->hasDropshadow, buttons[ptr->currentIndex]->leftText->isCenter);
@@ -339,7 +340,7 @@ void menu_Logic(MenuUI* ptr, MenuInputType controller) {
 			if (isPointInsideBox(mouse_Coordinates.x, mouse_Coordinates.y, &buttons[i]->box)) {
 				ptr->currentIndex = i;
 				if (PAD::IS_CONTROL_JUST_PRESSED(0, 237) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 237)) {
-					buttons[ptr->currentIndex]->onClickInteraction();
+					buttons[ptr->currentIndex]->OnClickInteraction(buttons[ptr->currentIndex]);
 				}
 			}
 			if (IsKeyJustUp(VK_UP)) {
@@ -355,7 +356,7 @@ void menu_Logic(MenuUI* ptr, MenuInputType controller) {
 				ptr->currentIndex = 0;
 			}
 			if (IsKeyJustUp(VK_RETURN)) {
-				buttons[ptr->currentIndex]->onClickInteraction();
+				buttons[ptr->currentIndex]->OnClickInteraction(buttons[ptr->currentIndex]);
 			}
 			buttons[ptr->currentIndex]->box.drawPos;
 			ptr->selectionButton.box = box_Create({ 255,255,255,200 }, buttons[ptr->currentIndex]->box.drawPos, buttons[0]->box.width, buttons[0]->box.height);
