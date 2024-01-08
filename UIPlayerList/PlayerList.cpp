@@ -1,7 +1,7 @@
 #include "PlayerList.h"
 #include "../ScriptHookV/natives.h"
 #include "../UI.h"
-//CPlayerList CPlayerList::m_Instance;
+CList<CListPlayer> CPlayerList::m_Players = CList<CListPlayer>();
 
 //CPlayerList& CPlayerList::GetInstance()
 //{
@@ -20,7 +20,6 @@ void CPlayerList::Update()
 	this->i_Draw();
 }
 CPlayerList::CPlayerList() :
-	m_Players(),
 	m_UIPlayerList(new CPlayerListScaleform)
 {
 

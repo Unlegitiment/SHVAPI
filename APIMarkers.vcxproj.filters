@@ -27,6 +27,11 @@
     <ClCompile Include="UIPlayerList\PlayerList.cpp" />
     <ClCompile Include="Scaleform\BaseScaleform.cpp" />
     <ClCompile Include="UIPlayerList\PlayerListScaleform.cpp" />
+    <ClCompile Include="CharacterSwitch\ICharacterSwitch.cpp" />
+    <ClCompile Include="CharacterSwitch\CharacterSwitchNative.cpp" />
+    <ClCompile Include="CharacterSwitch\CharacterSwitcher.cpp" />
+    <ClCompile Include="GTAThread\ThreadMgr.cpp" />
+    <ClCompile Include="CharacterSwitch\OnlineLoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -52,6 +57,12 @@
     <ClInclude Include="GenericList\CList.h" />
     <ClInclude Include="Scaleform\BaseScaleform.h" />
     <ClInclude Include="UIPlayerList\PlayerListScaleform.h" />
+    <ClInclude Include="CharacterSwitch\ICharacterSwitch.h" />
+    <ClInclude Include="CharacterSwitch\CharacterSwitchNative.h" />
+    <ClInclude Include="CharacterSwitch\CharacterSwitcher.h" />
+    <ClInclude Include="CharacterSwitch\AllCharacterSwitches.h" />
+    <ClInclude Include="CharacterSwitch\OnlineLoad.h" />
+    <ClInclude Include="GTAThread\ThreadMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -60,5 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="ScriptHookV\ScriptHookV.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

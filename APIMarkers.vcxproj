@@ -8,7 +8,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Alpha Items\Blips.cpp" />
+    <ClCompile Include="CharacterSwitch\CharacterSwitcher.cpp" />
+    <ClCompile Include="CharacterSwitch\CharacterSwitchNative.cpp" />
+    <ClCompile Include="CharacterSwitch\ICharacterSwitch.cpp" />
+    <ClCompile Include="CharacterSwitch\OnlineLoad.cpp" />
     <ClCompile Include="GenericList\List.cpp" />
+    <ClCompile Include="GTAThread\ThreadMgr.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
@@ -36,7 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alpha Items\Blips.h" />
+    <ClInclude Include="CharacterSwitch\AllCharacterSwitches.h" />
+    <ClInclude Include="CharacterSwitch\CharacterSwitcher.h" />
+    <ClInclude Include="CharacterSwitch\CharacterSwitchNative.h" />
+    <ClInclude Include="CharacterSwitch\ICharacterSwitch.h" />
+    <ClInclude Include="CharacterSwitch\OnlineLoad.h" />
     <ClInclude Include="GenericList\CList.h" />
+    <ClInclude Include="GTAThread\ThreadMgr.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Menu.h" />
@@ -61,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="ScriptHookV\ScriptHookV.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{d9f370ff-e11f-43d5-b263-442614553c5d}</ProjectGuid>

@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>
+#include <iostream>
 template<typename T>
 class CList {
     static_assert(std::is_default_constructible_v<T>, "T must be default constructible");
@@ -28,13 +29,16 @@ public:
         return size;
     }
     int getCompacity() {
+        
         return this->compacity;
     }
-    static void Cleanup(CList& list) {
-        for (int i = 0; i < list.size; i++) {
-            free(list->list[i]);
+    void clear() {
+    }
+    void Cleanup() {
+        for (int i = 0; i < this->size; i++) {
+            free(&this->list[i]);
         }
-        free(list->list);
+        free(&this->list);
     }
     T* getList() {
         return this->list;

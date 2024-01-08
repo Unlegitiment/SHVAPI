@@ -7,12 +7,14 @@
 #include "ScriptHookV/main.h"
 #include "script.h"
 #include "keyboard.h"
+#include "GTAThread/ThreadMgr.h"
 
 BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 {
 	switch (reason)
 	{
 	case DLL_PROCESS_ATTACH:
+		
 		scriptRegister(hInstance, ScriptMain);
 		scriptRegisterAdditionalThread(hInstance, THREAD_MAIN_2);
 		keyboardHandlerRegister(OnKeyboardMessage);

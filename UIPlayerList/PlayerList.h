@@ -13,7 +13,7 @@ public:
 	void Update();
 	CPlayerList();
 	CPlayerList(CListPlayer& player);
-	CList<CListPlayer> m_Players;
+	static CList<CListPlayer> m_Players;
 	
 private:
 	void setupDraw();
