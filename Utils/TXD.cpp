@@ -14,31 +14,31 @@ TXD* txd_Create(char* dictionary, char* name) {
 	strncpy(txd->txdName, name, sizeof(txd->txdName));
 	txd->txdDict[63] = '\0';
 	txd->txdName[63] = '\0';
-	txd->isDictRequested = FALSE_;
+	txd->isDictRequested = false;
 	return txd;
 }
 void txd_Destroy(TXD* tPtr) {
 	free(tPtr);
 	return;
 }
-BOOL_t txd_Comp(TXD* one, TXD* two) {
+bool txd_Comp(TXD* one, TXD* two) {
 	if (strcmp(one->txdDict, two->txdDict) == 0 &&
 		strcmp(one->txdName, two->txdName) == 0 &&
 		one->isDictRequested == two->isDictRequested) {
-		return TRUE_;
+		return true;
 	}
-	else return FALSE_;
+	else return false;
 }
 void txd_Init(TXD* tPtr) {
-	tPtr->isDictRequested = TRUE_;
+	tPtr->isDictRequested = true;
 	if (tPtr->txdDict == NULL || tPtr->txdName == NULL) {
-		tPtr->isDictRequested = FALSE_;
+		tPtr->isDictRequested = false;
 		return;
 	}
 	invoke<DWORD>(0xDFA2EF8E04127DD5, tPtr->txdDict, tPtr->isDictRequested);
 	return;
 }
-BOOL_t txd_isRequested(const TXD* tPtr) {
+bool txd_isRequested(const TXD* tPtr) {
 	return tPtr->isDictRequested;
 }
 #define NATIVE_H

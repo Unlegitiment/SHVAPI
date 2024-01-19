@@ -9,13 +9,13 @@ Vector3_t vec3_Create_EX(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY
 /*
 * @return 1 = TRUE 0 = FALSE
 */
-BOOL_t vec3_Comp(Vector3_t* vec, Vector3_t* vec2) {
+bool vec3_Comp(Vector3_t* vec, Vector3_t* vec2) {
 	if (vec->x == vec2->x &&
 		vec->y == vec2->y &&
 		vec->z == vec2->z) {
-		return TRUE_;
+		return true;
 	}
-	else { return FALSE_; }
+	else { return false; }
 }
 /*
 * Does NOT call free() on the vec. As typically we won't be accessing the malloc during operations involving Vector3(s)
@@ -85,7 +85,7 @@ Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY
 {
 	return Vector2_t{x, _paddingX_, y, _paddingY_};
 }
-const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding) {
+const char* vec2_ToStr(const Vector2_t vec, bool usePadding) {
 	//char buff[64];
 	//memset(buff, 0, sizeof(*buff));
 	//	char* x = util_FloatToStr(vec.x);
@@ -97,10 +97,10 @@ const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding) {
 	//	strcat(buff, y);
 	//}
 }
-BOOL_t vec2_Comp(Vector2_t vec, Vector2_t vec2) {
+bool vec2_Comp(Vector2_t vec, Vector2_t vec2) {
 	if (vec.x == vec2.x &&
 		vec.y == vec2.y) {
-		return TRUE_;
+		return true;
 	}
-	else { return FALSE_; }
+	else { return false; }
 }

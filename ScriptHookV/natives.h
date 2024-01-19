@@ -6042,7 +6042,7 @@ namespace MISC
 	NATIVE_DECL void REGISTER_INT64_TO_SAVE(Any* p0, const char* name) { invoke<Void>(0xA735353C77334EA0, p0, name); } // 0xA735353C77334EA0 b323
 	NATIVE_DECL void REGISTER_ENUM_TO_SAVE(Any* p0, const char* name) { invoke<Void>(0x10C2FA78D0E128A1, p0, name); } // 0x10C2FA78D0E128A1 0x9B38374A b323
 	NATIVE_DECL void REGISTER_FLOAT_TO_SAVE(Any* p0, const char* name) { invoke<Void>(0x7CAEC29ECB5DFEBB, p0, name); } // 0x7CAEC29ECB5DFEBB 0xDB06F7AD b323
-	NATIVE_DECL void REGISTER_BOOL_TO_SAVE(Any* p0, const char* name) { invoke<Void>(0xC8F4131414C835A1, p0, name); } // 0xC8F4131414C835A1 0x5417E0E0 b323
+	NATIVE_DECL void REGISTER_boolO_SAVE(Any* p0, const char* name) { invoke<Void>(0xC8F4131414C835A1, p0, name); } // 0xC8F4131414C835A1 0x5417E0E0 b323
 	NATIVE_DECL void REGISTER_TEXT_LABEL_TO_SAVE(Any* p0, const char* name) { invoke<Void>(0xEDB1232C5BEAE62F, p0, name); } // 0xEDB1232C5BEAE62F 0x284352C4 b323
 	// MISC::REGISTER_TEXT_LABEL_15_TO_SAVE(&a_0._f1, "tlPlateText");
 	// MISC::REGISTER_TEXT_LABEL_15_TO_SAVE(&a_0._f1C, "tlPlateText_pending");

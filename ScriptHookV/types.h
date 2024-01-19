@@ -8,6 +8,7 @@
 
 #include <windows.h>
 
+
 typedef DWORD Void;
 typedef DWORD Any;
 typedef DWORD uint;
@@ -46,3 +47,84 @@ typedef struct
 	DWORD _paddingz;
 } Vector3;
 #pragma pack(pop)
+#include <math.h>
+#include <string>
+class CVector2 {
+public:
+	CVector2(float x, DWORD _paddingX_, float y, DWORD _paddingY_) :
+		x(x),
+		y(y),
+		_paddingX_(_paddingX_),
+		_paddingY_(_paddingY_)
+	{
+		
+	}
+	CVector2(float x, float y)
+		:
+		CVector2(x,0UL,y,0UL)
+	{
+
+	}
+	float Dist(CVector2& other) {
+		float xsub, ysub;
+		xsub = other.x - this->x;
+		ysub = other.y - this->y;
+		float xsq, ysq;
+		xsq = xsub * xsub;
+		ysq = ysub * ysub;
+		float tot = xsq + ysq;
+		return static_cast<float>(sqrt(tot));
+	}
+	std::string toStr() {
+		return std::to_string(this->x) + std::to_string(this->y);
+	}
+	//float DistNormalScreen(CVector2& const other) {
+	//	int SCRX = 0;
+	//	int SCRY = 0;
+	//	GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
+	//	x = other.x / SCRX;
+	//	y = other.y / SCRY;
+	//	return Dist(other);
+	//}
+	//Warn this can give funky results.
+	void  Normalize(float VAL, float MAX, float MIN) {
+
+	}
+	void  NormalizeScr(float VAL) {
+
+	}
+	//CVector2 fromVector3(Vector3& const vec);
+	CVector2 operator+(CVector2 const& other) {
+		return CVector2(x + other.x, _paddingX_ + other._paddingX_, y + other.y, _paddingY_ + other._paddingY_);
+	}
+	CVector2 operator-(CVector2 const& other) {
+		return CVector2(x - other.x, _paddingX_ - other._paddingX_, y - other.y, _paddingY_ - other._paddingY_);
+	}
+
+
+	float x;
+	DWORD _paddingX_;
+	float y;
+	DWORD _paddingY_;
+};
+
+class CVector3 : public CVector2{
+public:
+	CVector3(float x, DWORD _paddingX_, float y, DWORD _paddingY_, float z, DWORD _paddingZ_)
+		:
+		CVector2(x, _paddingX_, y, _paddingY_),
+		z(z),
+		_paddingZ_(_paddingZ_)
+	{
+
+	}
+	CVector3(float x, float y, float z) :
+		CVector3(x, 0UL, y, 0UL, z, 0UL)
+	{
+
+	}
+
+private:
+	float z;
+	DWORD _paddingZ_;
+};

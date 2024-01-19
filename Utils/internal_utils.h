@@ -32,13 +32,13 @@ typedef unsigned long long DWORD_t;
 typedef struct {
 	char txdDict[MAX_BUFF];
 	char txdName[MAX_BUFF];
-	BOOL_t isDictRequested;
+	bool isDictRequested;
 }TXD;
 
 typedef struct noti_t{
 	TXD* txd;
 	int handle;
-	BOOL_t isHeadshot : 1;
+	bool isHeadshot : 1;
 	char TITLE[MAX_BUFF];
 	char HEADER[MAX_BUFF];
 	char TEXT[MAX_BUFF];

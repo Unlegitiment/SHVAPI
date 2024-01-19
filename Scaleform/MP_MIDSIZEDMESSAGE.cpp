@@ -16,8 +16,8 @@ typedef struct {
 	char msgTxt[MAX_BUFF];
 	HudColour colID;
 	mz_Type mz_TYPE;
-	BOOL_t useCondensed;
-	BOOL_t useDarkerShards;
+	bool useCondensed;
+	bool useDarkerShards;
 	struct BridgeAndKnife_t {
 		int totalTodo;
 		int totalComplete;
@@ -25,7 +25,7 @@ typedef struct {
 	}BridgeAndKnife;
 }MidSizedMessage;
 
-MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, BOOL_t useCondensed, BOOL_t useDarkerColour) {
+MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, bool useCondensed, bool useDarkerColour) {
 	if (bigTxt == NULL) bigTxt = "";
 
 	MidSizedMessage* z = (MidSizedMessage*)malloc(sizeof(MidSizedMessage));
@@ -94,7 +94,7 @@ void __mz_SHOW_BRIDGES_KNIVES_PROGRESS(int sclHandle, char* title, int totalToDo
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(completed);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void __mz_SHOW_COND_SHARD_MESSAGE(int sclHandle, char* bigTxt, char* msgTxt, int colID, BOOL_t useDarkerShard, BOOL_t useCondensedShard) {
+void __mz_SHOW_COND_SHARD_MESSAGE(int sclHandle, char* bigTxt, char* msgTxt, int colID, bool useDarkerShard, bool useCondensedShard) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(sclHandle, "SHOW_COND_SHARD_MESSAGE");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(bigTxt);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msgTxt);
@@ -103,7 +103,7 @@ void __mz_SHOW_COND_SHARD_MESSAGE(int sclHandle, char* bigTxt, char* msgTxt, int
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(useCondensedShard);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void __mz_SHARD_SET_TEXT(int sclHandle, char* bigTxt, char* msgTxt, BOOL_t useCondensed) {
+void __mz_SHARD_SET_TEXT(int sclHandle, char* bigTxt, char* msgTxt, bool useCondensed) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(sclHandle, "SHARD_SET_TEXT");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(bigTxt);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msgTxt);

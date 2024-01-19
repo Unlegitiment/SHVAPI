@@ -32,6 +32,13 @@
     <ClCompile Include="CharacterSwitch\CharacterSwitcher.cpp" />
     <ClCompile Include="GTAThread\ThreadMgr.cpp" />
     <ClCompile Include="CharacterSwitch\OnlineLoad.cpp" />
+    <ClCompile Include="CharacterSwitch\CTxd.cpp" />
+    <ClCompile Include="UserIO\Mouse.cpp" />
+    <ClCompile Include="CharWheelScaleform\PLAYER_SWITCH.cpp" />
+    <ClCompile Include="CharWheelScaleform\PlayerSwitchWrapper.cpp" />
+    <ClCompile Include="MP_NEXT_JOB_SELECT\CMPVoteScreenRaw.cpp" />
+    <ClCompile Include="MP_NEXT_JOB_SELECT\GridItem.cpp" />
+    <ClCompile Include="MP_NEXT_JOB_SELECT\MPVoteScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -40,7 +47,6 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils\internal_utils.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="Scaleform.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ScriptHookV\types.h" />
     <ClInclude Include="ScriptHookV\OGnatives.h" />
@@ -63,6 +69,17 @@
     <ClInclude Include="CharacterSwitch\AllCharacterSwitches.h" />
     <ClInclude Include="CharacterSwitch\OnlineLoad.h" />
     <ClInclude Include="GTAThread\ThreadMgr.h" />
+    <ClInclude Include="CharacterSwitch\CTxd.h" />
+    <ClInclude Include="UserIO\Mouse.h" />
+    <ClInclude Include="UserIO\THREAD.h" />
+    <ClInclude Include="CharWheelScaleform\PLAYER_SWITCH.h" />
+    <ClInclude Include="CharWheelScaleform\PlayerSwitchWrapper.h" />
+    <ClInclude Include="Include.h" />
+    <ClInclude Include="GenericList\RangeList.h" />
+    <ClInclude Include="MP_NEXT_JOB_SELECT\MPVoteScreen.h" />
+    <ClInclude Include="MP_NEXT_JOB_SELECT\CMPVoteScreenRaw.h" />
+    <ClInclude Include="MP_NEXT_JOB_SELECT\GridItem.h" />
+    <ClInclude Include="Scaleform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

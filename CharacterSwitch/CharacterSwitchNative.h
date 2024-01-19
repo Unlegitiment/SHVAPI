@@ -20,12 +20,12 @@ private:
 	static std::string			sm_EstablishShot ; 
 	CCharSwitcherNATIVE() {};
 
-	friend class TeleportCameraSwitch; //All SubClasses should go here as friend classes. This is because it allows them to control the state of all static members.
+	friend class CTpSwitch; //All SubClasses should go here as friend classes. This is because it allows them to control the state of all static members.
 public:
 	/*Flags*/
 	enum {
-		SWITCH_FLAG_0	= BIT(0),
-		SWITCH_FLAG_1	= BIT(1),
+		SWITCH_FLAG_SKIP_INTRO	= BIT(0),
+		SWITCH_FLAG_SKIP_OUTRO	= BIT(1),
 		SWITCH_FLAG_2	= BIT(2),
 		SWITCH_FLAG_3	= BIT(3),
 		SWITCH_FLAG_4	= BIT(4),
@@ -37,9 +37,17 @@ public:
 		SWITCH_FLAG_10	= BIT(10),
 		SWITCH_FLAG_11	= BIT(11),
 		SWITCH_FLAG_12	= BIT(12),
-		SWITCH_FLAG_13	= BIT(13),
-		SWITCH_FLAG_14	= BIT(14),
+		SWITCH_FLAG_13_NO_EFFECT_OUTRO	= BIT(13),
+		SWITCH_FLAG_14_NO_EFFECT_INTRO	= BIT(14),
 		SWITCH_FLAG_15	= BIT(15)
+	};
+	enum SwitchState {
+		SWITCH_PROG_STEP_1 = 1,
+		SWITCH_PROG_STEP_2 = 2,
+		SWITCH_PROG_STEP_3 = 3,
+		SWITCH_PROG_TRANSITION = 8,
+		SWITCH_PROG_DECENT = 10,
+		SWITCH_PROG_FINALIZE = 12
 	};
 	static CCharSwitcherNATIVE& GetInstance() { return sm_Instance; };
 	int GetSwitchState();

@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "..\utils.h"
+
 
 typedef int SCLHANDLE;
 #define MAX_BUFF 128

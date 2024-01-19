@@ -2,7 +2,7 @@
 #include "../ScriptHookV/natives.h"
 #include "../ScriptHookV/enums.h"
 #define BASE_TEXT_BUFF 64
-TextUI* t_Create(char* text, int font, Vector2_t position, RGBA_t textColour, float size, BOOL_t doesOutline, BOOL_t hasDropShadow, BOOL_t isCentered) {
+TextUI* t_Create(char* text, int font, Vector2_t position, RGBA_t textColour, float size, bool doesOutline, bool hasDropShadow, bool isCentered) {
 	TextUI* z = (TextUI*)malloc(sizeof(TextUI));
 	if (z == NULL) { return NULL; }
 	strncpy(z->text, text, 62);
@@ -61,9 +61,9 @@ void t_Destroy(TextUI* handle) {
 	free(handle);
 	return;
 }
-BOOL_t doVector2Equal(Vector2_t v1, Vector2_t v2) {
-	if (v1.x == v2.x && v1.y == v2.y && v1._paddingX_ == v2._paddingX_ && v1._paddingY_ == v2._paddingY_) return TRUE_;
-	return FALSE_;
+bool doVector2Equal(Vector2_t v1, Vector2_t v2) {
+	if (v1.x == v2.x && v1.y == v2.y && v1._paddingX_ == v2._paddingX_ && v1._paddingY_ == v2._paddingY_) return true;
+	return false;
 }
 BoxUI box_Create(RGBA_t boxColour, Vector2_t boxPosition, float width, float height) {
 	Vector2_t nullPos = { NULL, NULL, NULL, NULL };
@@ -116,7 +116,7 @@ Button* button_Create(BoxUI box, TextUI* const leftText, TextUI* const rightText
 	t_Destroy(rightText);
 	return b;
 }
-void button_TextModify(ButtonHandle* handle, TextUI* newText, BOOL_t isRightText) {
+void button_TextModify(ButtonHandle* handle, TextUI* newText, bool isRightText) {
 	if (handle == NULL) return;
 	Button* b = (Button*)handle;
 	if (isRightText) {
@@ -130,7 +130,7 @@ void button_TextModify(ButtonHandle* handle, TextUI* newText, BOOL_t isRightText
 		return;
 	}
 }
-void button_Text_Draw(Button b, BOOL_t isRight) {
+void button_Text_Draw(Button b, bool isRight) {
 	TextUI* handle = NULL;
 	if (!isRight && b.rightText == NULL) {
 		handle = b.leftText;
@@ -184,7 +184,7 @@ void button_Destroy(ButtonHandle* handle) {
 	return;
 }
 
-BOOL_t isPointInsideBox(float x, float y, BoxUI* box) {
+bool isPointInsideBox(float x, float y, BoxUI* box) {
 	if (x >= box->topLeft.x && x <= box->bottomRight.x) {
 		if (y >= box->topLeft.y && y <= box->bottomRight.y) {
 			return TRUE;

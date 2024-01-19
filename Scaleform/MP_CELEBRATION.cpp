@@ -4,7 +4,7 @@
 #define wallid_LIMIT 16
 #define MODE_LIMIT 64
 struct INTRO_T_I {
-	BOOL_t chalTextLabel, tarTypeTextLabel, modeLabelIsStringLiteral;
+	bool chalTextLabel, tarTypeTextLabel, modeLabelIsStringLiteral;
 	char missionName[MODE_LIMIT];
 	char missionType[MODE_LIMIT];
 	char modeType[MODE_LIMIT];
@@ -38,9 +38,9 @@ CelebHandle* celeb_Intro_Create(
 								char missionType[MODE_LIMIT],
 								char modeType[MODE_LIMIT],
 								CelebrationTypes type,
-								BOOL_t chalTextLabel, 
-								BOOL_t tarTypeTextLabel, 
-								BOOL_t modeLabelIsStringLiteral,
+								bool chalTextLabel, 
+								bool tarTypeTextLabel, 
+								bool modeLabelIsStringLiteral,
 								int opacity
 								) {
 	if (missionName == NULL) missionName = "";
@@ -128,13 +128,13 @@ int getIndexOfSclFG(CelebHandle* handle) {
 }
 /*
 * @param int offset - Some scaleforms are too long for the program thus this is created to subtract from the base time.
-* BOOL_t isOffsetPositive - By default set to FALSE_ because you basically never need more time for a scaleform however im not here to judge boo.
+* bool isOffsetPositive - By default set to false because you basically never need more time for a scaleform however im not here to judge boo.
 */
 
 #define NATIVE_H
 #ifdef NATIVE_H
 #include "../ScriptHookV/natives.h"
-void displayOorI(CelebHandle* handle, int offset = 0, BOOL_t isOffsetPositive = FALSE_) {
+void displayOorI(CelebHandle* handle, int offset = 0, bool isOffsetPositive = false) {
 	MP_CELEB* celeb = (MP_CELEB*)handle;
 	int startTime = MISC::GET_GAME_TIMER();
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(celeb->scl[getIndexOfScl(handle)].handle, "GET_TOTAL_WALL_DURATION");
@@ -212,7 +212,7 @@ void celeb_Draw(CelebHandle* celeb) {
 		SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(c->wallID);
 		END_SCALEFORM_MOVIE_METHOD();
 	}
-	BOOL_t running = FALSE_;
+	bool running = false;
 	c->startTime = MISC::GET_GAME_TIMER();
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(c->scl[2].handle, "GET_TOTAL_WALL_DURATION");
 	int retHandle = GRAPHICS::END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE();
@@ -315,7 +315,7 @@ void CELEB_MISS_RESULT(int handle, const char* wallId, const char* textLabel, co
 /*
 * @brief NEEDS DOCUMENTATION THIS IS VERY CONFUSING.
 */
-void CELEB_ADD_WINNER_TO_WALL(int handle, const char* wallID, BOOL_t isInFlow, const char* largeLabel, const char* playerName, const char* crewName, const char* teamName, int bet) {
+void CELEB_ADD_WINNER_TO_WALL(int handle, const char* wallID, bool isInFlow, const char* largeLabel, const char* playerName, const char* crewName, const char* teamName, int bet) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_WINNER_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(largeLabel);
@@ -389,14 +389,14 @@ void CELEB_ADD_OBJ_TO_WALL(int handle, char* wallID, char* objTitle, char* objTe
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE); // NO IDEA?
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void CELEB_ADD_CASH_TO_WALL(int handle, char* wallID, int incrementCash, BOOL_t unknown = TRUE) {
+void CELEB_ADD_CASH_TO_WALL(int handle, char* wallID, int incrementCash, bool unknown = TRUE) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_CASH_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(incrementCash);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(unknown);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void CELEB_ADD_JP_TO_WALL(int handle, char* wallID, float JP, BOOL_t unknown = FALSE) {
+void CELEB_ADD_JP_TO_WALL(int handle, char* wallID, float JP, bool unknown = FALSE) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_JOB_POINTS_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(JP);
@@ -416,13 +416,13 @@ void CELEB_ADD_RP_AND_BAR_TO_WALL(int handle, char* wallID, float start, float r
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING("");
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void CELEB_ADD_READY(int handle, char* wallID, BOOL_t unknown) {
+void CELEB_ADD_READY(int handle, char* wallID, bool unknown) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_READY_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(unknown);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void CELEB_ADD_CHAL_WINNER_TO_WALL(int handle, char* wallID, char* subTxt, char* winLose, char* crew, char* challLabel, float bet, BOOL_t isFlow) {
+void CELEB_ADD_CHAL_WINNER_TO_WALL(int handle, char* wallID, char* subTxt, char* winLose, char* crew, char* challLabel, float bet, bool isFlow) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_CHALLENGE_WINNER_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(subTxt);
@@ -595,7 +595,7 @@ void CELEB_PAUSE(int handle, char* wallID, int duration) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(duration);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void CELEB_DRAW(int handle, int handle_bg, int handle_fg, int offset, BOOL_t offsetNeg) {
+void CELEB_DRAW(int handle, int handle_bg, int handle_fg, int offset, bool offsetNeg) {
 	if (offsetNeg) {
 		offset = -offset;
 	}
@@ -681,17 +681,17 @@ void exampleOutro(CelebHandle* handle) {
 		a->outro.endMoney = 1805205;
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, a->outro.endMoney + 0.0F, "ACTUAL TAKE", "", "", 0);
 		a->outro.startMoney = a->outro.endMoney;
-		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, (int)(a->outro.endMoney *= .25F), "25% CUT OF TAKE", "", "", 0);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, static_cast<float>(a->outro.endMoney *= .25F), "25% CUT OF TAKE", "", "", 0);
 		a->outro.startMoney = a->outro.endMoney;
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney + 0.0F, a->outro.endMoney+ 0.0F, "ELITE CHALLENGE", "COMPLETE IN UNDER 10:15 MINS", "15:26", 2);
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney + 0.0F, a->outro.endMoney+ 0.0F, "ELITE CHALLENGE", "NOOSE NOT CALLED", "", 2);
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney + 0.0F, a->outro.endMoney+ 0.0F, "ELITE CHALLENGE", "NOBODY GETS WASTED", "", 1);
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney + 0.0F, a->outro.endMoney+ 0.0F, "ELITE CHALLENGE INCOMPLETE", "", "", 0);
 		a->outro.startMoney = a->outro.endMoney;
-		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, (int)(a->outro.endMoney += 999749.0F), "ALL IN ORDER CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES IN ORDER", "", 0);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, static_cast<float > (a->outro.endMoney += 999749.0F), "ALL IN ORDER CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES IN ORDER", "", 0);
 		a->outro.startMoney = a->outro.endMoney;
 
-		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, (int)(a->outro.endMoney += 10000000.0F), "CRIMINAL MASTERMIND CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES, IN ORDER, WITH THE SAME TEAM, WITHOUT LOSING ANY LIVES", "", 0);
+		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.startMoney + 0.0F, static_cast<float>(a->outro.endMoney += 10000000.0F), "CRIMINAL MASTERMIND CHALLENGE BONUS", "COMPLETE ALL HEIST SETUPS AND FINALES, IN ORDER, WITH THE SAME TEAM, WITHOUT LOSING ANY LIVES", "", 0);
 		CELEB_ADD_INCREMENT_CASH_ANIM(a->scl[i].handle, a->wallID, "ID", a->outro.endMoney + 0.0F, a->outro.endMoney + 0.0F, "TOTAL CASH EARNED", "", "", 0);
 		CELEB_ADD_INCREMENT_CASH_TO_WALL(a->scl[i].handle, a->wallID, "ID");
 		CELEB_PAUSE(a->scl[i].handle, a->wallID, 5 * 6);

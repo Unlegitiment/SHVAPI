@@ -1,5 +1,5 @@
 #pragma once
-#include "utils.h"
+
 #include "Scaleform/HUD_COLOUR.h"
 
 typedef void CelebHandle;
@@ -31,7 +31,7 @@ typedef enum CelebrationTypes {
 
 extern void celeb_Draw(CelebHandle* celeb);
 #define MODE_LIMIT 64
-extern CelebHandle* celeb_Intro_Create(char missionName[MODE_LIMIT],char missionType[MODE_LIMIT],char modeType[MODE_LIMIT],CelebrationTypes type,BOOL_t chalTextLabel,BOOL_t tarTypeTextLabel,BOOL_t modeLabelIsStringLiteral = TRUE_,int opacity = 0);
+extern CelebHandle* celeb_Intro_Create(char missionName[MODE_LIMIT],char missionType[MODE_LIMIT],char modeType[MODE_LIMIT],CelebrationTypes type,bool chalTextLabel,bool tarTypeTextLabel,bool modeLabelIsStringLiteral = true,int opacity = 0);
 
 extern void Outro_Draw(CelebHandle* cIns);
 
@@ -63,17 +63,17 @@ extern void HC_ADD_BKG_TO_WALL(int handle, char* wallID, int opacity, int moneyM
 extern void HC_ADD_MISS_RESULT(int handle, char* wallID, char* missionTextLbl, char* passFail, char* msgLabel);
 extern void HC_ADD_COMPLETE_MESS_TO_WALL(int handle, char* wallID, char* missionTextLbl, char* passFail, char* msgLabel);
 extern void HC_CREATE_STAT_TABLE(int handle, char* wallID, char* statID, int sfxID);
-extern void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* name, char* val, BOOL_t isTotalRow, BOOL_t isValTime, char* COLID);
+extern void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* name, char* val, bool isTotalRow, bool isValTime, char* COLID);
 extern void HC_ADD_STAT_TABLE_TO_WALL(int handle, char* wallID, char* statId);
 extern void HC_SHOW_STAT_WALL(int handle, char* wallID);
 extern void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID);
-extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType);
+extern void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, bool handico, int soundType);
 extern void HC_ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID);
-extern void HC_ADD_JP(int handle, char* wallID, int pts, BOOL_t xAlign);
+extern void HC_ADD_JP(int handle, char* wallID, int pts, bool xAlign);
 extern void HC_ADD_RP_AND_BAR(int handle, char* wallID, int repGained, int startRep, int minRepForRank, int maxRepForRank, int currentRank, int nextRank, char* rnk1txt, char* ranktxt2);
 extern void HC_ADD_CASH_DEDUCTION(int handle, char* wallID, char* title, char* desc, int val);
-extern void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int finVal, int startVal, BOOL_t xAlign, BOOL_t isRawTxt);
-extern void HC_ADD_CASH_TO_WALL(int handle, char* wallID, float val, BOOL_t xAlign);
+extern void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int finVal, int startVal, bool xAlign, bool isRawTxt);
+extern void HC_ADD_CASH_TO_WALL(int handle, char* wallID, float val, bool xAlign);
 extern void HC_CLEANUP(int handle, char* wallID);
 extern void HC_CREATE_SEQUENCE(int handle, char* wallID, int sfxID, int colourId);
 
@@ -87,7 +87,7 @@ extern HeistCelebHandle* EX_HC_FAILED(int startRep, int currentRank, int nextRan
 * MidSizedMessage Scaleform Commands (Does Not Include Native Scaleform Pushs rather a wrapper around it.
 */
 
-extern MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, BOOL_t useCondensed, BOOL_t useDarkerColour);
+extern MidSizedHandle* mz_Create(char* bigTxt, char* descTxt, HudColour colour, bool useCondensed, bool useDarkerColour);
 extern void mz_Destroy(MidSizedHandle* handle);
 extern void mz_ApplyBridgeAndKnife(MidSizedHandle* handle, char* info, int totalTodo, int totalComplete);
 extern void mz_Tick(MidSizedHandle* scl);
@@ -136,7 +136,7 @@ extern void __MPBMF_SHOW_BIG_MP_MESSAGE_WITH_STRAP(int handle);
 extern void __MPBMF_SHOW_BIG_MP_MESSAGE(int handle);
 extern void __MPBMF_SHOW_SHARD_CENTERED_MP_MESSAGE(int handle);
 extern void __MPBMF_SHOW_SHARD_CENTERED_MP_MESSAGE_LARGE(int handle);
-extern void __MPBMF_SHOW_SHARD_WASTED_MP_MESSAGE(int handle, char* bigTxt, char* msgTxt, HudColour colID, BOOL_t unusedBool, BOOL_t darkenBackground);
+extern void __MPBMF_SHOW_SHARD_WASTED_MP_MESSAGE(int handle, char* bigTxt, char* msgTxt, HudColour colID, bool unusedBool, bool darkenBackground);
 extern void __MPBMF_SHOW_SHARD_CENTERED_TOP_MP_MESSAGE(int handle);
 extern void __MPBMF_SHOW_SHARD_RANKUP_MP_MESSAGE(int handle);
 extern void __MPBMF_SHOW_SHARD_CREW_RANKUP_MP_MESSAGE(int handle);

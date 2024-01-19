@@ -2094,7 +2094,7 @@ namespace GAMEPLAY
 	static void _0xA735353C77334EA0(Any* p0, Any* p1) { invoke<Void>(0xA735353C77334EA0, p0, p1); } // 0xA735353C77334EA0
 	static void REGISTER_ENUM_TO_SAVE(Any* p0, char* name) { invoke<Void>(0x10C2FA78D0E128A1, p0, name); } // 0x10C2FA78D0E128A1 0x9B38374A
 	static void REGISTER_FLOAT_TO_SAVE(Any* p0, char* name) { invoke<Void>(0x7CAEC29ECB5DFEBB, p0, name); } // 0x7CAEC29ECB5DFEBB 0xDB06F7AD
-	static void REGISTER_BOOL_TO_SAVE(Any* p0, char* name) { invoke<Void>(0xC8F4131414C835A1, p0, name); } // 0xC8F4131414C835A1 0x5417E0E0
+	static void REGISTER_boolO_SAVE(Any* p0, char* name) { invoke<Void>(0xC8F4131414C835A1, p0, name); } // 0xC8F4131414C835A1 0x5417E0E0
 	static void REGISTER_TEXT_LABEL_TO_SAVE(Any* p0, char* name) { invoke<Void>(0xEDB1232C5BEAE62F, p0, name); } // 0xEDB1232C5BEAE62F 0x284352C4
 	static void _0x6F7794F28C6B2535(Any* p0, char* name) { invoke<Void>(0x6F7794F28C6B2535, p0, name); } // 0x6F7794F28C6B2535 0xE2089749
 	static void _0x48F069265A0E4BEC(Any* p0, char* name) { invoke<Void>(0x48F069265A0E4BEC, p0, name); } // 0x48F069265A0E4BEC 0xF91B8C33

@@ -55,7 +55,7 @@ void CPlayerListScaleform::SET_DATA_SLOT(int viewIndex, int rank, const char* na
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(rank); //rank [1]
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(name); //name [2]
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)colour); // color [3]
-    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT((int)icon);// icon image (rank globe, death X)
+    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)icon);// icon image (rank globe, death X)
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(mugshotTxd); //mugshot txt[5]
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(jp); //jp[6
     GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(crewTag); // crew after 4th index ? [7]

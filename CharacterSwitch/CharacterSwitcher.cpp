@@ -2,7 +2,7 @@
 #include "../ScriptHookV/natives.h"
 #include "../ScriptHookV/enums.h"
 #include "../keyboard.h"
-TeleportCameraSwitch::TeleportCameraSwitch(Vector3 newPosition, signed flags) :
+CTpSwitch::CTpSwitch(Vector3 newPosition, signed flags) :
 	clonedPed(-1)
 {
 	this->m_WarpPosition = newPosition;
@@ -12,7 +12,7 @@ TeleportCameraSwitch::TeleportCameraSwitch(Vector3 newPosition, signed flags) :
 * Transfer thread? Or just use if statements and recursion?
 */
 
-void TeleportCameraSwitch::Init()
+void CTpSwitch::Init()
 {
 	clonedPed = PED::CLONE_PED(PLAYER::PLAYER_PED_ID(), 0,0,1);
 	ENTITY::SET_ENTITY_COORDS(clonedPed, this->m_WarpPosition.x, this->m_WarpPosition.y, this->m_WarpPosition.z, 1, 0, 0, 1);
@@ -21,17 +21,17 @@ void TeleportCameraSwitch::Init()
 	this->m_Native.Start();
 }
 
-void TeleportCameraSwitch::SetupEstablishingShot(const char* wtv)
+void CTpSwitch::SetupEstablishingShot(const char* wtv)
 {
 	this->m_Native.SetEstablishingShot(wtv);
 }
 
-void TeleportCameraSwitch::Tick()
+void CTpSwitch::Tick()
 {
-	if (this->m_Native.GetSwitchState() == SWITCH_PROG_TRANSITION) {
+	if (this->m_Native.GetSwitchState() == m_Native.SWITCH_PROG_TRANSITION) {
 		ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), this->m_WarpPosition.x, this->m_WarpPosition.y, this->m_WarpPosition.z, 1, 0, 0, 1);
 	}
-	if (this->m_Native.GetSwitchState() == SWITCH_PROG_DECENT) {
+	if (this->m_Native.GetSwitchState() == m_Native.SWITCH_PROG_DECENT) {
 		PED::DELETE_PED(&this->clonedPed);
 		m_Native.sm_IsSwitchActive = FALSE;
 	}
@@ -40,7 +40,7 @@ void TeleportCameraSwitch::Tick()
 	}
 }
 
-bool TeleportCameraSwitch::isTeleportActive()
+bool CTpSwitch::isTeleportActive()
 {
 	return this->m_Native.isSwitchInProgress();
 }

@@ -11,10 +11,10 @@ typedef struct {
 	float size;
 	int font;
 	RGBA_t colour;
-	BOOL_t hasOutline;
-	BOOL_t hasDropshadow;
-	BOOL_t isCenter;
-	BOOL_t isDrawn;
+	bool hasOutline;
+	bool hasDropshadow;
+	bool isCenter;
+	bool isDrawn;
 }TextUI;
 typedef struct {
 	Vector2_t drawPos;
@@ -35,7 +35,7 @@ typedef struct __button_internal__{
 	TextUI* leftText;
 	TextUI* rightText;
 	BoxUI box;
-	BOOL_t isSelected;
+	bool isSelected;
 	union PlayerInteractions{
 		struct NoButtonChange{
 			void(*ClickInteraction)();
@@ -68,9 +68,9 @@ typedef struct{
 	int prevIndex;
 	int nextIndex;
 	MenuInputType controllerType;
-	BOOL_t doesHaveArrows;
-	BOOL_t doesHaveHeader;
-	BOOL_t isVisible;
+	bool doesHaveArrows;
+	bool doesHaveHeader;
+	bool isVisible;
 }MenuUI;
 typedef void TextHandle;
 typedef void BoxHandle;
@@ -86,7 +86,7 @@ extern void menu_Switch(MenuUI* primaryMenu, MenuUI* newMenu);
 extern void menu_Draw(MenuUI* ptr, DWORD_t toggleKey);
 extern void menu_CancelDraw(MenuUI* ptr);
 
-extern TextUI* t_Create(char* text, int font, Vector2_t position, RGBA_t textColour, float size, BOOL_t doesOutline, BOOL_t hasDropShadow, BOOL_t isCentered);
+extern TextUI* t_Create(char* text, int font, Vector2_t position, RGBA_t textColour, float size, bool doesOutline, bool hasDropShadow, bool isCentered);
 extern void t_Draw(TextUI* handle);
 extern void t_Destroy(TextUI* handle);
 /*
@@ -97,14 +97,14 @@ extern void box_Draw(BoxUI box);
 extern void box_Destroy(BoxHandle* handle);
 
 
-extern Button* button_Create(BoxUI box, TextUI* const leftText, TextUI* const rightText = t_Create("NULL", 0, { 0,0,0,0 }, { 255,0,0,255 }, 0.532, FALSE_, FALSE_, FALSE_));
-extern void button_TextModify(ButtonHandle* handle, TextUI* newText, BOOL_t isRightText = FALSE_);
+extern Button* button_Create(BoxUI box, TextUI* const leftText, TextUI* const rightText = t_Create("NULL", 0, { 0,0,0,0 }, { 255,0,0,255 }, 0.532, false, false, false));
+extern void button_TextModify(ButtonHandle* handle, TextUI* newText, bool isRightText = false);
 extern void button_Draw(Button ptr);
 extern void button_Destroy(ButtonHandle* handle);
 
 
-extern void button_Text_Draw(Button b, BOOL_t isRight);
-extern BOOL_t isPointInsideBox(float x, float y, BoxUI* box);
+extern void button_Text_Draw(Button b, bool isRight);
+extern bool isPointInsideBox(float x, float y, BoxUI* box);
 
 extern List list_Create(size_t compacity, size_t stride);
 extern void list_Add(List* list, void* data);

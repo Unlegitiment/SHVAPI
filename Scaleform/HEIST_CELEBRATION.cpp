@@ -45,7 +45,7 @@ void HC_CREATE_STAT_TABLE(int handle, char* wallID, char* statID, int sfxID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(sfxID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* name, char* val, BOOL_t isTotalRow, BOOL_t isValTime, char* COLID) {
+void HC_ADD_STAT_TO_WALL(int handle, char* wallID, char* statId, char* name, char* val, bool isTotalRow, bool isValTime, char* COLID) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_STAT_TO_TABLE");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(statId);
@@ -75,7 +75,7 @@ void HC_CREATE_INCREMENTAL_CASH_ANIM(int handle, char* wallID, char* stepID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, BOOL_t handico, int soundType) {
+void HC_ADD_INCREMENTAL_CASH_WON_STEP(int handle, char* wallID, char* stepID, int startDol, int finishDol, char* topTxt, char* bottomTxt, char* handStat, bool handico, int soundType) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_INCREMENTAL_CASH_WON_STEP");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
@@ -94,7 +94,7 @@ void HC_ADD_INCREMENTAL_CASH_TO_WALL(int handle, char* wallID, char* stepID) {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(stepID);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_JP(int handle, char* wallID, int pts, BOOL_t xAlign) {
+void HC_ADD_JP(int handle, char* wallID, int pts, bool xAlign) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_JOB_POINTS_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(pts);
@@ -123,7 +123,7 @@ void HC_ADD_CASH_DEDUCTION(int handle, char* wallID, char* title, char* desc, in
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(val); 
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int finVal, int startVal, BOOL_t xAlign, BOOL_t isRawTxt) {
+void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int finVal, int startVal, bool xAlign, bool isRawTxt) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_CASH_WON_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(statLbl);
@@ -133,7 +133,7 @@ void HC_ADD_CASH_WON_TO_WALL(int handle, char* wallID, char* statLbl, int finVal
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(isRawTxt);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
-void HC_ADD_CASH_TO_WALL(int handle, char* wallID, float val, BOOL_t xAlign) {
+void HC_ADD_CASH_TO_WALL(int handle, char* wallID, float val, bool xAlign) {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(handle, "ADD_CASH_TO_WALL");
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(wallID);
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(val);
@@ -356,7 +356,7 @@ HeistCelebHandle* EX_HC_PASS(int potentTake, int actualTake, float cut , int sta
 		HC_CREATE_INCREMENTAL_CASH_ANIM(h->scl[i].handle, h->wallID, "ID");
 		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", 0, potentTake, "POTENTIAL TAKE", "", "", -1, 3);
 		HC_ADD_INCREMENTAL_CASH_WON_STEP(h->scl[i].handle, h->wallID, "ID", potentTake, actualTake, "ACTUAL TAKE", "", "", -1, 3);
-		char* cutpercentinstr = util_FloatToStr(cut);
+		char* cutpercentinstr = const_cast<char*>(std::to_string(cut).c_str());
 		cutpercentinstr = (char*)realloc(cutpercentinstr, strlen(cutpercentinstr) + 13);
 		strcat(cutpercentinstr, "% CUT OF TAKE\0");
 		float finalCut = actualTake * (cut / 100);

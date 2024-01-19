@@ -3,7 +3,7 @@
 #ifdef NATIVE_H
 #include "../ScriptHookV/natives.h"
 #include "..\UI.h"
-void UI_DrawText(char* text, Vector2_t screen) {
+void UI_DrawText(const char* text, Vector2_t screen) {
     HUD::SET_TEXT_FONT(0);
     HUD::SET_TEXT_SCALE(1, 0.552);
     HUD::SET_TEXT_OUTLINE();

@@ -12,7 +12,7 @@ typedef int Entity;
 */
 
 extern RGBA_t rgb_Create(float r, float g, float b, float a);
-extern BOOL_t rgb_Equal(RGBA_t rgb1, RGBA_t rgb2);
+extern bool rgb_Equal(RGBA_t rgb1, RGBA_t rgb2);
 extern void rgb_Destroy(RGBA_t* rgb);
 
 /*
@@ -21,7 +21,7 @@ extern void rgb_Destroy(RGBA_t* rgb);
 
 extern Vector3_t vec3_Create(float x, float y, float z); 
 extern Vector3_t vec3_Create_EX(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_, float z, DWORD_t _paddingZ_);
-extern BOOL_t vec3_Comp(Vector3_t* vec, Vector3_t* vec2);
+extern bool vec3_Comp(Vector3_t* vec, Vector3_t* vec2);
 extern void vec3_Destroy(Vector3_t* vec);
 extern void vec3_Add(Vector3_t* const dest, const Vector3_t* src);
 extern void vec3_Sub(Vector3_t* const dest, const Vector3_t* src);
@@ -30,8 +30,8 @@ extern void vec3_Divide(Vector3_t* const dest, const Vector3_t* src);
 
 extern Vector2_t vec2_Create(float x, float y);
 extern Vector2_t vec2_Create_Ex(float x, DWORD_t _paddingX_, float y, DWORD_t _paddingY_);
-extern BOOL_t vec2_Comp(Vector2_t vec, Vector2_t vec2);
-extern const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding);
+extern bool vec2_Comp(Vector2_t vec, Vector2_t vec2);
+extern const char* vec2_ToStr(const Vector2_t vec, bool usePadding);
 /*
 * ~~~~~TXD Function & Headshot ~~~~~~
 */
@@ -44,9 +44,9 @@ extern const char* vec2_ToStr(const Vector2_t vec, BOOL_t usePadding);
 */
 extern TXD* txd_Create(char* dictionary, char* name);
 extern void txd_Destroy(TXD* tPtr);
-extern BOOL_t txd_Comp(TXD* one, TXD* two);
+extern bool txd_Comp(TXD* one, TXD* two);
 extern void txd_Init(TXD* tPtr);
-extern BOOL_t txd_isRequested(const TXD* tPtr);
+extern bool txd_isRequested(const TXD* tPtr);
 extern TXD* GetHeadShot(Entity e);
 
 inline char* util_IntToStr(int i = 0) {

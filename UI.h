@@ -9,7 +9,7 @@
 * @param char* text - Text must be pre-combined
 * @param Vector2 screen - Must be normalized (a.k.a between values of 0-1)
 */
-extern void UI_DrawText(char* text, Vector2_t screen);
+extern void UI_DrawText(const char* text, Vector2_t screen);
 extern void UI_DrawNotificationSTR(char* text);
 extern void UI_DrawNotificationI(int i);
 extern void UI_DrawNotificationF(float text, int decimalPlaces = 5);
