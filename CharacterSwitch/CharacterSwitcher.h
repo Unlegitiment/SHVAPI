@@ -6,7 +6,6 @@ Not A Single Instance.
 */
 class CTpSwitch{
 public:
-
 	CTpSwitch(Vector3 newPosition, signed flags);
 	void Init();
 	void SetupEstablishingShot(const char* wtv);

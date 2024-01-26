@@ -1,5 +1,5 @@
 #include "CMPVoteScreenRaw.h"
-
+#include "../ScriptHookV/natives.h"
 CMPVoteScreenRaw::CMPVoteScreenRaw():
 	CBaseScaleform("MP_NEXT_JOB_SELECTION")
 {

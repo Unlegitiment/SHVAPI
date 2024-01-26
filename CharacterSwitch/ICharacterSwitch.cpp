@@ -22,7 +22,6 @@ void ICharacterSwitch::Start()
 		PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 		
 		if(IsKeyJustUp(VK_ACCEPT)) this->End();
-		UI_DrawText(util_IntToStr(m_JumpIndex), { 0.5F,0,0.5F,0 });
 		WAIT(0);
 	}
 }

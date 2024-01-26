@@ -239,6 +239,7 @@ void menu_UpdateBoxPositions(Button* ptr, Vector2_t newPosition) {
 	ptr->box.topRight.y			= ptr->box.topLeft.y;
 	ptr->box.bottomRight.x		= ptr->box.topRight.x;
 	ptr->box.bottomRight.y		= ptr->box.topRight.y + ptr->box.height;
+	
 }
 void menu_AddOption(MenuUI* handle, Button* bHandle) {
 	Button** buttons = (Button**)handle->b.array;

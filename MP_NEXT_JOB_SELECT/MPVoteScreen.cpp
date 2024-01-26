@@ -1,28 +1,33 @@
 #include "MPVoteScreen.h"
 //CVoteScreen CVoteScreen::sm_Instance;
-//int			CVoteScreen::sm_Selected; //					1		2				3			4				5		6
-//CVoteItem	CVoteScreen::sm_VoteItems[MAX_BUTTONS] = {CVoteItem(), CVoteItem(), CVoteItem(), CVoteItem(), CVoteItem(), CVoteItem() };
-////CVoteScreen& CVoteScreen::GetInstance()
-////{
-////	return sm_Instance;
-////}
-//CVoteScreen::CVoteScreen() {
-//	return;
-//}
-//void CVoteScreen::Draw() {
-//	return;
-//}
-//
-//void CVoteScreen::Update()
+
+//CVoteScreen& CVoteScreen::GetInstance()
 //{
-//
+//	return sm_Instance;
 //}
-//
-//void CVoteScreen::Tick()
-//{
-//	
-//}
-//
-//void CVoteScreen::Close()
-//{
-//}
+CVoteScreen::CVoteScreen():
+	CMPVoteScreenRaw(),
+	m_isActive(false),
+	m_VoteItems{CVoteItem(),CVoteItem(), CVoteItem(), CVoteItem(), CVoteItem(), CVoteItem(),},
+	m_Selected(0)
+{
+	
+	return;
+}
+void CVoteScreen::Draw() {
+	GRAPHICS::DRAW_SCALEFORM_MOVIE(this->m_Scaleform, 0.5, 0.5, 1, 1, 255, 255, 255, 255, 0);
+}
+
+void CVoteScreen::Update()
+{
+
+}
+
+void CVoteScreen::Tick()
+{
+	this->Draw();
+}
+
+void CVoteScreen::Close()
+{
+}

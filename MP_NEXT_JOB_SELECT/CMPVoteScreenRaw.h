@@ -5,7 +5,6 @@ using std::string;
 class CMPVoteScreenRaw : protected CBaseScaleform {
 public:
 	CMPVoteScreenRaw();
-
 	void SET_TITLE(string sTitle, string sVotes);
 	void SHOW_PLAYER_VOTE(int i, string sGamerName, int r, int g, int b);
 	void SET_GRID_ITEM(int i, string sTitle, string sTXD, string sTXN, int textureLoadType, int verifiedType, int eIcon, int bCheck, int rpMult, int cashMult, int bDisabled, int iconCol, int apMult);

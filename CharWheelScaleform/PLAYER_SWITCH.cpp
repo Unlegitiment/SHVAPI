@@ -1,7 +1,7 @@
 #include "PLAYER_SWITCH.h"
 #include "../ScriptHookV/natives.h"
 CPLAYER_SWITCH::CPLAYER_SWITCH()
-	:CBaseScaleform("PLAYER_SWITCH")
+	: CBaseScaleform("PLAYER_SWITCH")
 {
 
 }

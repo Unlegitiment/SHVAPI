@@ -7,8 +7,6 @@
 #include "ScriptHookV/main.h"
 #include "script.h"
 #include "keyboard.h"
-#include "GTAThread/ThreadMgr.h"
-
 BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 {
 	switch (reason)

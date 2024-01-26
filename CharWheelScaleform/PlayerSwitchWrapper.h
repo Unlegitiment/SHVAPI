@@ -54,7 +54,12 @@ public:
 	}Damage;
 	int missionCounter;
 };
-
+struct SCharacterInfoMP : CCharacterInfo {
+	MPState state;
+	SCharacterInfoMP() {
+		state = MPState::NULLCHARWITHOUTLABEL;
+	}
+};
 /*
 * Can be a Singleton because you can only have one instance of it active at once. 
 * However is not right now because of the fact that it would introduce some added complexity.
@@ -62,12 +67,6 @@ public:
 */
 class PlayerSwitchWrapper : public IThreadMethod{
 public:
-	struct SCharacterInfoMP : CCharacterInfo{
-		MPState state ;
-		SCharacterInfoMP() {
-			state = MPState::NULLCHARWITHOUTLABEL;
-		}
-	};
 	PlayerSwitchWrapper();
 	int GetSwitchIndex();
 	void Tick();
@@ -86,5 +85,3 @@ private:
 	SCharacterInfoMP	m_MPCharacterInfo;
 };
 
-
-extern PlayerSwitchWrapper g_Switcher;

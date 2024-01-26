@@ -78,19 +78,16 @@ public:
 	std::string toStr() {
 		return std::to_string(this->x) + std::to_string(this->y);
 	}
-	//float DistNormalScreen(CVector2& const other) {
-	//	int SCRX = 0;
-	//	int SCRY = 0;
-	//	GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
-	//	x = other.x / SCRX;
-	//	y = other.y / SCRY;
-	//	return Dist(other);
-	//}
+	void NormalizeScreen(float* locX, float* locY) {
+		int SCRX = 0;
+		int SCRY = 0;
+		GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
+		*locX = this->x / SCRX;
+		*locY = this->y / SCRY;
+		return;
+	}
 	//Warn this can give funky results.
 	void  Normalize(float VAL, float MAX, float MIN) {
-
-	}
-	void  NormalizeScr(float VAL) {
 
 	}
 	//CVector2 fromVector3(Vector3& const vec);
@@ -127,4 +124,16 @@ public:
 private:
 	float z;
 	DWORD _paddingZ_;
+};
+class CRGBA {
+public:
+	float r, g, b, a;
+	CRGBA(float R, float G, float B, float A) :
+		r(R),
+		g(G),
+		b(B),
+		a(A)
+	{
+
+	}
 };

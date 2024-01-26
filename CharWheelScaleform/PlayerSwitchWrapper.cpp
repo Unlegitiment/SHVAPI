@@ -1,12 +1,13 @@
 #include "PlayerSwitchWrapper.h"
-#include "../ScriptHookV/natives.h"
+
 #include "../UI.h"
-PlayerSwitchWrapper g_Switcher = PlayerSwitchWrapper();
+#include "../keyboard.h"
 PlayerSwitchWrapper::PlayerSwitchWrapper() :
 	m_rawSwitch(CPLAYER_SWITCH()),
 	m_selected(-1),
 	m_SPCharacterInfo{ CCharacterInfoSP(), CCharacterInfoSP(), CCharacterInfoSP() },
-	m_MPCharacterInfo()
+	m_MPCharacterInfo(),
+	m_Active(false)
 {
 
 }
@@ -16,7 +17,6 @@ int PlayerSwitchWrapper::GetSwitchIndex()
 {
 	return -2;
 }
-#include "../keyboard.h"
 void PlayerSwitchWrapper::Tick()
 {
 	NativeTick();
@@ -38,6 +38,10 @@ void PlayerSwitchWrapper::Tick()
 }
 void PlayerSwitchWrapper::Update() {
 	Tick();
+}
+
+void PlayerSwitchWrapper::SetMissionNumber(CCharacterInfo::Slot SlotToApply, int Number)
+{
 }
 
 void PlayerSwitchWrapper::NativeTick()
@@ -67,6 +71,10 @@ void PlayerSwitchWrapper::NativeTick()
 	this->m_rawSwitch.Draw();
 }
 
+void PlayerSwitchWrapper::HandleControl()
+{
+}
+
 
 
 
@@ -91,3 +99,5 @@ void PlayerSwitchWrapper::NativeTick()
 //Selected is actually not an index instead it is the sector around the player
 //Head txd Might work but not sure.
 
+
+//PlayerSwitchWrapper g_Switcher = PlayerSwitchWrapper();

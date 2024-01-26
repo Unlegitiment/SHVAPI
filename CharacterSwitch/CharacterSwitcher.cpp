@@ -35,9 +35,11 @@ void CTpSwitch::Tick()
 		PED::DELETE_PED(&this->clonedPed);
 		m_Native.sm_IsSwitchActive = FALSE;
 	}
+#ifdef TEST
 	if (IsKeyJustUp(VK_ADD)) { // BAIL CONDITION ( TEST ) 
 		m_Native.Stop(true);
 	}
+#endif
 }
 
 bool CTpSwitch::isTeleportActive()

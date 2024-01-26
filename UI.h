@@ -1,5 +1,6 @@
 #pragma once
 #include "utils.h"
+#include <string>
 /*
 * ~~~DRAW Functions~~~~
 * IMPORTANT: Draw Functions must be called every tick or else they draw once.
@@ -38,3 +39,21 @@ extern Notification* UI_n_CreateDraw(char* title, char* header, char* msg);
 */
 extern void UI_n_Destroy(Notification* ptr);
 
+class CNotification {
+public:
+	//Factory
+	CNotification(std::string str);
+	static CNotification CreateAndDraw(std::string str);
+	//Base stuff
+	int GetNotifHandle();
+	void changeText(std::string newStr);
+	void Draw(); 
+private:
+	std::string text;
+};
+class CTxdNotication : public CNotification{
+
+};
+class CVersusNotification : public CNotification {
+
+};

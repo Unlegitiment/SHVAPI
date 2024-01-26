@@ -75,11 +75,48 @@ bool CBaseScaleform::GetScaleformValueBool(int retHandle)
 {
 	return GRAPHICS::GET_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_BOOL(retHandle);
 }
-
-void CBaseScaleform::RequestTXD(std::string txd)
+CScaleform::CScaleform(std::string scaleformName) :
+	CBaseScaleform(scaleformName)
 {
-	GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(txd.c_str(), 1);
-	while (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(txd.c_str())) {
+}
+
+bool CScaleform::SET_SCALEFORM(std::string newScaleform)
+{
+	if (this->m_Scaleform > SCL_INVALID) {
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_Scaleform);
+	}
+	this->m_Scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
+	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_Scaleform)) {
 		WAIT(0);
 	}
+	return true;
+}
+
+bool CScaleform::SET_SCALEFORMBG(std::string newScaleform)
+{
+	if (this->m_ScaleformBG > SCL_INVALID) {
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_ScaleformBG);
+	}
+	this->m_ScaleformBG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
+	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformBG)) {
+		WAIT(0);
+	}
+	return true;
+}
+
+bool CScaleform::SET_SCALEFORMFG(std::string newScaleform)
+{
+	if (this->m_ScaleformFG > SCL_INVALID) {
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_ScaleformFG);
+	}
+	this->m_ScaleformFG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
+	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformFG)) {
+		WAIT(0);
+	}
+	return true;
+}
+
+void CScaleform::Draw()
+{
+	return;
 }

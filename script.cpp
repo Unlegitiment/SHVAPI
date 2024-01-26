@@ -1,21 +1,13 @@
 #include "script.h"
 #include "keyboard.h"
-#include "Markers.h"
+#include "MP_NEXT_JOB_SELECT/MPVoteScreen.h"
 #include "UI.h"
-#include "Scaleform.h"
-#include "Menu.h"
-#include "UIPlayerList/PlayerList.h"
-#include "CharacterSwitch/AllCharacterSwitches.h"
-#include "UserIO/Mouse.h"
-#include "CharWheelScaleform/PlayerSwitchWrapper.h"
-#include "MP_NEXT_JOB_SELECT/CMPVoteScreenRaw.h"
 #include <string>
 #include <ctime>
+#pragma warning(disable : 4244 4305) // double <-> float conversions
 
 void main();
 void THREAD_2();
-#pragma warning(disable : 4244 4305) // double <-> float conversions
-
 float square(float num) { return num * num; }
 float distanceTo(Vector3 vec1, Vector3 vec2) {
     float xsub, ysub, zsub;
@@ -54,409 +46,12 @@ float distanceTo(Vector3 vec1) {
     float tot = xsq + ysq + zsq;
     return (float)sqrt(tot);
 }
-void DisableEclipse() {
-    while (true) {
-        HUD::THEFEED_FLUSH_QUEUE();
-        
-        GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"));
-        GRAPHICS::DISABLE_OCCLUSION_THIS_FRAME();
-        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
-        UI_DRAWBOX(rgb_Create(0, 0, 0, 255), { 0.1F,0UL, 0.513F, 0UL }, 0.01F, 0.039F);
-        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
-        
-
-        /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
-        if (IsKeyJustUp(VK_DIVIDE)) {
-            UI_DrawNotificationSTR("FALSE");
-            main();
-        }
-        WAIT(0);
+int GET_MP_INT_CHARACTER_STAT(int iSlot = -1) {
+    int res = -1;
+    if (STATS::STAT_GET_INT(MISC::GET_HASH_KEY("MP0_CHAR_RANK_FM"), &res, -1)) {
+        return res;
     }
-}
-
-typedef enum {
-    RGBA_R, RGBA_G, RGBA_B, RGBA_A
-}RGBA_MOD_TYPE;
-void RGBA_Mod(RGBA_t* ptr, RGBA_MOD_TYPE valToMod, float val) {
-    switch (valToMod) {
-    case RGBA_R:
-        ptr->r = val;
-        break;
-    case RGBA_B:
-        ptr->b = val;
-        break;
-    case RGBA_A: 
-        ptr->a = val;
-        break;
-    case RGBA_G:
-        ptr->g = val;
-            break;
-    }
-    return;
-}
-void flashColour(RGBA_t* colour) {
-    RGBA_t* temp = colour;
-    
-    *colour = { 255,255,255,255 };
-    WAIT(0);
-    colour = temp;
-    return;
-}
-#include <unordered_map>
-void disable(signed flags) {
-    DLC::ON_ENTER_MP();
-    GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
-    
-    //switch (flags) {
-    //case 1 << 0:
-    //    /*Eclipse*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"));
-    //    break;
-    //case 1 << 1:
-    //    /*Alta*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_20_build2"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20"));
-    //    break;
-    //case 1 << 2:
-    //    /*Weazel*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_09_ema"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_09_bld_01"));
-    //    break;
-    //case 1 << 3:
-    //    /*Del Parro*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_sm_14_bld2"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("sm_14_emissive"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("prop_wall_light_12a"));
-    //    break;
-    //case 1 << 4:
-    //    /*Pillbox Hill*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_03_build1x"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1"));
-    //    break;
-    //case 1 << 5:
-    //    //Richard
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_emissive_bh1_08"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_bld2_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_em"));
-    //    break;
-    //case 1 << 6:
-    //            /*Tinsel*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"   ));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02" ));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"      ));
-    //    break;
-    //case 1 << 7:
-    //    //STILT
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"));
-    //    break;
-    //case 1 << 8:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_d"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house02_railings"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_details"));
-    //    break;
-    //case 1 << 9:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"));
-    //    break;
-    //case 1 << 10:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"));
-    //    break;
-    //case 1 << 11:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05c_b4"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_decals_05"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_B4_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_emissive_07"));
-    //    break;
-    //case 1 << 12:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs07"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_hs07_details"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07"));
-    //    break;
-    //case 1 << 13:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13"));
-    //    break;
-    //case 1 << 14:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"));
-    //    break;
-    //case 1 << 15:
-    //    /*Stilt*/
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_railing_06"));
-    //    break;
-    //case 1 << 16:
-    //    //STILT
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01_d"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05"));
-    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house01_details"));
-    //    break;
-    //}
- 
-    if (flags & (1 << 0)) {
-        /*Eclipse*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"      ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"      ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"  ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"               ));
-    }
-    if (flags & (1 << 1)) {
-        /*Alta*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_20_build2"          ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20" ));
-    }
-    if (flags & (1 << 2)) {
-        /*Weazel*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_09_ema"         ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_09_bld_01"  ));
-    }
-    if (flags & (1 << 3)) {
-        /*Del Parro*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_sm_14_bld2"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("sm_14_emissive"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("prop_wall_light_12a"));
-    }
-    if (flags & (1 << 4)) {
-        /*Pillbox Hill*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_03_build1x"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1" ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1" ));
-    }
-    if (flags & (1 << 5)) {
-        //Richard
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"        ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_emissive_bh1_08"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_bld2_LOD"        ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"        ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_em"              ));
-    }
-    if (flags & (1 << 6)) {
-        /*Tinsel*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"   ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02" ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"      ));
-    }
-    if (flags & (1 << 7)) {
-        //STILT
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5"       ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"   ));
-    }
-    if (flags & (1 << 8)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02"         ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_d"       ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"         ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house02_railings"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04"         ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_details" ));
-    }
-    if (flags & (1 << 9)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"  ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"   ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"    ));
-    }
-    if (flags & (1 << 10)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11"        ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"   ));
-    }
-    if (flags & (1 << 11)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05c_b4"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_decals_05"  ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_B4_LOD"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_emissive_07"));
-    }
-    if (flags & (1 << 12)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs07"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_hs07_details"       ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07"        ));
-    }
-
-    if (flags & (1 << 13)) {
-        /*Stilt*/
-
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"   ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13"        ));
-    }
-    if (flags & (1 << 14)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02"           ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"  ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD" ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"   ));
-    }
-    if (flags & (1 << 15)) {
-        /*Stilt*/
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"      ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02"        ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"   ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"    ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_railing_06"         ));
-    }
-    if (flags & (1 << 16)) {
-        //STILT
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01_d"   ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD" ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05"     ));
-        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house01_details" ));
-    }
-
-    GRAPHICS::DISABLE_OCCLUSION_THIS_FRAME();
-}
-
-void DisableDelPerro() {
-    DLC::ON_ENTER_MP();
-    HUD::THEFEED_FLUSH_QUEUE();
-    Vector2_t vec = { 0.55F, 0UL, 0.5F, 0UL };
-    RGBA_t b_RGBA = rgb_Create(0, 0, 0, 255);
-    static BOOL toggle = FALSE;
-
-    for (int i = 0; i < MISC::GET_GAME_TIMER(); i++) {
-        if (IsKeyJustUp(VK_ADD)) {
-            toggle = TRUE;
-        }
-        if (toggle == FALSE) { return; }
-        disable((1 << 3));
-        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
-        box_Draw(box_Create(rgb_Create(255, 0, 0, 255), {vec.x, 0UL, vec.y+0.019F , 0UL}, 0.0512F, 0.09F));
-        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
-        t_Draw(t_Create("Del Perro Removed", 0, { vec.x, 0UL, vec.y + 0.019F, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
-        /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
-        if (IsKeyJustUp(VK_ADD)) {
-            int startTime = MISC::GET_GAME_TIMER();
-            int endTime = startTime + 2500;
-            while (MISC::GET_GAME_TIMER() < endTime) {
-                if (IsKeyJustUp(VK_ADD)) {
-                    toggle = TRUE;
-                    DisableDelPerro();
-                }
-                GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
-                box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
-                GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
-                t_Draw(t_Create("NULL", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
-                WAIT(0);
-            }
-            THREAD_2();
-        }
-        WAIT(0);
-    }
-    
-}
-
-BOOL DisableAllApartments(signed zxd) {
-    DLC::ON_ENTER_MP();
-    HUD::THEFEED_FLUSH_QUEUE();
-    Vector2_t vec = { 0.55F, 0UL, 0.5F, 0UL };
-    RGBA_t b_RGBA = rgb_Create(0, 0, 0, 255);
-
-    for (int i = 0; i < MISC::GET_GAME_TIMER(); i++) {
-        if (zxd != FALSE) {
-            disable((1 << 16) - 1);
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
-            box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
-            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
-            t_Draw(t_Create("All Apartments Cleansed.", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
-
-            /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
-            if (IsKeyJustUp(VK_DIVIDE)) {
-                int startTime = MISC::GET_GAME_TIMER();
-                int endTime = startTime + 2500;
-                zxd = FALSE;
-                while (MISC::GET_GAME_TIMER() < endTime) {
-                    if (IsKeyJustUp(VK_DIVIDE)) {
-                        zxd = TRUE;
-                        DisableAllApartments(zxd);
-                    }
-                    GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
-                    box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
-                    GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
-                    t_Draw(t_Create("NULL", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
-                }
-                
-                THREAD_2();
-            }
-        }
-        return zxd;
-        WAIT(0);
-    }
-    return NULL;
+    return 0;
 }
 //bool isPointInsideBox( float x, float y, BoxUI* box) {
 //    // Check if the point's x-coordinate is within the box's x-range
@@ -469,7 +64,6 @@ BOOL DisableAllApartments(signed zxd) {
 //    }
 //    return FALSE;
 //}
-
 /*
 * StartRep = CurrentRepLocation
 * CurrentRank = the Rank You're Currently on
@@ -479,186 +73,98 @@ BOOL DisableAllApartments(signed zxd) {
 * minNext is Better put as a 0. Because this reveals the animation and makes it more seemless.
 * maxNext = Represents the Maximum amount the bar can represent. It will trigger an animation extension if it goes past it.
 */
-
-
-#define CHARZ "CHAR_ALL_PLAYERS_CONF"
-void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
-    box->drawPos = newPosition;
-
-    box->width = width;
-    box->height = height;
-
-    box->topLeft.x = box->drawPos.x - (box->width / 2.0F);
-    box->topLeft.y = box->drawPos.y - (box->height / 2.0F);
-
-    box->bottomLeft.x = box->topLeft.x;
-    box->bottomLeft.y = box->topLeft.y + box->height;
-
-    box->topRight.x = box->topLeft.x + box->width;
-    box->topRight.y = box->topLeft.y;
-
-    box->bottomRight.x = box->topRight.x;
-    box->bottomRight.y = box->topRight.y + box->height;
-    return;
-}
-//void nullFunc() {
-//    HUD::THEFEED_FLUSH_QUEUE();
-//    HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
-//    HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Unimplemented Item!");
-//    HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(TRUE, FALSE);
-//    return;
-//}
-void menu_Action_TIMER(Button* ptr) {
-    return;
-}
-void button_CanBeSelected(Button* ptr, int duration) {
-    int endTime = MISC::GET_GAME_TIMER() + duration;
-    RGBA_t preChangeColour = ptr->leftText->colour;
-    void(*PreChangeButtonFunc)(Button*) = ptr->OnClickInteraction;
-    ptr->OnClickInteraction = menu_Action_TIMER;
-    ptr->leftText->colour = {64,64,64,255};
-    if (MISC::GET_GAME_TIMER() > endTime-1) {
-        ptr->leftText->colour = preChangeColour;
-        ptr->OnClickInteraction = PreChangeButtonFunc;
-    }
-}
-void invert_Colours(Button* ptr) {
-    ptr->leftText->colour = { 0,0,0,255 };
-    ptr->box.colour = {0,0,156,ptr->box.colour.a};
-    return;
-}
-void timeCycleModifier(Button* ptr) {
-
-    GRAPHICS::SET_TIMECYCLE_MODIFIER("DLC_Island_main_hanger");
-    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(1);
-    
-    return;
-}
-void menuAction(Button* ptr) {
-    SCRIPT::REQUEST_SCRIPT("fm_content_drug_vehicle");
-    
-    if (SCRIPT::HAS_SCRIPT_LOADED("fm_content_drug_vehicle")) {
-        int reqID = SYSTEM::START_NEW_SCRIPT("fm_content_drug_vehicle", 5000);
-        ptr->box.colour = { 0,255,0,255 };
-        //strncpy(ptr->leftText->text, util_IntToStr(reqID), 64);
-        //ptr->leftText->text = util_FloatToStr(reqID);
+void main() //Frontend Tick. 
+{
+    // Tick. 
+    while (true)
+    {
+        int rank = GET_MP_INT_CHARACTER_STAT(-1);
+        UI_DrawText(std::to_string(rank).c_str(), {0.25f,0,0.3f,0});
         WAIT(0);
-        return;
     }
-    ptr->box.colour = { 255,0,0,255 };
-    
 }
-void menuAction2(Button* ptr) {
-    DLC::ON_ENTER_MP();
+void THREAD_2() { 
+    while (true) {
+        WAIT(0);
+    }
+}
+
+void THREAD_MAIN_2() {
+    srand(GetTickCount());
+    THREAD_2();
+}
+void ScriptMain()
+{
+    srand(GetTickCount());
+    main();
 }
 /*
-So Intotal what I should do definitely is basically when I create a button we add it to the list. (NO)
-So we apply the button to the menu maybe so that we can have buttons that are shared across a potential List. 
-So like apply the button to the menu and create specific instances of a menu?
-*/
-const char* boolO_STR(BOOL t) {
-    if (t == 1) {
-        return "TRUE";
-    }
-    else {
-        return "FALSE";
-    }
-}
-constexpr int MAX_LOBBY_SIZE = 30;
-float h = 0.034F, w = 0.2249F;
-void disable2(signed flags) {
-    DLC::ON_ENTER_MP();
-    GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
+*  t_Draw(t_Create(util_IntToStr(switchIndex), 0, { 0.17F, 0UL, 0.2F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        t_Draw(t_Create(util_IntToStr(SCL_HANDLE), 0, { 0.17F, 0UL, 0.23F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        t_Draw(t_Create(util_IntToStr(timer), 0, { 0.17F, 0UL, 0.26F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+        if (IsKeyJustUp(VK_ACCEPT)) {
+            switchIndex = 0 ;
+        } 
+        switch (switchIndex)
+        {
+        case 0: //Set up Draw
+            SCL_HANDLE = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
+            timer = MISC::GET_GAME_TIMER() + 3000;
+            switchIndex = 1;
+            break;
 
-    // Define an array of hash keys corresponding to each case
-    const Hash hashKeys[] = {
-        MISC::GET_HASH_KEY("apa_ss1_11_flats"),
-        MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"),
-        MISC::GET_HASH_KEY("ss1_11_detail01b"),
-        MISC::GET_HASH_KEY("ss1_11_Flats_LOD"),
-        MISC::GET_HASH_KEY("SS1_02_Building01_LOD"),
-        MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"),
-        MISC::GET_HASH_KEY("SS1_02_SLOD1"),
-        MISC::GET_HASH_KEY("hei_dt1_20_build2"),
-        MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20"),
-        MISC::GET_HASH_KEY("bh1_09_ema"),
-        MISC::GET_HASH_KEY("hei_bh1_09_bld_01"),
-        MISC::GET_HASH_KEY("hei_sm_14_bld2"),
-        MISC::GET_HASH_KEY("sm_14_emissive"),
-        MISC::GET_HASH_KEY("prop_wall_light_12a"),
-        MISC::GET_HASH_KEY("hei_dt1_03_build1x"),
-        MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1"),
-        MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1"),
-        MISC::GET_HASH_KEY("hei_bh1_08_bld2"),
-        MISC::GET_HASH_KEY("bh1_emissive_bh1_08"),
-        MISC::GET_HASH_KEY("bh1_08_bld2_LOD"),
-        MISC::GET_HASH_KEY("hei_bh1_08_bld2"),
-        MISC::GET_HASH_KEY("bh1_08_em"),
-        MISC::GET_HASH_KEY("apa_ss1_02_building01"),
-        MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"),
-        MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02"),
-        MISC::GET_HASH_KEY("apa_ss1_02_building01"),
-        MISC::GET_HASH_KEY("SS1_02_Building01_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_05e_res5"),
-        MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_04_house02"),
-        MISC::GET_HASH_KEY("apa_ch2_04_house02_d"),
-        MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"),
-        MISC::GET_HASH_KEY("ch2_04_house02_railings"),
-        MISC::GET_HASH_KEY("ch2_04_emissive_04"),
-        MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs01"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"),
-        MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_hs11"),
-        MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"),
-        MISC::GET_HASH_KEY("CH2_09c_Emissive_11"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"),
-        MISC::GET_HASH_KEY("apa_ch2_05c_b4"),
-        MISC::GET_HASH_KEY("ch2_05c_decals_05"),
-        MISC::GET_HASH_KEY("ch2_05c_B4_LOD"),
-        MISC::GET_HASH_KEY("ch2_05c_emissive_07"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_hs07"),
-        MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"),
-        MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"),
-        MISC::GET_HASH_KEY("ch2_09c_hs07_details"),
-        MISC::GET_HASH_KEY("CH2_09c_Emissive_07"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_hs13"),
-        MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"),
-        MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"),
-        MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"),
-        MISC::GET_HASH_KEY("ch2_09c_Emissive_13"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs02"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"),
-        MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"),
-        MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"),
-        MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"),
-        MISC::GET_HASH_KEY("ch2_12b_emissive_02"),
-        MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"),
-        MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"),
-        MISC::GET_HASH_KEY("ch2_12b_railing_06"),
-        MISC::GET_HASH_KEY("apa_ch2_04_house01"),
-        MISC::GET_HASH_KEY("apa_ch2_04_house01_d"),
-        MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD"),
-        MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"),
-        MISC::GET_HASH_KEY("ch2_04_emissive_05"),
-        MISC::GET_HASH_KEY("ch2_04_house01_details"),
-    };
+        case 1: //Set up SCL
+            if (MISC::GET_GAME_TIMER() > timer)
+            {
+                if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+                {
+                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "SHOW_MISSION_PASSED_MESSAGE");
+                    PUSH_GFX("M_FB4P3_P" /* GXT: ~y~Mission Passed );
+                    PUSH_GFX("M_FB4P3" /* GXT: Getaway Vehicle );
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(100);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);
+                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+                    timer = MISC::GET_GAME_TIMER() + 10000;
+                    switchIndex = 2;
+                }
+            }
+            break;
 
-    // Iterate through the array based on the flags
-    for (int i = 0; i < sizeof(hashKeys) / sizeof(hashKeys[0]); ++i) {
-        if (flags & (1 << i)) {
-            INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(hashKeys[i]);
+        case 2: // Draw
+            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+            {
+                if (MISC::GET_GAME_TIMER() < timer)
+                {
+                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+                }
+                else if (MISC::GET_GAME_TIMER() < timer + 100)
+                {
+                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "TRANSITION_OUT");
+                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+                    timer = (timer - 100);
+                }
+                else if (MISC::GET_GAME_TIMER() < timer + 500)
+                {
+                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+                }
+                else
+                {
+                    switchIndex = 3;
+                }
+            }
+            break;
+
+        case 3: // CleanUp
+
+            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+            {
+                GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&SCL_HANDLE);
+            }
+            break;
         }
-    }
-}
-
+*/
 //void menu_Tick() {
 //    while (true) {
 //        static BOOL z = FALSE;
@@ -822,137 +328,6 @@ void disable2(signed flags) {
 //        WAIT(0);
 //    }
 //}
-void main() // Front end Tick. 
-{
-    // Tick. 
-    while (true)
-    {
-        /*1, 2, 3 , 7 - CAM MOVE, 8 DECENT, 10 - FINALIZE*/
-        if (IsKeyJustUp(VK_ADD)) {
-            CGTAVScaleform scaleform = CGTAVScaleform("Title", "SubTitle", "Body", "char_mp_snitch", "char_mp_snitch");
-            CTpSwitch teleport = CTpSwitch({ 1080,0,-3137,0,5,0 }, CCharSwitcherNATIVE::SWITCH_FLAG_SKIP_INTRO | CCharSwitcherNATIVE::SWITCH_FLAG_SKIP_OUTRO | CCharSwitcherNATIVE::SWITCH_FLAG_13_NO_EFFECT_OUTRO | CCharSwitcherNATIVE::SWITCH_FLAG_12 | CCharSwitcherNATIVE::SWITCH_FLAG_14_NO_EFFECT_INTRO);
-            teleport.Init();
-            while (teleport.isTeleportActive()) {
-                scaleform.Draw();
-                teleport.Tick();
-                WAIT(0);
-            }
-        }
-        if (IsKeyJustUp(VK_F14)) {
-            CMouse mouse = CMouse::GetInstance();
-            mouse.Activate(mouse.ACT_FRAME);
-            while (mouse.IsActive()) {
-                mouse.Tick(CMouse::ACT_FRAME);
-                UI_DrawText((char*)mouse.GetMousePos().toStr().c_str(), { 0.5,0,0.5,0 });
-                if (IsKeyJustUp(VK_F14)) {
-                    mouse.SetIsActive(false);
-                }
-                WAIT(0);
-            }
-        }
-        if (IsKeyJustUp(VK_F15)) {
-            CMPVoteScreenRaw cVote = CMPVoteScreenRaw();
-            bool isActive = true;
-            while (isActive) {
-                cVote.SET_TITLE("TITLE", "VOTES");
-                cVote.SET_GRID_ITEM(1, "TITLE", "HUSH_TREVOR", "HUSH_TREVOR", 1, 1, 1, 0, 2, 2, 0, 1, 2);
-                cVote.Draw();
-                if (IsKeyJustUp(VK_F15)) {
-                    isActive = false;
-                }
-                WAIT(0);;
-            }
-        }
-        if (IsKeyJustUp(VK_DIVIDE)) {
-
-            Vector2_t base = vec2_Create(0.163F, 0.201F);
-            float scale = w + (h / 0.25F);
-            BoxUI b1 = box_Create({ 0,0,0,0 }, base, w, h);
-            BoxUI b2 = box_Create({ 0,0,0,0 }, base, w, h);
-            BoxUI b3 = box_Create({ 0,0,0,0 }, base, w, h);
-            BoxUI b4 = box_Create({ 0,0,0,0 }, base, w, h);
-            BoxUI b5 = box_Create({ 0,0,0,0 }, base, w, h);
-            /*menuAction Takes a pointer to a Button because say if you wanted to modify the button's text to change the buttons colour or others you'd need this. This only works with the current indexed button that the user has selected and does NOT apply to anything else.*/
-            /*To as well preface. Ideally as well you should probably do a union inside the structure that can be used to represent different types of interactions like for example handling a menu change to a newly created menu etc. */
-            
-            Button button;
-            for (int i = 0; i < MAX_LOBBY_SIZE; i++) {
-                if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i)) {
-                     button = { t_Create((char*)PLAYER::GET_PLAYER_NAME(i), 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
-                }   
-            }
-
-
-            Button button2 = { t_Create("Activate Online Native", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
-            Button button3 = { t_Create((char*)boolO_STR(DLC::IS_DLC_PRESENT(MISC::GET_HASH_KEY("XX_I$RAWKST4H_D3V_XX"))), 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
-            Button button4 = { t_Create("fourth", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b4, FALSE,  menuAction2 };
-            Button button5 = { t_Create("Time Modifier", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b5, FALSE,  timeCycleModifier };
-            
-
-            MenuUI* menu = menu_Create();
-            
-            menu_AddOption(menu, &button);  //  1    Index: 0
-            menu_AddOption(menu, &button2); //  2    Index: 1
-            menu_AddOption(menu, &button3); //  3    Index: 2
-            menu_AddOption(menu, &button4); //  4    Index: 3
-            menu_AddOption(menu, &button5); //  5    Index: 4
-
-            menu_Draw(menu, VK_DIVIDE);
-        }
-        WAIT(0);
-    }
-}
-
-
-
-float easeInOut(float t, float b, float c, float d) {
-    return (-c) / 2 * (cos(3.141592653589793 * t / d) - 1) + b;
-}
-
-void DrawBox(float x, float y, float width, float height) {
-    GRAPHICS::DRAW_RECT(x, y, width, height, 0, 0, 255, 100,TRUE);
-}
-
-void AnimateBox(float startTime, float duration, float startX, float endX) {
-    float endTime = MISC::GET_GAME_TIMER() - startTime;
-    if (endTime > duration)
-        endTime = duration;
-
-    float currentX = easeInOut(endTime, startX, endX - startX, duration);
-    float currentY = SYSTEM::SIN(endTime * 0.15F);
-    float normalizedY = fabs((currentY));
-    
-    UI_DrawText(util_FloatToStr(currentX), { 0.8,0,0.5,0 });
-    UI_DrawText(util_FloatToStr(currentY), { 0.8,0,0.55,0 });
-    UI_DrawText(util_FloatToStr(normalizedY), { 0.8,0,0.6,0 });
-    //DrawBox(currentX, 0.5F, w, h);
-    
-    GRAPHICS::DRAW_RECT(currentX, normalizedY, 0.16, 0.16F, 0, 0, 255, 125, TRUE);
-}
-void PUSH_GFX(char* sParam0)//Position - 0x947C
-{
-    GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING(sParam0);
-    GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
-}
-int switchIndex = 0;
-int SCL_HANDLE = 0;
-int timer = 0 ;
-void deNormalizeONSCR(Vector2_t conversion, float* x, float *y) {
-    int SCRx = 0;
-    int SCRy = 0;
-    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRx, &SCRy);
-    *x = conversion.x * SCRx;
-    *y = conversion.y * SCRy;
-    return;
-}
-void normalizeScr(Vector2_t conversion, float *x, float* y){
-    int SCRX = 0;
-    int SCRY = 0;
-    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
-    *x = conversion.x / SCRX;
-    *y = conversion.y / SCRY;
-    return;
-}
 /* Just Random Stuff to do with the API.
   PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
   PAD::ENABLE_CONTROL_ACTION(0, 239, FALSE);
@@ -973,95 +348,668 @@ void normalizeScr(Vector2_t conversion, float *x, float* y){
   Button b = { t_Create((char*)str.c_str(), 0, {x, 0, y + 0.04F, 0}, {255,255,255,255},0.512, FALSE, FALSE, FALSE), NULL, box_Create({0,0,0,120}, {x , 0, y - 0.2F, 0},0.3F, 0.15F), FALSE, NULL };
   Button b1 = { t_Create((char*)str2.c_str(), 0, {x, 0, y + 0.04F, 0}, {255,255,255,255},0.512, FALSE, FALSE, FALSE), NULL, box_Create({0,0,0,120}, {b.box.drawPos.x , 0, b.box.drawPos.y + b.box.height , 0},0.3F, 0.15F), FALSE, NULL };
   box_Draw(b.box);
-  button_Text_Draw(b, FALSE);  
+  button_Text_Draw(b, FALSE);
   box_Draw(b1.box);
   button_Text_Draw(b1, FALSE);
 */
-#include "GTAThread/ThreadMgr.h"
 
-//Backend Tick Update(s) (For dbg purposes this as well can be used for random side projects. Nothing against using this thread however it's likely just better to create the tick methods and have the work done in the main thread.
-void THREAD_2() { 
-    while (true) {
-        WAIT(0);
-    }
-}
 
-void THREAD_MAIN_2() {
-    srand(GetTickCount());
-    THREAD_2();
-}
-void ScriptMain()
-{
-    GTAthread::GetInstance().Register((void(*)())THREAD_MAIN_2);
-    srand(GetTickCount());
-    main();
-}
+//Any thing After this point is depricated Code or code that will eventually be reworked into a seperate class/file.
 
+
+//void deNormalizeONSCR(Vector2_t conversion, float* x, float* y) {
+//    int SCRx = 0;
+//    int SCRy = 0;
+//    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRx, &SCRy);
+//    *x = conversion.x * SCRx;
+//    *y = conversion.y * SCRy;
+//    return;
+//}
+//void normalizeScr(Vector2_t conversion, float* x, float* y) {
+//    int SCRX = 0;
+//    int SCRY = 0;
+//    GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
+//    *x = conversion.x / SCRX;
+//    *y = conversion.y / SCRY;
+//    return;
+//}
+//float easeInOut(float t, float b, float c, float d) {
+//    return (-c) / 2 * (cos(3.141592653589793 * t / d) - 1) + b;
+//}
+//
+//void DrawBox(float x, float y, float width, float height) {
+//    GRAPHICS::DRAW_RECT(x, y, width, height, 0, 0, 255, 100, TRUE);
+//}
+//
+//void AnimateBox(float startTime, float duration, float startX, float endX) {
+//    float endTime = MISC::GET_GAME_TIMER() - startTime;
+//    if (endTime > duration)
+//        endTime = duration;
+//
+//    float currentX = easeInOut(endTime, startX, endX - startX, duration);
+//    float currentY = SYSTEM::SIN(endTime * 0.15F);
+//    float normalizedY = fabs((currentY));
+//
+//    UI_DrawText(util_FloatToStr(currentX), { 0.8,0,0.5,0 });
+//    UI_DrawText(util_FloatToStr(currentY), { 0.8,0,0.55,0 });
+//    UI_DrawText(util_FloatToStr(normalizedY), { 0.8,0,0.6,0 });
+//    //DrawBox(currentX, 0.5F, w, h);
+//
+//    GRAPHICS::DRAW_RECT(currentX, normalizedY, 0.16, 0.16F, 0, 0, 255, 125, TRUE);
+//}
+
+//void disable2(signed flags) {
+//    DLC::ON_ENTER_MP();
+//    GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
+//
+//    // Define an array of hash keys corresponding to each case
+//    const Hash hashKeys[] = {
+//        MISC::GET_HASH_KEY("apa_ss1_11_flats"),
+//        MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"),
+//        MISC::GET_HASH_KEY("ss1_11_detail01b"),
+//        MISC::GET_HASH_KEY("ss1_11_Flats_LOD"),
+//        MISC::GET_HASH_KEY("SS1_02_Building01_LOD"),
+//        MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"),
+//        MISC::GET_HASH_KEY("SS1_02_SLOD1"),
+//        MISC::GET_HASH_KEY("hei_dt1_20_build2"),
+//        MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20"),
+//        MISC::GET_HASH_KEY("bh1_09_ema"),
+//        MISC::GET_HASH_KEY("hei_bh1_09_bld_01"),
+//        MISC::GET_HASH_KEY("hei_sm_14_bld2"),
+//        MISC::GET_HASH_KEY("sm_14_emissive"),
+//        MISC::GET_HASH_KEY("prop_wall_light_12a"),
+//        MISC::GET_HASH_KEY("hei_dt1_03_build1x"),
+//        MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1"),
+//        MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1"),
+//        MISC::GET_HASH_KEY("hei_bh1_08_bld2"),
+//        MISC::GET_HASH_KEY("bh1_emissive_bh1_08"),
+//        MISC::GET_HASH_KEY("bh1_08_bld2_LOD"),
+//        MISC::GET_HASH_KEY("hei_bh1_08_bld2"),
+//        MISC::GET_HASH_KEY("bh1_08_em"),
+//        MISC::GET_HASH_KEY("apa_ss1_02_building01"),
+//        MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"),
+//        MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02"),
+//        MISC::GET_HASH_KEY("apa_ss1_02_building01"),
+//        MISC::GET_HASH_KEY("SS1_02_Building01_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_05e_res5"),
+//        MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_house02"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_house02_d"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"),
+//        MISC::GET_HASH_KEY("ch2_04_house02_railings"),
+//        MISC::GET_HASH_KEY("ch2_04_emissive_04"),
+//        MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs01"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"),
+//        MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_hs11"),
+//        MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"),
+//        MISC::GET_HASH_KEY("CH2_09c_Emissive_11"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"),
+//        MISC::GET_HASH_KEY("apa_ch2_05c_b4"),
+//        MISC::GET_HASH_KEY("ch2_05c_decals_05"),
+//        MISC::GET_HASH_KEY("ch2_05c_B4_LOD"),
+//        MISC::GET_HASH_KEY("ch2_05c_emissive_07"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_hs07"),
+//        MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"),
+//        MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"),
+//        MISC::GET_HASH_KEY("ch2_09c_hs07_details"),
+//        MISC::GET_HASH_KEY("CH2_09c_Emissive_07"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_hs13"),
+//        MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"),
+//        MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"),
+//        MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"),
+//        MISC::GET_HASH_KEY("ch2_09c_Emissive_13"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs02"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"),
+//        MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"),
+//        MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"),
+//        MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"),
+//        MISC::GET_HASH_KEY("ch2_12b_emissive_02"),
+//        MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"),
+//        MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"),
+//        MISC::GET_HASH_KEY("ch2_12b_railing_06"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_house01"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_house01_d"),
+//        MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD"),
+//        MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"),
+//        MISC::GET_HASH_KEY("ch2_04_emissive_05"),
+//        MISC::GET_HASH_KEY("ch2_04_house01_details"),
+//    };
+//
+//    // Iterate through the array based on the flags
+//    for (int i = 0; i < sizeof(hashKeys) / sizeof(hashKeys[0]); ++i) {
+//        if (flags & (1 << i)) {
+//            INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(hashKeys[i]);
+//        }
+//    }
+//}
 
 /*
-*  t_Draw(t_Create(util_IntToStr(switchIndex), 0, { 0.17F, 0UL, 0.2F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        t_Draw(t_Create(util_IntToStr(SCL_HANDLE), 0, { 0.17F, 0UL, 0.23F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        t_Draw(t_Create(util_IntToStr(timer), 0, { 0.17F, 0UL, 0.26F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        if (IsKeyJustUp(VK_ACCEPT)) {
-            switchIndex = 0 ;
-        } 
-        switch (switchIndex)
-        {
-        case 0: //Set up Draw
-            SCL_HANDLE = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
-            timer = MISC::GET_GAME_TIMER() + 3000;
-            switchIndex = 1;
-            break;
-
-        case 1: //Set up SCL
-            if (MISC::GET_GAME_TIMER() > timer)
-            {
-                if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-                {
-                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "SHOW_MISSION_PASSED_MESSAGE");
-                    PUSH_GFX("M_FB4P3_P" /* GXT: ~y~Mission Passed );
-                    PUSH_GFX("M_FB4P3" /* GXT: Getaway Vehicle );
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(100);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
-                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-                    timer = MISC::GET_GAME_TIMER() + 10000;
-                    switchIndex = 2;
-                }
-            }
-            break;
-
-        case 2: // Draw
-            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-            {
-                if (MISC::GET_GAME_TIMER() < timer)
-                {
-                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
-                }
-                else if (MISC::GET_GAME_TIMER() < timer + 100)
-                {
-                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "TRANSITION_OUT");
-                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-                    timer = (timer - 100);
-                }
-                else if (MISC::GET_GAME_TIMER() < timer + 500)
-                {
-                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
-                }
-                else
-                {
-                    switchIndex = 3;
-                }
-            }
-            break;
-
-        case 3: // CleanUp
-
-            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-            {
-                GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&SCL_HANDLE);
-            }
-            break;
-        }
+So Intotal what I should do definitely is basically when I create a button we add it to the list. (NO)
+So we apply the button to the menu maybe so that we can have buttons that are shared across a potential List.
+So like apply the button to the menu and create specific instances of a menu?
 */
+//const char* boolO_STR(BOOL t) {
+//    if (t == 1) {
+//        return "TRUE";
+//    }
+//    else {
+//        return "FALSE";
+//    }
+//}
+
+//void DisableEclipse() {
+//    while (true) {
+//        HUD::THEFEED_FLUSH_QUEUE();
+//
+//        GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"));
+//        GRAPHICS::DISABLE_OCCLUSION_THIS_FRAME();
+//        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+//        UI_DRAWBOX(rgb_Create(0, 0, 0, 255), { 0.1F,0UL, 0.513F, 0UL }, 0.01F, 0.039F);
+//        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
+//
+//
+//        /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
+//        if (IsKeyJustUp(VK_DIVIDE)) {
+//            UI_DrawNotificationSTR("FALSE");
+//            main();
+//        }
+//        WAIT(0);
+//    }
+//}
+
+//typedef enum {
+//    RGBA_R, RGBA_G, RGBA_B, RGBA_A
+//}RGBA_MOD_TYPE;
+//void RGBA_Mod(RGBA_t* ptr, RGBA_MOD_TYPE valToMod, float val) {
+//    switch (valToMod) {
+//    case RGBA_R:
+//        ptr->r = val;
+//        break;
+//    case RGBA_B:
+//        ptr->b = val;
+//        break;
+//    case RGBA_A:
+//        ptr->a = val;
+//        break;
+//    case RGBA_G:
+//        ptr->g = val;
+//        break;
+//    }
+//    return;
+//}
+//void flashColour(RGBA_t* colour) {
+//    RGBA_t* temp = colour;
+//
+//    *colour = { 255,255,255,255 };
+//    WAIT(0);
+//    colour = temp;
+//    return;
+//}
+//void disable(signed flags) {
+//    DLC::ON_ENTER_MP();
+//    GRAPHICS::SET_DISABLE_DECAL_RENDERING_THIS_FRAME();
+//
+//    //switch (flags) {
+//    //case 1 << 0:
+//    //    /*Eclipse*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"));
+//    //    break;
+//    //case 1 << 1:
+//    //    /*Alta*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_20_build2"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20"));
+//    //    break;
+//    //case 1 << 2:
+//    //    /*Weazel*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_09_ema"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_09_bld_01"));
+//    //    break;
+//    //case 1 << 3:
+//    //    /*Del Parro*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_sm_14_bld2"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("sm_14_emissive"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("prop_wall_light_12a"));
+//    //    break;
+//    //case 1 << 4:
+//    //    /*Pillbox Hill*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_03_build1x"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1"));
+//    //    break;
+//    //case 1 << 5:
+//    //    //Richard
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_emissive_bh1_08"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_bld2_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_em"));
+//    //    break;
+//    //case 1 << 6:
+//    //            /*Tinsel*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"   ));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02" ));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"      ));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"      ));
+//    //    break;
+//    //case 1 << 7:
+//    //    //STILT
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"));
+//    //    break;
+//    //case 1 << 8:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_d"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house02_railings"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_details"));
+//    //    break;
+//    //case 1 << 9:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"));
+//    //    break;
+//    //case 1 << 10:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"));
+//    //    break;
+//    //case 1 << 11:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05c_b4"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_decals_05"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_B4_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_emissive_07"));
+//    //    break;
+//    //case 1 << 12:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs07"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_hs07_details"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07"));
+//    //    break;
+//    //case 1 << 13:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13"));
+//    //    break;
+//    //case 1 << 14:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"));
+//    //    break;
+//    //case 1 << 15:
+//    //    /*Stilt*/
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_railing_06"));
+//    //    break;
+//    //case 1 << 16:
+//    //    //STILT
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01_d"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05"));
+//    //    INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house01_details"));
+//    //    break;
+//    //}
+//
+//    if (flags & (1 << 0)) {
+//        /*Eclipse*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_11_flats"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_ss1_emissive_a"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_detail01b"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_11_Flats_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_LOD_01_02_08_09_10_11"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_SLOD1"));
+//    }
+//    if (flags & (1 << 1)) {
+//        /*Alta*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_20_build2"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_20_dt1_emissive_dt1_20"));
+//    }
+//    if (flags & (1 << 2)) {
+//        /*Weazel*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_09_ema"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_09_bld_01"));
+//    }
+//    if (flags & (1 << 3)) {
+//        /*Del Parro*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_sm_14_bld2"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("sm_14_emissive"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("prop_wall_light_12a"));
+//    }
+//    if (flags & (1 << 4)) {
+//        /*Pillbox Hill*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_dt1_03_build1x"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("DT1_Emissive_DT1_03_b1"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("dt1_03_dt1_Emissive_b1"));
+//    }
+//    if (flags & (1 << 5)) {
+//        //Richard
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_emissive_bh1_08"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_bld2_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("hei_bh1_08_bld2"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("bh1_08_em"));
+//    }
+//    if (flags & (1 << 6)) {
+//        /*Tinsel*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_Emissive_SS1_02a_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ss1_02_ss1_emissive_ss1_02"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ss1_02_building01"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("SS1_02_Building01_LOD"));
+//    }
+//    if (flags & (1 << 7)) {
+//        //STILT
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05e_res5_LOD"));
+//    }
+//    if (flags & (1 << 8)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_d"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_a_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house02_railings"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_04_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house02_details"));
+//    }
+//    if (flags & (1 << 9)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01a_details"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs01_balcony"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_11"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09b_House08_LOD"));
+//    }
+//    if (flags & (1 << 10)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_11"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs11_details"));
+//    }
+//    if (flags & (1 << 11)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_05c_b4"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_decals_05"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_B4_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_05c_emissive_07"));
+//    }
+//    if (flags & (1 << 12)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs07"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_build_11_07_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_build_11_07_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_hs07_details"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("CH2_09c_Emissive_07"));
+//    }
+//
+//    if (flags & (1 << 13)) {
+//        /*Stilt*/
+//
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09c_hs13_details"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_CH2_09c_House11_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09c_Emissive_13"));
+//    }
+//    if (flags & (1 << 14)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02b_details"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_09b_botpoolHouse02_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_Emissive_09"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_09b_hs02_balcony"));
+//    }
+//    if (flags & (1 << 15)) {
+//        /*Stilt*/
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_12b_house03mc"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_house03_MC_a_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_emissive_02_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_12b_railing_06"));
+//    }
+//    if (flags & (1 << 16)) {
+//        //STILT
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_house01_d"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("apa_ch2_04_M_b_LOD"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_emissive_05"));
+//        INTERIOR::ENABLE_EXTERIOR_CULL_MODEL_THIS_FRAME(MISC::GET_HASH_KEY("ch2_04_house01_details"));
+//    }
+//
+//    GRAPHICS::DISABLE_OCCLUSION_THIS_FRAME();
+//}
+//
+//void DisableDelPerro() {
+//    DLC::ON_ENTER_MP();
+//    HUD::THEFEED_FLUSH_QUEUE();
+//    Vector2_t vec = { 0.55F, 0UL, 0.5F, 0UL };
+//    RGBA_t b_RGBA = rgb_Create(0, 0, 0, 255);
+//    static BOOL toggle = FALSE;
+//
+//    for (int i = 0; i < MISC::GET_GAME_TIMER(); i++) {
+//        if (IsKeyJustUp(VK_ADD)) {
+//            toggle = TRUE;
+//        }
+//        if (toggle == FALSE) { return; }
+//        disable((1 << 3));
+//        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+//        box_Draw(box_Create(rgb_Create(255, 0, 0, 255), { vec.x, 0UL, vec.y + 0.019F , 0UL }, 0.0512F, 0.09F));
+//        GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
+//        t_Draw(t_Create("Del Perro Removed", 0, { vec.x, 0UL, vec.y + 0.019F, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
+//        /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
+//        if (IsKeyJustUp(VK_ADD)) {
+//            int startTime = MISC::GET_GAME_TIMER();
+//            int endTime = startTime + 2500;
+//            while (MISC::GET_GAME_TIMER() < endTime) {
+//                if (IsKeyJustUp(VK_ADD)) {
+//                    toggle = TRUE;
+//                    DisableDelPerro();
+//                }
+//                GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+//                box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
+//                GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
+//                t_Draw(t_Create("NULL", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
+//                WAIT(0);
+//            }
+//            THREAD_2();
+//        }
+//        WAIT(0);
+//    }
+//
+//}
+//
+//BOOL DisableAllApartments(signed zxd) {
+//    DLC::ON_ENTER_MP();
+//    HUD::THEFEED_FLUSH_QUEUE();
+//    Vector2_t vec = { 0.55F, 0UL, 0.5F, 0UL };
+//    RGBA_t b_RGBA = rgb_Create(0, 0, 0, 255);
+//
+//    for (int i = 0; i < MISC::GET_GAME_TIMER(); i++) {
+//        if (zxd != FALSE) {
+//            disable((1 << 16) - 1);
+//            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+//            box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
+//            GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
+//            t_Draw(t_Create("All Apartments Cleansed.", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
+//
+//            /*Thread Controller For Adding back that side of the building and transfering ownership of the program to that thread.*/
+//            if (IsKeyJustUp(VK_DIVIDE)) {
+//                int startTime = MISC::GET_GAME_TIMER();
+//                int endTime = startTime + 2500;
+//                zxd = FALSE;
+//                while (MISC::GET_GAME_TIMER() < endTime) {
+//                    if (IsKeyJustUp(VK_DIVIDE)) {
+//                        zxd = TRUE;
+//                        DisableAllApartments(zxd);
+//                    }
+//                    GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+//                    box_Draw(box_Create(rgb_Create(255, 0, 0, 255), vec, 0.0512F, 0.09F));
+//                    GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(2);
+//                    t_Draw(t_Create("NULL", 0, { vec.x, 0UL, vec.y, 0UL }, { 0,0,0,255 }, 0.513, FALSE, TRUE, TRUE));
+//                }
+//
+//                THREAD_2();
+//            }
+//        }
+//        return zxd;
+//        WAIT(0);
+//    }
+//    return NULL;
+//}
+
+
+
+
+/*After this Point is ALL BoxUI/Button/TextUI Code found within the main function.*/
+
+//Vector2_t base = vec2_Create(0.163F, 0.201F);
+//float scale = w + (h / 0.25F);
+//BoxUI b1 = box_Create({ 0,0,0,0 }, base, w, h);
+//BoxUI b2 = box_Create({ 0,0,0,0 }, base, w, h);
+//BoxUI b3 = box_Create({ 0,0,0,0 }, base, w, h);
+//BoxUI b4 = box_Create({ 0,0,0,0 }, base, w, h);
+//BoxUI b5 = box_Create({ 0,0,0,0 }, base, w, h);
+///*menuAction Takes a pointer to a Button because say if you wanted to modify the button's text to change the buttons colour or others you'd need this. This only works with the current indexed button that the user has selected and does NOT apply to anything else.*/
+///*To as well preface. Ideally as well you should probably do a union inside the structure that can be used to represent different types of interactions like for example handling a menu change to a newly created menu etc. */
+//
+//Button button;
+//for (int i = 0; i < MAX_LOBBY_SIZE; i++) {
+//    if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i)) {
+//        button = { t_Create((char*)PLAYER::GET_PLAYER_NAME(i), 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b1, FALSE, menuAction };
+//    }
+//}
+//
+//
+//Button button2 = { t_Create("Activate Online Native", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b2, FALSE,  menuAction2 };
+//Button button3 = { t_Create((char*)boolO_STR(DLC::IS_DLC_PRESENT(MISC::GET_HASH_KEY("XX_I$RAWKST4H_D3V_XX"))), 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE), NULL, b3, FALSE,  menuAction2 };
+//Button button4 = { t_Create("fourth", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b4, FALSE,  menuAction2 };
+//Button button5 = { t_Create("Time Modifier", 0,base, {255,255,255,255},scale, FALSE, FALSE, FALSE),NULL, b5, FALSE,  timeCycleModifier };
+//
+//
+//MenuUI* menu = menu_Create();
+//
+//menu_AddOption(menu, &button);  //  1    Index: 0
+//menu_AddOption(menu, &button2); //  2    Index: 1
+//menu_AddOption(menu, &button3); //  3    Index: 2
+//menu_AddOption(menu, &button4); //  4    Index: 3
+//menu_AddOption(menu, &button5); //  5    Index: 4
+//
+//menu_Draw(menu, VK_DIVIDE);
+//#define CHARZ "CHAR_ALL_PLAYERS_CONF"
+//void updateBox(BoxUI* box, Vector2_t newPosition, float height, float width) {
+//    box->drawPos = newPosition;
+//
+//    box->width = width;
+//    box->height = height;
+//
+//    box->topLeft.x = box->drawPos.x - (box->width / 2.0F);
+//    box->topLeft.y = box->drawPos.y - (box->height / 2.0F);
+//
+//    box->bottomLeft.x = box->topLeft.x;
+//    box->bottomLeft.y = box->topLeft.y + box->height;
+//
+//    box->topRight.x = box->topLeft.x + box->width;
+//    box->topRight.y = box->topLeft.y;
+//
+//    box->bottomRight.x = box->topRight.x;
+//    box->bottomRight.y = box->topRight.y + box->height;
+//    return;
+//}
+//void menu_Action_TIMER(Button* ptr) {
+//    return;
+//}
+//void button_CanBeSelected(Button* ptr, int duration) {
+//    int endTime = MISC::GET_GAME_TIMER() + duration;
+//    RGBA_t preChangeColour = ptr->leftText->colour;
+//    void(*PreChangeButtonFunc)(Button*) = ptr->OnClickInteraction;
+//    ptr->OnClickInteraction = menu_Action_TIMER;
+//    ptr->leftText->colour = { 64,64,64,255 };
+//    if (MISC::GET_GAME_TIMER() > endTime - 1) {
+//        ptr->leftText->colour = preChangeColour;
+//        ptr->OnClickInteraction = PreChangeButtonFunc;
+//    }
+//}
+//void invert_Colours(Button* ptr) {
+//    ptr->leftText->colour = { 0,0,0,255 };
+//    ptr->box.colour = { 0,0,156,ptr->box.colour.a };
+//    return;
+//}
+//void timeCycleModifier(Button* ptr) {
+//
+//    GRAPHICS::SET_TIMECYCLE_MODIFIER("DLC_Island_main_hanger");
+//    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(1);
+//
+//    return;
+//}
+//void menuAction(Button* ptr) {
+//    SCRIPT::REQUEST_SCRIPT("fm_content_drug_vehicle");
+//
+//    if (SCRIPT::HAS_SCRIPT_LOADED("fm_content_drug_vehicle")) {
+//        int reqID = SYSTEM::START_NEW_SCRIPT("fm_content_drug_vehicle", 5000);
+//        ptr->box.colour = { 0,255,0,255 };
+//        //strncpy(ptr->leftText->text, util_IntToStr(reqID), 64);
+//        //ptr->leftText->text = util_FloatToStr(reqID);
+//        WAIT(0);
+//        return;
+//    }
+//    ptr->box.colour = { 255,0,0,255 };
+//
+//}
+//void menuAction2(Button* ptr) {
+//    DLC::ON_ENTER_MP();
+//}
+//
+//constexpr int MAX_LOBBY_SIZE = 30;
+//float h = 0.034F, w = 0.2249F;

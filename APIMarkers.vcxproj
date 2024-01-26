@@ -20,19 +20,18 @@
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
-    <ClCompile Include="Markers\m_Markers_internal.h" />
+    <ClCompile Include="UIEditor\TextDraw\Text.cpp" />
+    <ClCompile Include="UIEditor\TextDraw\TextDropshadow.cpp" />
+    <ClCompile Include="UIEditor\TextDraw\TextJustify.cpp" />
     <ClCompile Include="MP_NEXT_JOB_SELECT\CMPVoteScreenRaw.cpp" />
     <ClCompile Include="MP_NEXT_JOB_SELECT\GridItem.cpp" />
     <ClCompile Include="MP_NEXT_JOB_SELECT\MPVoteScreen.cpp" />
-    <ClCompile Include="UserIO\Mouse.cpp" />
     <ClCompile Include="Scaleform\BaseScaleform.cpp" />
     <ClCompile Include="Scaleform\HEIST_CELEBRATION.cpp" />
-    <ClCompile Include="Scaleform\internal_scaleform.h" />
     <ClCompile Include="Scaleform\MP_BIG_MESSAGE_FREEMODE.cpp" />
     <ClCompile Include="Scaleform\MP_CELEBRATION.cpp" />
     <ClCompile Include="Scaleform\MP_MIDSIZEDMESSAGE.cpp" />
     <ClCompile Include="script.cpp" />
-    <ClCompile Include="Types.h" />
     <ClCompile Include="Types\Player.cpp" />
     <ClCompile Include="UIPlayerList\CrewTag.cpp" />
     <ClCompile Include="UIPlayerList\ListPlayer.cpp" />
@@ -40,11 +39,12 @@
     <ClCompile Include="UIPlayerList\PlayerListScaleform.cpp" />
     <ClCompile Include="UI_menu\FirstStep.cpp" />
     <ClCompile Include="UI_menu\UI_Menu.cpp" />
-    <ClCompile Include="Utils\Vector3.cpp" />
+    <ClCompile Include="UserIO\Mouse.cpp" />
     <ClCompile Include="Utils\Draw.cpp" />
     <ClCompile Include="Utils\RGBA.cpp" />
     <ClCompile Include="Utils\TXD.cpp" />
     <ClCompile Include="Utils\UI.cpp" />
+    <ClCompile Include="Utils\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alpha Items\Blips.h" />
@@ -57,21 +57,22 @@
     <ClInclude Include="CharWheelScaleform\PlayerSwitchWrapper.h" />
     <ClInclude Include="CharWheelScaleform\PLAYER_SWITCH.h" />
     <ClInclude Include="GenericList\CList.h" />
-    <ClInclude Include="GenericList\RangeList.h" />
     <ClInclude Include="GTAThread\ThreadMgr.h" />
-    <ClInclude Include="Include.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Markers.h" />
+    <ClInclude Include="Markers\m_Markers_internal.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="UIEditor\TextDraw\Text.h" />
+    <ClInclude Include="UIEditor\TextDraw\TextDropshadow.h" />
+    <ClInclude Include="UIEditor\TextDraw\TextJustify.h" />
     <ClInclude Include="MP_NEXT_JOB_SELECT\CMPVoteScreenRaw.h" />
     <ClInclude Include="MP_NEXT_JOB_SELECT\GridItem.h" />
     <ClInclude Include="MP_NEXT_JOB_SELECT\MPVoteScreen.h" />
-    <ClInclude Include="Scaleform.h" />
-    <ClInclude Include="UserIO\Mouse.h" />
-    <ClInclude Include="UserIO\THREAD.h" />
     <ClInclude Include="Scaleform Decompilation\CelebBar.cpp" />
+    <ClInclude Include="Scaleform.h" />
     <ClInclude Include="Scaleform\BaseScaleform.h" />
     <ClInclude Include="Scaleform\HUD_COLOUR.h" />
+    <ClInclude Include="Scaleform\internal_scaleform.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="ScriptHookV\enums.h" />
     <ClInclude Include="ScriptHookV\main.h" />
@@ -79,16 +80,16 @@
     <ClInclude Include="ScriptHookV\natives.h" />
     <ClInclude Include="ScriptHookV\OGnatives.h" />
     <ClInclude Include="ScriptHookV\types.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIPlayerList\CrewTag.h" />
     <ClInclude Include="UIPlayerList\ListPlayer.h" />
     <ClInclude Include="UIPlayerList\PlayerList.h" />
     <ClInclude Include="UIPlayerList\PlayerListScaleform.h" />
+    <ClInclude Include="UserIO\Mouse.h" />
+    <ClInclude Include="UserIO\THREAD.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils\internal_utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="ScriptHookV\ScriptHookV.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
