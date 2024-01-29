@@ -10,6 +10,19 @@ CBaseScaleform::CBaseScaleform(std::string scaleform)
 	}
 }
 
+CBaseScaleform::CBaseScaleform(std::string scl, std::string sclBG, std::string sclFG)
+{
+	int* scaleforms[3] = { &this->m_Scaleform, &this->m_ScaleformBG, &this->m_ScaleformFG };
+	std::string strs[3] = { scl, sclBG, sclFG };
+	for (int i = 0; i < 3; i++) {
+		*scaleforms[i] = GRAPHICS::REQUEST_SCALEFORM_MOVIE(strs[i].c_str());
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(*scaleforms[i])) {
+			WAIT(0);
+		}
+	}
+	return;
+}
+
 void CBaseScaleform::LitStrPush(std::string literalString)
 {
 	GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(literalString.c_str());
@@ -75,48 +88,38 @@ bool CBaseScaleform::GetScaleformValueBool(int retHandle)
 {
 	return GRAPHICS::GET_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_BOOL(retHandle);
 }
-CScaleform::CScaleform(std::string scaleformName) :
-	CBaseScaleform(scaleformName)
+int CBaseScaleform::sclRequest(int sclId, std::string ScaleformReq)
 {
-}
+	switch (sclId) {
+	case -1: //none aka modify base
+		this->m_Scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE(ScaleformReq.c_str());
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_Scaleform)) {
+			WAIT(0);
+		}
+		break;
+	case -2://base
+		this->m_Scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE(ScaleformReq.c_str());
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_Scaleform)) {
+			WAIT(0);
+		}
+		break;
+	case -3://bg
+		this->m_ScaleformBG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(ScaleformReq.c_str());
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformBG)) {
+			WAIT(0);
+		}
+		break;
+	case -4://fg
+		this->m_ScaleformFG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(ScaleformReq.c_str());
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformFG)) {
+			WAIT(0);
+		}
+		break;
+	case -5://all
 
-bool CScaleform::SET_SCALEFORM(std::string newScaleform)
-{
-	if (this->m_Scaleform > SCL_INVALID) {
-		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_Scaleform);
+		break;
+	default: //return 0;
+		break;
 	}
-	this->m_Scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
-	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_Scaleform)) {
-		WAIT(0);
-	}
-	return true;
-}
-
-bool CScaleform::SET_SCALEFORMBG(std::string newScaleform)
-{
-	if (this->m_ScaleformBG > SCL_INVALID) {
-		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_ScaleformBG);
-	}
-	this->m_ScaleformBG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
-	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformBG)) {
-		WAIT(0);
-	}
-	return true;
-}
-
-bool CScaleform::SET_SCALEFORMFG(std::string newScaleform)
-{
-	if (this->m_ScaleformFG > SCL_INVALID) {
-		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&this->m_ScaleformFG);
-	}
-	this->m_ScaleformFG = GRAPHICS::REQUEST_SCALEFORM_MOVIE(newScaleform.c_str());
-	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(this->m_ScaleformFG)) {
-		WAIT(0);
-	}
-	return true;
-}
-
-void CScaleform::Draw()
-{
-	return;
+	return SCL_PASSCODE;
 }

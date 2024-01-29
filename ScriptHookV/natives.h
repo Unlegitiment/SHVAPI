@@ -3002,7 +3002,7 @@ namespace GRAPHICS
 	// 
 	// The total number of rectangles to be drawn in one frame is apparently limited to 399.
 	// 
-	NATIVE_DECL void DRAW_RECT(float x, float y, float width, float height, int r, int g, int b, int a, BOOL bSterio) { invoke<Void>(0x3A618A217E5154F0, x, y, width, height, r, g, b, a, bSterio); } // 0x3A618A217E5154F0 0xDD2BFC77 b323
+	NATIVE_DECL void DRAW_RECT(float x, float y, float width, float height, int r, int g, int b, int a, BOOL bStereo) { invoke<Void>(0x3A618A217E5154F0, x, y, width, height, r, g, b, a, bStereo); } // 0x3A618A217E5154F0 0xDD2BFC77 b323
 	// Sets a flag defining whether or not script draw commands should continue being drawn behind the pause menu. This is usually used for TV channels and other draw commands that are used with a world render target.
 	NATIVE_DECL void SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(BOOL toggle) { invoke<Void>(0xC6372ECD45D73BCD, toggle); } // 0xC6372ECD45D73BCD 0xF8FBCC25 b323
 	// Sets the draw order for script draw commands.

@@ -13,11 +13,10 @@ public:
 	//enum eIconType {
 
 	//};
+private:
 	string m_Title;
 	CTxd m_TXD;
 	bool m_bVerifType, m_bCheck, m_bDisabled;
 	int m_rpMult, m_cashMult, m_apMult;
 	HudColour m_iconCol;
-private:
-	
 };

@@ -78,14 +78,7 @@ public:
 	std::string toStr() {
 		return std::to_string(this->x) + std::to_string(this->y);
 	}
-	void NormalizeScreen(float* locX, float* locY) {
-		int SCRX = 0;
-		int SCRY = 0;
-		GRAPHICS::GET_ACTUAL_SCREEN_RESOLUTION(&SCRX, &SCRY);
-		*locX = this->x / SCRX;
-		*locY = this->y / SCRY;
-		return;
-	}
+	void NormalizeScreen(float* locX, float* locY);
 	//Warn this can give funky results.
 	void  Normalize(float VAL, float MAX, float MIN) {
 

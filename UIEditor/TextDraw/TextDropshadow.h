@@ -7,8 +7,8 @@ public:
 	void changeDistance(int newDistance);
 	int getDistance();
 	CRGBA getColour();
-private:
 	void NativeCall();
+private:
 	CRGBA colour;
 	int distance;
 };

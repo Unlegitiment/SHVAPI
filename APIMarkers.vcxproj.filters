@@ -39,6 +39,9 @@
     <ClCompile Include="UIEditor\TextDraw\TextJustify.cpp" />
     <ClCompile Include="UIEditor\TextDraw\Text.cpp" />
     <ClCompile Include="UIEditor\TextDraw\TextDropshadow.cpp" />
+    <ClCompile Include="ScriptHookV\types.cpp" />
+    <ClCompile Include="Scaleform\CScaleform.cpp" />
+    <ClCompile Include="UIEditor\BoxDraw\CBoxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -84,6 +87,10 @@
     <ClInclude Include="UIEditor\TextDraw\Text.h" />
     <ClInclude Include="UIEditor\TextDraw\TextJustify.h" />
     <ClInclude Include="UIEditor\TextDraw\TextDropshadow.h" />
+    <ClInclude Include="Scaleform\CScaleform.h" />
+    <ClInclude Include="UIEditor\BoxDraw\CBoxUI.h" />
+    <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
+    <ClInclude Include="UIEditor\ButtonDraw\CButtonMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

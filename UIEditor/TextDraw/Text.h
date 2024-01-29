@@ -30,13 +30,15 @@ public: // functions
 	* @brief We'll handle most things. :)
 	* @brief Uses a default size, font, and basic settings allowing more things to apply.
 	*/
-	CTextUI(string text, CVector2 position, CRGBA colour); 
+	CTextUI(string text, CVector2 position, CRGBA colour);
+	CTextUI operator=(CTextUI & other);
 	/// <summary>
 	/// Similar to Tick method in other functions. 
 	/// This goes within a thread main as it initalized every native call nessicary.
 	/// </summary>
 	void Draw();
 	bool getIsDrawn();
+	void SetTextJustification(TextJustify newJustification);
 public://variables 
 	string text;
 	CVector2 pos;

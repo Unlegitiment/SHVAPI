@@ -1,7 +1,10 @@
 #include "script.h"
 #include "keyboard.h"
 #include "MP_NEXT_JOB_SELECT/MPVoteScreen.h"
+#include "UserIO/Mouse.h"
+#include "Scaleform/CScaleform.h"
 #include "UI.h"
+#include "UIEditor/TextDraw/Text.h"
 #include <string>
 #include <ctime>
 #pragma warning(disable : 4244 4305) // double <-> float conversions
@@ -78,8 +81,21 @@ void main() //Frontend Tick.
     // Tick. 
     while (true)
     {
-        int rank = GET_MP_INT_CHARACTER_STAT(-1);
-        UI_DrawText(std::to_string(rank).c_str(), {0.25f,0,0.3f,0});
+        if (IsKeyJustUp(VK_DIVIDE)) {
+            bool isActive = true;
+            
+            CTextUI& text = CTextUI("TEXT", CVector2(0.5, 0.5),1,0,CRGBA(255,0,0,255),s_TextConfig(CTextDropshadow(0,CRGBA(0,0,0,0)),CRightJustify(0.0,0.5), false));
+            while (isActive) {
+                if (IsKeyJustUp(VK_F15)) {
+                    text.text = "WOMP";
+                }
+                text.Draw();
+                if (IsKeyJustUp(VK_DIVIDE)) {
+                    isActive = false;
+                }
+                WAIT(0);
+            }
+        }
         WAIT(0);
     }
 }

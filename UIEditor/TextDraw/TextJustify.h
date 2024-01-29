@@ -18,7 +18,7 @@ private:
 //Should Justify call other functions in it's constructor?
 class CRightJustify : public TextJustify {
 public:
-	//CRightJustify(float start, float end);
+	CRightJustify(float start, float end);
 	void SetupText(float start, float end) override; 
 	int GetType() override { return 2; }
 private:
@@ -34,5 +34,5 @@ public:
 	int GetType()override { return 0; }
 private:
 	void NativeCaller() override;
-	void SetupText(float start, float end)override;
+	void SetupText(float start, float end) override;
 };

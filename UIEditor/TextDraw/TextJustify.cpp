@@ -13,13 +13,13 @@ void CLeftJustify::SetupText(float start, float end)
 {
 }
 
-//CRightJustify::CRightJustify(float start, float end) 
-//	:
-//	m_Start(start),
-//	m_End(end)
-//{
-//
-//}
+CRightJustify::CRightJustify(float start, float end) 
+	:
+	m_Start(start),
+	m_End(end)
+{
+
+}
 
 void CRightJustify::SetupText(float start, float end)
 {
@@ -40,6 +40,7 @@ void CRightJustify::SetupText()
 
 void CMiddleJustify::SetupText()
 {
+	HUD::SET_TEXT_CENTRE(1);
 }
 
 void CMiddleJustify::NativeCaller()

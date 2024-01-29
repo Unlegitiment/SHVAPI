@@ -20,6 +20,9 @@
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Markers\m_Markers.cpp" />
+    <ClCompile Include="Scaleform\CScaleform.cpp" />
+    <ClCompile Include="ScriptHookV\types.cpp" />
+    <ClCompile Include="UIEditor\BoxDraw\CBoxUI.cpp" />
     <ClCompile Include="UIEditor\TextDraw\Text.cpp" />
     <ClCompile Include="UIEditor\TextDraw\TextDropshadow.cpp" />
     <ClCompile Include="UIEditor\TextDraw\TextJustify.cpp" />
@@ -62,6 +65,10 @@
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Markers\m_Markers_internal.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Scaleform\CScaleform.h" />
+    <ClInclude Include="UIEditor\BoxDraw\CBoxUI.h" />
+    <ClInclude Include="UIEditor\ButtonDraw\CButtonMgr.h" />
+    <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
     <ClInclude Include="UIEditor\TextDraw\Text.h" />
     <ClInclude Include="UIEditor\TextDraw\TextDropshadow.h" />
     <ClInclude Include="UIEditor\TextDraw\TextJustify.h" />
