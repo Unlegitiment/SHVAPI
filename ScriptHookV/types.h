@@ -76,7 +76,7 @@ public:
 		return static_cast<float>(sqrt(tot));
 	}
 	std::string toStr() {
-		return std::to_string(this->x) + std::to_string(this->y);
+		return std::to_string(this->x) + " " + std::to_string(this->y);
 	}
 	void NormalizeScreen(float* locX, float* locY);
 	//Warn this can give funky results.
@@ -128,5 +128,12 @@ public:
 		a(A)
 	{
 
+	}
+	std::string toStr() {
+		std::string red = std::to_string(r);
+		std::string gre = std::to_string(g);
+		std::string blu = std::to_string(b);
+		std::string alp = std::to_string(a);
+		return red + " " + gre + " " + blu + " " + alp;
 	}
 };

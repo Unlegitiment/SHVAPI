@@ -10,26 +10,30 @@
 * 
 * Also unless a Tick() method is specified as a backend (via comment) than don't bother using. Tick backgrounds should go on a seperate thread because they do more stuff more in track with updating weird background values.
 * Also Menu(s) should likely use a (static CList<CButtonUI> buttons) So that the values can change and flash so that a value will remain after. Like Green Box and Text should stick.
-* 
 */ 
+
 class CButtonUI {
 public:
 	friend class CButtonMgr;
 public://FACTORY
-	CButtonUI(CTextUI& leftText, CTextUI& rightText, CBox& button);
-	static CButtonUI CreateDraw(); //Quick Creation and Drawing used in whileLoop
+	CButtonUI(CBox& __button__); // mainly for ease of use. 
+	//CButtonUI(CBox& __button__, CHighlightContext __highlightContext__); //Allows specification of highlight context otherwise it will do the regular GTA highlight of a soft white.
+	static CButtonUI CreateDraw(CBox& __box__); // Quick Factory so that its nice.
 public:
-	enum eText{
+	enum eText  {
 		ETEXT_LEFT,
 		ETEXT_MIDDLE,
 		ETEXT_RIGHT,
 		ETEXT_MAX
 	};
-
+	void SetNewDrawPos(CVector2 __drawPos__);
+	CBox& GetBox();
+	void SetNewBox(CBox& __box);
 	CTextUI* GetText(eText textToReq);
 	void SetText(eText textToSet, CTextUI* textToInput);
-	
+	void IdealDraw(CButtonUI::eText textToSet, CTextUI* textToInput);
 private:
-	CTextUI*	m_Buttons[ETEXT_MAX]; //specified max buttonTypes LUT?
-	CBox		m_Box;
+	CTextUI*			m_Buttons[ETEXT_MAX]; //specified max buttonTypes LUT?
+	CBox				m_Box;
+	//CHighlightContext	m_HighlightCtx;
 };

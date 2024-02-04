@@ -42,6 +42,8 @@
     <ClCompile Include="ScriptHookV\types.cpp" />
     <ClCompile Include="Scaleform\CScaleform.cpp" />
     <ClCompile Include="UIEditor\BoxDraw\CBoxUI.cpp" />
+    <ClCompile Include="UIEditor\ButtonDraw\CButtonMgr.cpp" />
+    <ClCompile Include="UIEditor\ButtonDraw\CButtonUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -89,8 +91,9 @@
     <ClInclude Include="UIEditor\TextDraw\TextDropshadow.h" />
     <ClInclude Include="Scaleform\CScaleform.h" />
     <ClInclude Include="UIEditor\BoxDraw\CBoxUI.h" />
-    <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
+    <ClInclude Include="UIEditor\Menu\Menu.h" />
     <ClInclude Include="UIEditor\ButtonDraw\CButtonMgr.h" />
+    <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

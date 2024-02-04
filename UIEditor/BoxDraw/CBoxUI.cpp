@@ -29,6 +29,16 @@ void CBox::SetHeight(float height)
 	UpdateCornerPos();
 }
 
+float CBox::GetWidth()
+{
+	return this->width;
+}
+
+float CBox::GetHeight()
+{
+	return this->height;
+}
+
 void CBox::Draw()
 {
 	GRAPHICS::DRAW_RECT(this->drawPos.x, this->drawPos.y, this->width, this->height, this->colour.r, this->colour.g, this->colour.b, this->colour.a, false);
@@ -41,9 +51,23 @@ CVector2& CBox::GetDrawPos()
 
 CVector2& CBox::GetCornerPos(Corner cornerToGet)
 {
-	if (cornerToGet < Corner::CORNER_MAX) cornerToGet = Corner::TOPLEFT;
-	if (cornerToGet > Corner::TOPLEFT) cornerToGet = Corner::TOPLEFT;
+	if (cornerToGet > Corner::CORNER_MAX - 1) cornerToGet = Corner::TOPLEFT;
+	if (cornerToGet < Corner::TOPLEFT) cornerToGet = Corner::TOPLEFT;
 	return corners[cornerToGet];
+}
+
+CRGBA& CBox::GetColour()
+{
+	return this->colour;
+}
+
+void CBox::SetColour(CRGBA __newColour__)
+{
+	this->colour = __newColour__;
+}
+
+void CBox::ShowDebugInfo()
+{
 }
 
 void CBox::UpdateCornerPos()
