@@ -12,11 +12,11 @@ class CCharSwitcherNATIVE{
 private:
 	static int					sm_OldPed		 ;
 	static int					sm_NewPed		 ;
-	static int					sm_SwitchState	 ;
+	static int					sm_SwitchState	 ; 
 	static int					sm_SwitchType	 ; // ePlayerSwitchType : LONG, MED, SHORT, AUTO;
-	static bool					sm_IsSwitchActive;
-	int							m_Flags		  = 0;
-	static CCharSwitcherNATIVE	sm_Instance		 ;
+	static bool					sm_IsSwitchActive; 
+	int							m_Flags		  = 0; 
+	static CCharSwitcherNATIVE	sm_Instance		 ; 
 	static std::string			sm_EstablishShot ; 
 	CCharSwitcherNATIVE() {};
 
