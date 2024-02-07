@@ -4,14 +4,12 @@
 Logger Logger::sm_Instance = Logger(); 
 Logger& Logger::GetInstance()
 {
-	UI_DrawNotificationSTR("GetInst Called");
-	UI_DrawNotificationI(reinterpret_cast<int>( & sm_Instance));
+
 	return sm_Instance;
 }
 Logger::Logger() :
 	m_LogFile(std::ofstream(__logName__, std::ios::in | std::ios::out | std::ios::app))
 {
-	UI_DrawNotificationSTR("Constructor Called");
 	
 	Init();
 }
@@ -48,9 +46,12 @@ void Logger::InfoLog(std::string loggerInfo)
 		m_LogFile.close();
 	}
 	else {
-		
+		m_LogFile.close();
+
 		return;
 	}
+	m_LogFile.close();
+
 	
 }
 

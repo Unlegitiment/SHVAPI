@@ -2,19 +2,21 @@
 #include "CButtonUI.h"
 class CButtonView { //Current display to user. 
 public:
-	void Draw();
+	CButtonView();
+	void Draw( CButtonUI& const button);
 private:
 };
-class CButtonController {
+class CButtonMgr {
 public:
-	CButtonController(CButtonUI buttonToSetup);
-	CButtonController(const CBox& box, const CTextUI& ltextUI);
+	CButtonMgr(CButtonUI& buttonToSetup);
+	//CButtonMgr(const CBox& box, const CTextUI* ltextUI);
 	void handleMouse(CRGBA highlightColour, float mousePosX, float mousePosY);
-	void handleKeyboard(CRGBA highlightColour);
 	void UpdateDrawPos(CVector2 drawPosition);
-	void SetHeight(float height);
-	void SetWidth(float width);
+	void UpdateButtonAtIndex(int index);
+	void SetHeight(float _height);
+	void SetWidth(float _width);
+	void Update(); 
 private:
-	CButtonUI button;
+	CButtonUI& button;
 	CButtonView view;
 };

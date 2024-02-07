@@ -21,6 +21,7 @@ public:
 	CRGBA& GetColour();
 	void SetColour(CRGBA __newColour__);
 	void ShowDebugInfo();
+	bool GetIfPointIsInside(CVector2 point);
 private:
 	void UpdateCornerPos();
 	CVector2 drawPos;

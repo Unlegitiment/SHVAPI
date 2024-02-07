@@ -14,7 +14,7 @@
 
 class CButtonUI {
 public:
-	friend class CButtonController;
+	friend class CButtonMgr;
 public://FACTORY
 	CButtonUI(CBox& __button__); // mainly for ease of use. 
 	//CButtonUI(CBox& __button__, CHighlightContext __highlightContext__); //Allows specification of highlight context otherwise it will do the regular GTA highlight of a soft white.
@@ -27,13 +27,13 @@ public:
 		ETEXT_MAX
 	};
 	void SetNewDrawPos(CVector2 __drawPos__);
-	CBox& GetBox();
+	CBox& GetBox() ;
 	void SetNewBox(CBox& __box);
-	CTextUI& GetText(eText textToReq);
-	void SetText(eText textToSet, const CTextUI& textToInput);
-	void IdealDraw(CButtonUI::eText textToSet, CTextUI& textToInput);
+	CTextUI* GetText(eText textToReq) ;
+	void SetText(eText textToSet, const CTextUI* textToInput);
+	void IdealDraw(CButtonUI::eText textToSet, CTextUI* textToInput);
 private:
-	CTextUI				m_Buttons[ETEXT_MAX]; //specified max buttonTypes LUT?
+	CTextUI*			m_Buttons[ETEXT_MAX]; //specified max buttonTypes LUT?
 	CBox				m_Box;
 	//CHighlightContext	m_HighlightCtx;
 };

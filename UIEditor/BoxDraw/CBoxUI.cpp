@@ -70,6 +70,16 @@ void CBox::ShowDebugInfo()
 {
 }
 
+bool CBox::GetIfPointIsInside(CVector2 point)
+{
+	if (point.x >= GetCornerPos(TOPLEFT).x && point.x <= GetCornerPos(TOPRIGHT).x) {
+		if (point.y <= GetCornerPos(BOTTOMLEFT).y && point.y >= GetCornerPos(TOPLEFT).y) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void CBox::UpdateCornerPos()
 {
 	this->corners[Corner::TOPLEFT].x = this->drawPos.x - (this->width / 2.0F);

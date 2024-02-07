@@ -6,7 +6,7 @@
 #include "UI.h"
 #include "UIEditor/TextDraw/Text.h"
 #include "UIEditor/BoxDraw/CBoxUI.h"
-#include "UIEditor/ButtonDraw/CButtonUI.h"
+#include "UIEditor/ButtonDraw/CButtonController.h"
 #include "Logger/Logging.h"
 #include <string>
 #include <ctime>
@@ -62,7 +62,7 @@ int GET_MP_INT_CHARACTER_STAT(int iSlot = -1) {
 void ButtonDraw(CButtonUI& b) {
     b.GetBox().Draw();
     for (int i = 0; i < b.ETEXT_MAX; i++) {
-        b.GetText(static_cast<CButtonUI::eText>(i)).Draw();
+        b.GetText(static_cast<CButtonUI::eText>(i))->Draw();
     }
 }
 void draw3d(std::string str,float x,float y,float z, float scale, int fontType, float r, float g, float b, float a, bool useOutline = true, bool useDropshadow = true, int layer = 0 ) {
@@ -123,52 +123,40 @@ void draw3d(std::string str,float x,float y,float z, float scale, int fontType, 
 */
 void main() //Frontend Tick. 
 {
-    LOGGER_INSTANCE.InfoLog("TEST");
-    // Tick. 
-    while (true)
-    {
-        if (IsKeyJustUp(VK_DIVIDE)) {
-            bool isActive = true;
-            //CTextUI& text = CTextUI("TEXT", CVector2(0.5, 0.5),1,0,CRGBA(255,0,0,255),s_TextConfig(CTextDropshadow(0,CRGBA(0,0,0,0)),CRightJustify(0.0,0.5), false));
+	// Tick. 
+	while (true)
+	{
+
+		if (IsKeyJustUp(VK_DIVIDE)) {
+			bool isActive = true;
             CButtonUI& button = CButtonUI(CBox(CVector2(0.5, 0.5), CRGBA(255, 255, 255, 120), 0.5, 0.5));
-            button.SetText(button.ETEXT_LEFT, 
-                CTextUI("TEXT", CVector2(0.5, 0.5), CRGBA(255, 255, 255, 255)));
-            //button.SetText(button.ETEXT_MIDDLE, CTextUI("TEXTM", CVector2(0.5, 0.5), CRGBA(255, 255, 255, 200)));
-            //button.SetText(
-            //button.ETEXT_RIGHT, 
-            //    CTextUI("TEXTR", 
-            //    CVector2(0.4,0.5), 0.3609f, 0,CRGBA(255,255,255,200), 
-            //    CTextDropshadow(0,CRGBA(0,0,0,0)), new CRightJustify(0.0, button.GetBox().GetCornerPos(button.GetBox().BOTTOMRIGHT).x), false));
-          while(isActive){  
-            button.GetBox().Draw();
-            if (IsKeyJustUp(VK_F13)) {
-                button.GetBox().SetHeight(button.GetBox().GetHeight() / 2.0F);
-                button.GetBox().SetWidth(button.GetBox().GetWidth() / 2.0F);
-                button.SetNewDrawPos(CVector2(0.25,0.25));
-                button.IdealDraw(button.ETEXT_LEFT, button.GetText(button.ETEXT_LEFT));
-                button.IdealDraw(button.ETEXT_MIDDLE, button.GetText(button.ETEXT_MIDDLE));
-                button.IdealDraw(button.ETEXT_RIGHT, button.GetText(button.ETEXT_RIGHT));
-                button.GetText(button.ETEXT_RIGHT).SetTextJustification(new CRightJustify(0.0, button.GetBox().GetCornerPos(CBox::BOTTOMRIGHT).x));
-                button.GetText(button.ETEXT_RIGHT).textJustification->SetupText();
-            }
-            std::string str = "TOP:" + button.GetBox().GetCornerPos(button.GetBox().TOPLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().TOPRIGHT).toStr(); 
-            std::string btm = "BOT:";// + button.GetBox().GetCornerPos(button.GetBox().BOTTOMLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().BOTTOMRIGHT).toStr() + "~n~" + button.GetBox().GetDrawPos().toStr();
-            CTextUI* text = new CTextUI(str, CVector2(0.2,0.1),CRGBA(255,255,255,200));
-            CTextUI* btmTxt = new CTextUI(btm, CVector2(0.2, text->pos.y + (text->size / 7.0F)), CRGBA(255, 255, 255, 200));
-            //text->Draw();
-            //btmTxt->DrawDebugInfo(0.1f,100);
-            button.GetText(CButtonUI::ETEXT_LEFT).Draw();
-            button.GetText(CButtonUI::ETEXT_RIGHT).Draw();
-            button.GetText(CButtonUI::ETEXT_LEFT).DrawDebugInfo(0.01f);
-            button.GetText(CButtonUI::ETEXT_RIGHT).DrawDebugInfo(0.31f);
-                if (IsKeyJustUp(VK_DIVIDE)) {
-                    isActive = false;
-                }
-                WAIT(0);
-            }
-        }
-        WAIT(0);
-    }
+            button.SetText(button.ETEXT_LEFT,
+                new CTextUI("TEXT", CVector2(0.5, 0.5), CRGBA(255, 255, 255, 255)));
+            button.SetText(button.ETEXT_MIDDLE,
+                new CTextUI("TEXTM", CVector2(0.5, 0.5), CRGBA(255, 255, 255, 255)));
+            button.SetText(button.ETEXT_RIGHT,
+                new CTextUI("TEXTR", CVector2(0.5, 0.5), CRGBA(255, 255, 255, 255)));
+			while (isActive) {
+
+				CButtonMgr controller = CButtonMgr(button);
+				if (IsKeyJustUp(VK_F13)) {
+					controller.UpdateDrawPos(CVector2(0.25,0.25));
+                    controller.SetHeight(button.GetBox().GetHeight() / 2.0F);
+                    controller.SetWidth(button.GetBox().GetWidth() / 2.0F);
+				}
+                controller.handleMouse(CRGBA(0, 0, 0, 100), PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240));
+				std::string str = "TOP:" + button.GetBox().GetCornerPos(button.GetBox().TOPLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().TOPRIGHT).toStr();
+				std::string btm = "BOT:";// + button.GetBox().GetCornerPos(button.GetBox().BOTTOMLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().BOTTOMRIGHT).toStr() + "~n~" + button.GetBox().GetDrawPos().toStr();
+				CTextUI* text = new CTextUI(str, CVector2(0.2, 0.1), CRGBA(255, 255, 255, 200));
+				CTextUI* btmTxt = new CTextUI(btm, CVector2(0.2, text->pos.y + (text->size / 7.0F)), CRGBA(255, 255, 255, 200));
+				if (IsKeyJustUp(VK_DIVIDE)) {
+					isActive = false;
+				}
+				WAIT(0);
+			}
+		}
+		WAIT(0);
+	}
 }
 
 void THREAD_2() { 

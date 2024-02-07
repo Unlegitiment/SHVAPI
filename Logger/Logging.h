@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
-#define __logName__ "APIMarkers.log"
+#define __logName__ "E:\\SteamLibrary\\steamapps\\common\\Grand Theft Auto V\\APIMarkers.log"
 /*Borke the mod crashes immediately because log file can't open idk ill try some more later or on monday.*/
 class Logger {
 public:
