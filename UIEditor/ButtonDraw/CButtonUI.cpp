@@ -31,6 +31,7 @@ CBox& CButtonUI::GetBox()
 	return m_Box;
 }
 
+
 void CButtonUI::SetNewBox(CBox& __box)
 {
 	this->m_Box = __box;

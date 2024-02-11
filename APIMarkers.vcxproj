@@ -26,6 +26,12 @@
     <ClCompile Include="UIEditor\BoxDraw\CBoxUI.cpp" />
     <ClCompile Include="UIEditor\ButtonDraw\CButtonController.cpp" />
     <ClCompile Include="UIEditor\ButtonDraw\CButtonUI.cpp" />
+    <ClCompile Include="UIEditor\Menu\CMenuItem.h" />
+    <ClCompile Include="UIEditor\Menu\CMTxd.cpp" />
+    <ClCompile Include="UIEditor\Menu\CMTxd.h" />
+    <ClCompile Include="UIEditor\Menu\CWrappedText.cpp" />
+    <ClCompile Include="UIEditor\Menu\Menu.cpp" />
+    <ClCompile Include="UIEditor\Menu\MenuHeader.h" />
     <ClCompile Include="UIEditor\TextDraw\Text.cpp" />
     <ClCompile Include="UIEditor\TextDraw\TextDropshadow.cpp" />
     <ClCompile Include="UIEditor\TextDraw\TextJustify.cpp" />
@@ -74,7 +80,10 @@
     <ClInclude Include="UIEditor\BoxDraw\CBoxUI.h" />
     <ClInclude Include="UIEditor\ButtonDraw\CButtonController.h" />
     <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
+    <ClInclude Include="UIEditor\Menu\CWrappedText.h" />
     <ClInclude Include="UIEditor\Menu\Menu.h" />
+    <ClInclude Include="UIEditor\Menu\MenuContext.h" />
+    <ClInclude Include="UIEditor\Menu\MenuScroll.h" />
     <ClInclude Include="UIEditor\TextDraw\Text.h" />
     <ClInclude Include="UIEditor\TextDraw\TextDropshadow.h" />
     <ClInclude Include="UIEditor\TextDraw\TextJustify.h" />

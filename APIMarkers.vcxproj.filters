@@ -45,6 +45,12 @@
     <ClCompile Include="UIEditor\ButtonDraw\CButtonController.cpp" />
     <ClCompile Include="UIEditor\ButtonDraw\CButtonUI.cpp" />
     <ClCompile Include="Logger\Logging.cpp" />
+    <ClCompile Include="UIEditor\Menu\MenuHeader.h" />
+    <ClCompile Include="UIEditor\Menu\CMTxd.h" />
+    <ClCompile Include="UIEditor\Menu\CMTxd.cpp" />
+    <ClCompile Include="UIEditor\Menu\CMenuItem.h" />
+    <ClCompile Include="UIEditor\Menu\Menu.cpp" />
+    <ClCompile Include="UIEditor\Menu\CWrappedText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -97,6 +103,9 @@
     <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
     <ClInclude Include="GamerTag\GamerTag.h" />
     <ClInclude Include="Logger\Logging.h" />
+    <ClInclude Include="UIEditor\Menu\MenuScroll.h" />
+    <ClInclude Include="UIEditor\Menu\MenuContext.h" />
+    <ClInclude Include="UIEditor\Menu\CWrappedText.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

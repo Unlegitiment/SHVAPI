@@ -28,12 +28,14 @@ public:
 	};
 	void SetNewDrawPos(CVector2 __drawPos__);
 	CBox& GetBox() ;
+
 	void SetNewBox(CBox& __box);
 	CTextUI* GetText(eText textToReq) ;
 	void SetText(eText textToSet, const CTextUI* textToInput);
 	void IdealDraw(CButtonUI::eText textToSet, CTextUI* textToInput);
 private:
 	CTextUI*			m_Buttons[ETEXT_MAX]; //specified max buttonTypes LUT?
-	CBox				m_Box;
+	CBox		 		m_Box;
+
 	//CHighlightContext	m_HighlightCtx;
 };

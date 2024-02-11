@@ -1,11 +1,12 @@
 #include "CBoxUI.h"
 #include "../../ScriptHookV/natives.h"
-CBox::CBox(CVector2 drawPos, CRGBA colour, float width, float height):
-	drawPos(drawPos),
-	colour(colour),
-	width(width),
-	height(height),
-	corners{CVector2(0,0),CVector2(0,0), CVector2(0,0), CVector2(0,0)}
+CBox::CBox(CVector2 _drawPos, CRGBA _colour, float _length, float _height):
+	drawPos(_drawPos),
+	colour(_colour),
+	width(_length),
+	height(_height),
+	corners{CVector2(0,0),CVector2(0,0), CVector2(0,0), CVector2(0,0)},
+	originalColor(_colour)
 {
 	this->UpdateCornerPos();
 	return;
@@ -56,7 +57,7 @@ CVector2& CBox::GetCornerPos(Corner cornerToGet)
 	return corners[cornerToGet];
 }
 
-CRGBA& CBox::GetColour()
+CRGBA CBox::GetColour() 
 {
 	return this->colour;
 }
@@ -65,9 +66,26 @@ void CBox::SetColour(CRGBA __newColour__)
 {
 	this->colour = __newColour__;
 }
-
-void CBox::ShowDebugInfo()
+#include "../TextDraw/Text.h"
+void CBox::DrawDebugText(const std::string& debugText, float x, float yOffset, int lineIndex)
 {
+	CTextUI debugTextUI(debugText, CVector2(x, ((0.61f + yOffset) * lineIndex) / 900.0F), CRGBA(255, 255, 255, 200));
+
+	debugTextUI.Draw();
+}
+
+void CBox::ShowDebugInfo(float x, float yOffset)
+{
+	// 0.1f Height Change
+	DrawDebugText("dPos: " + drawPos.toStr(), x, yOffset, 7);
+	DrawDebugText("Corners:", x,yOffset,8);
+	DrawDebugText("		TLPos: " + corners[TOPLEFT].toStr(), x, yOffset, 9);
+	DrawDebugText("		TRPos: " + corners[TOPRIGHT].toStr(), x, yOffset, 10);
+	DrawDebugText("		BLPos: " + corners[BOTTOMLEFT].toStr(), x, yOffset, 11);
+	DrawDebugText("		BRPos: " + corners[BOTTOMRIGHT].toStr(), x, yOffset, 12);
+	DrawDebugText("COL: " + colour.toStr(), x, yOffset, 13);
+	DrawDebugText("WID: " + std::to_string(width), x, yOffset, 14);
+	DrawDebugText("HGT: " + std::to_string(height), x, yOffset, 15);
 }
 
 bool CBox::GetIfPointIsInside(CVector2 point)
@@ -78,6 +96,16 @@ bool CBox::GetIfPointIsInside(CVector2 point)
 		}
 	}
 	return false;
+}
+
+CRGBA CBox::GetOriginalColor()
+{
+	return originalColor;
+}
+
+void CBox::SetNewOriginalColor(CRGBA newColor)
+{
+	this->originalColor = newColor;
 }
 
 void CBox::UpdateCornerPos()
