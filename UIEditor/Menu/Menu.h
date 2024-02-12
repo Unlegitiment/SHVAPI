@@ -1,19 +1,25 @@
 #pragma once
 #include "../../GenericList/CList.h"
-#include "MenuHeader.h"
-#include "CMenuItem.h"
+#include "./Menu Dependancy(s)/MenuHeader.h"
+#include "MenuItems/CMenuItem.h"
 #include "../ButtonDraw/CButtonUI.h"
 #define _BLIST_ CList<CBaseMenuItem> 
 class CMenuUI {
 public:
 	CMenuUI();
-	void addButton(CButtonUI _button);
-	CButtonUI getButtonAtIndex(int index);
-	bool isIndexValid();
-	
+	_BLIST_ GetList();
+	CMenuHeader& GetHeader(); 
+
+private:
+	CMenuHeader& header;
+	_BLIST_ _bList_;
+};
+class CMenuCntrllr {
+public:
+	void AddButton(CButtonUI _button);
+	CButtonUI GetButtonAtIndex(int index);
+	bool IsIndexValid(int index);
 private:
 
-	_BLIST_ _bList_;
-	CMenuHeader header;
 };
 #undef _BLIST_

@@ -1,10 +1,10 @@
 #include "CMTxd.h"
-#include "../../ScriptHookV/natives.h"
+#include "../../../ScriptHookV/natives.h"
+
 CMTxd::CMTxd(std::string& txd, std::string& txn) :
     txd(txd),
     txn(txn)
 {
-    Request();
 }
 
 CMTxd::CMTxd(std::string& txd) :

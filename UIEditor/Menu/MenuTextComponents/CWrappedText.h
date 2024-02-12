@@ -1,6 +1,6 @@
 #pragma once
-#include "../BoxDraw/CBoxUI.h"
-#include "../TextDraw/Text.h"
+#include "../../BoxDraw/CBoxUI.h"
+#include "../../TextDraw/Text.h"
 /*
 * Length of text should be equal to the length of a specific box.
 */

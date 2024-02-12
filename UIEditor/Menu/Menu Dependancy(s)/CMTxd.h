@@ -5,6 +5,10 @@
 */
 class CMTxd {
 public:
+	/*
+	Constructor will NOT Request the txd or txn because you should handle that logic yourself.
+	You're a programmer do it.
+	*/
 	CMTxd(std::string& txd, std::string& txn);
 	CMTxd(std::string& txd);
 	~CMTxd(); 

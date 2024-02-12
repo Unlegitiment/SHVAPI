@@ -25,7 +25,7 @@ public: // functions
 		FONT_CHALET_COMPRISE_COLOGNE= 4,
 		FONT_PRICEDOWN = 7
 	};
-	CTextUI::CTextUI(string text, CVector2 position, float size, int font, CRGBA colour, CTextDropshadow _dropShadow_, TextJustify* _justification_, bool _hasOutline_);
+	CTextUI(string text, CVector2 position, float size, int font, CRGBA colour, CTextDropshadow _dropShadow_, TextJustify* _justification_, bool _hasOutline_);
 	/*
 	* @brief We'll handle most things. :)
 	* @brief Uses a default size, font, and basic settings allowing more things to apply.

@@ -45,12 +45,13 @@
     <ClCompile Include="UIEditor\ButtonDraw\CButtonController.cpp" />
     <ClCompile Include="UIEditor\ButtonDraw\CButtonUI.cpp" />
     <ClCompile Include="Logger\Logging.cpp" />
-    <ClCompile Include="UIEditor\Menu\MenuHeader.h" />
-    <ClCompile Include="UIEditor\Menu\CMTxd.h" />
-    <ClCompile Include="UIEditor\Menu\CMTxd.cpp" />
-    <ClCompile Include="UIEditor\Menu\CMenuItem.h" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\MenuHeader.h" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\CMTxd.h" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\CMTxd.cpp" />
+    <ClCompile Include="UIEditor\Menu\MenuItems\CMenuItem.h" />
     <ClCompile Include="UIEditor\Menu\Menu.cpp" />
-    <ClCompile Include="UIEditor\Menu\CWrappedText.cpp" />
+    <ClCompile Include="UIEditor\Menu\MenuTextComponents\CWrappedText.cpp" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -103,9 +104,12 @@
     <ClInclude Include="UIEditor\ButtonDraw\CButtonUI.h" />
     <ClInclude Include="GamerTag\GamerTag.h" />
     <ClInclude Include="Logger\Logging.h" />
-    <ClInclude Include="UIEditor\Menu\MenuScroll.h" />
-    <ClInclude Include="UIEditor\Menu\MenuContext.h" />
-    <ClInclude Include="UIEditor\Menu\CWrappedText.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy%28s%29\MenuScroll.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy%28s%29\MenuContext.h" />
+    <ClInclude Include="UIEditor\Menu\MenuTextComponents\CWrappedText.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\CMenuInformation.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\MouseHandlable.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

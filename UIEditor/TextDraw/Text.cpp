@@ -54,6 +54,7 @@ bool CTextUI::getIsDrawn()
 void CTextUI::SetTextJustification(TextJustify* newJustification)
 {
 	this->textJustification = newJustification;
+	return;
 }
 
 void CTextUI::DrawDebugInfo(float x, float yOffset)

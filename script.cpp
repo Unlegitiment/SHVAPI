@@ -8,6 +8,7 @@
 #include "UIEditor/BoxDraw/CBoxUI.h"
 #include "UIEditor/ButtonDraw/CButtonController.h"
 #include "Logger/Logging.h"
+#include "UIEditor/Menu/Menu Dependancy(s)/ArrowButton.h"
 #include <string>
 #include <ctime>
 #pragma warning(disable : 4244 4305) // double <-> float conversions
@@ -98,17 +99,6 @@ void draw3d(std::string str,float x,float y,float z, float scale, int fontType, 
     HUD::END_TEXT_COMMAND_DISPLAY_TEXT(0, 0, 1);
     GRAPHICS::CLEAR_DRAW_ORIGIN();
 }
-//bool isPointInsideBox( float x, float y, BoxUI* box) {
-//    // Check if the point's x-coordinate is within the box's x-range
-//    if (x >= box->topLeft.x && x <= box->bottomRight.x) {
-//        // Check if the point's y-coordinate is within the box's y-range
-//        if (y >= box->topLeft.y && y <= box->bottomRight.y) {
-//            // The point is inside the box
-//            return TRUE;
-//        }
-//    }
-//    return FALSE;
-//}
 /*
 * StartRep = CurrentRepLocation
 * CurrentRank = the Rank You're Currently on
@@ -126,19 +116,31 @@ void main() //Frontend Tick.
 
 		if (IsKeyJustUp(VK_DIVIDE)) {
 			bool isActive = true;
+            CArrowButton b = CArrowButton(
+                //CBox(CVector2(0.1,0.1),CRGBA(0,0,0,120),0.1,0.1),
+                //CTextUI("1", CVector2(0.1,0.1),0.512,3,CRGBA(255,255,255,255),CTextDropshadow(0.1,CRGBA(0,0,0,180)),new CMiddleJustify(), false),
+                CVector2(0.1,0.1), CArrowButton::eArrowBtn::AB_DWN);
+            CArrowView v = CArrowView();
+            
             /*
             * Predeclaring these objects allows us to effectively 
             */
             CButtonUI& button2 =  CButtonUI(CBox(CVector2(0.25, 0.7), CRGBA(000, 000, 000, 120), 0.25, 0.5));
             CButtonUI& button =   CButtonUI(CBox(CVector2(0.71, 0.7), CRGBA(00, 255, 255, 120), 0.5, 0.5));
-            button.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+            button.SetText(button.ETEXT_LEFT, new CTextUI("A", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT",CVector2(0.2,0.2), CRGBA(255, 255, 255, 255)));
             button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
 
+            int i = 0;
 			while (isActive) {
+                v.Draw(b.GetText(), b.GetBox());
+                PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+                PAD::ENABLE_CONTROL_ACTION(0, 239, 0);
+                PAD::ENABLE_CONTROL_ACTION(0, 240, 0);
+
                 bool contll2 = false;
                 bool contrll1 = false;
 				CButtonMgr controller = CButtonMgr(button);
@@ -146,6 +148,12 @@ void main() //Frontend Tick.
                 if (IsKeyJustUp(VK_F14)) {
                     contrll1 = !contrll1;
                     contll2 = !contll2;
+                }
+                if (IsKeyJustUp(VK_F15)) { 
+                    // Varying combinations of this font however the most important ones are that the arrows are in the first 4 characters. 
+                    i++;
+                    button.GetText(button.ETEXT_LEFT)->font = 3;
+                    button.GetText(button.ETEXT_LEFT)->text = std::to_string(i);
                 }
 
                 if (button.GetBox().GetIfPointIsInside(CVector2(PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240)))) {
