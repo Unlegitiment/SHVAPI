@@ -19,6 +19,7 @@ public://FACTORY
 	CButtonUI(CBox& __button__); // mainly for ease of use. 
 	//CButtonUI(CBox& __button__, CHighlightContext __highlightContext__); //Allows specification of highlight context otherwise it will do the regular GTA highlight of a soft white.
 	static CButtonUI CreateDraw(CBox& __box__); // Quick Factory so that its nice.
+	~CButtonUI();
 public:
 	enum eText  {
 		ETEXT_LEFT,

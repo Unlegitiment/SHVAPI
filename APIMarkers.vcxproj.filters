@@ -52,6 +52,7 @@
     <ClCompile Include="UIEditor\Menu\Menu.cpp" />
     <ClCompile Include="UIEditor\Menu\MenuTextComponents\CWrappedText.cpp" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.cpp" />
+    <ClCompile Include="ApartmentRemover\GlobalDeleter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\CMenuInformation.h" />
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.h" />
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\MouseHandlable.h" />
+    <ClInclude Include="ApartmentRemover\GlobalDeleter.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

@@ -20,6 +20,14 @@ CButtonUI CButtonUI::CreateDraw(CBox& __box__)
 	return CButtonUI(__box__);
 }
 
+CButtonUI::~CButtonUI()
+{
+	for (int i = 0; i < ETEXT_MAX; i++) {
+		delete m_Buttons[i];
+	}
+	
+}
+
 void CButtonUI::SetNewDrawPos(CVector2 __drawPos__)
 {
 	this->m_Box.SetNewDrawPos(__drawPos__);

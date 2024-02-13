@@ -120,7 +120,7 @@ void main() //Frontend Tick.
                 //CBox(CVector2(0.1,0.1),CRGBA(0,0,0,120),0.1,0.1),
                 //CTextUI("1", CVector2(0.1,0.1),0.512,3,CRGBA(255,255,255,255),CTextDropshadow(0.1,CRGBA(0,0,0,180)),new CMiddleJustify(), false),
                 CVector2(0.1,0.1), CArrowButton::eArrowBtn::AB_DWN);
-            CArrowView v = CArrowView();
+            //CArrowView v = CArrowView();
             
             /*
             * Predeclaring these objects allows us to effectively 
@@ -135,8 +135,19 @@ void main() //Frontend Tick.
             button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
 
             int i = 0;
+                int j = 0;
 			while (isActive) {
-                v.Draw(b.GetText(), b.GetBox());
+                if (IsKeyJustUp(VK_F16)) {
+                    ++j;
+                    b.GetText().text = b.EnumToStr(static_cast<CArrowButton::eArrowBtn>(j));
+                }
+                CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
+                if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
+                    b.GetBox().SetColour(CRGBA(255,255,255,180));
+                    b.GetText().colour = (CRGBA(0, 0, 0, 255));
+
+                }
+                b.Update();
                 PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
                 PAD::ENABLE_CONTROL_ACTION(0, 239, 0);
                 PAD::ENABLE_CONTROL_ACTION(0, 240, 0);

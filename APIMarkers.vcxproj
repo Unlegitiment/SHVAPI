@@ -8,6 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Alpha Items\Blips.cpp" />
+    <ClCompile Include="ApartmentRemover\GlobalDeleter.cpp" />
     <ClCompile Include="CharacterSwitch\CharacterSwitcher.cpp" />
     <ClCompile Include="CharacterSwitch\CharacterSwitchNative.cpp" />
     <ClCompile Include="CharacterSwitch\CTxd.cpp" />
@@ -61,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alpha Items\Blips.h" />
+    <ClInclude Include="ApartmentRemover\GlobalDeleter.h" />
     <ClInclude Include="CharacterSwitch\AllCharacterSwitches.h" />
     <ClInclude Include="CharacterSwitch\CharacterSwitcher.h" />
     <ClInclude Include="CharacterSwitch\CharacterSwitchNative.h" />

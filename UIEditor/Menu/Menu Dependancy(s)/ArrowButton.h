@@ -11,28 +11,23 @@ public:
 		AB_DWN		= 4
 	};
 	CArrowButton(CVector2& drawPos, eArrowBtn arrowBtn);
-	CArrowButton(CBox* box, CTextUI* text, CVector2 drawPos, eArrowBtn arrowBtn);
+	//This will effectively be a constructor as the previous two don't do what I'd like them to do;
+	void Init(CVector2& drawPositon, eArrowBtn arrowButton); 
 	CBox& GetBox();
 	CTextUI& GetText();
 	void SetText(CTextUI* _text);
-	void SetBox(CBox* _box);
+	void SetBox(CBox* _box); 
+	bool GetPointIntersect(CVector2 point);
+	void Update();
+	/*
+	* This is a one time use item after that call Update because that will get Ideal DrawPosition for the box;
+	*/
+	void Attach();
+	static void Draw(CTextUI* text, CBox* box);
 	~CArrowButton(); 
+	char* EnumToStr(eArrowBtn btn);
 private:
-	CBox*		box; 
-	CTextUI*		text;
-};
-class CArrowView {
-public:
-	void Draw(CTextUI& text, CBox& box); // Thing that we are doing here is getting the button and drawing it.   
-private:
-};
-
-class CArrowContrller {
-public:
-	CArrowContrller(CArrowButton button, CArrowView view);
-	void HandleMouse(CMenuCntrllr& menuToHandle); // Get Click?
-	//A keyboard can physically never reach these buttons? 
-private:
-	CArrowButton&	button;
-	CArrowView&		view;
+	void UpdateColor();
+	CBox*		m_Box;
+	CTextUI*	m_Text;
 };
