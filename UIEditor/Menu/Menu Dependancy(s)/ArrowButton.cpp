@@ -79,6 +79,13 @@ void CArrowButton::Update()
 
 CArrowButton::~CArrowButton()
 {
+	if (m_Box != nullptr) {
+		delete m_Box;
+	}
+	if (m_Text != nullptr) {
+		delete m_Text;
+	}
+	return;
 }
 
 char* CArrowButton::EnumToStr(eArrowBtn btn)

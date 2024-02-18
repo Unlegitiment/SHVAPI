@@ -32,6 +32,14 @@ CTextUI::~CTextUI()
 	delete textJustification;
 }
 
+float CTextUI::CharacterHeight(float iLead)
+{
+	int scrHeight = 0;
+	int scrWidth = 0;
+	GRAPHICS::GET_SCREEN_RESOLUTION(&scrWidth, &scrHeight);
+	return ((size + iLead) / scrHeight) * 10;
+}
+
 void CTextUI::Draw() 
 {
 	this->textJustification->SetupText();
@@ -59,7 +67,6 @@ void CTextUI::SetTextJustification(TextJustify* newJustification)
 
 void CTextUI::DrawDebugInfo(float x, float yOffset)
 {
-
 	DrawDebugText("STR: " + text, x, yOffset, 2);
 	DrawDebugText("POS: " + pos.toStr(), x, yOffset, 3);
 	DrawDebugText("COL: " + colour.toStr(), x, yOffset,4);

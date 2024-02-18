@@ -16,7 +16,7 @@ public:
     /*Assumes the compacity is 1*/
     CList() : CList(2) {
     }
-    void add(T& data) {
+    void add(T data) {
         extend();
         if (size < capacity) {
             list[size++] = data;

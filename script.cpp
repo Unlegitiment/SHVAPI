@@ -9,6 +9,8 @@
 #include "UIEditor/ButtonDraw/CButtonController.h"
 #include "Logger/Logging.h"
 #include "UIEditor/Menu/Menu Dependancy(s)/ArrowButton.h"
+#include "UIEditor/Menu/Menu Dependancy(s)/MenuHeader.h"
+#include "ApartmentRemover/GlobalDeleter.h"
 #include <string>
 #include <ctime>
 #pragma warning(disable : 4244 4305) // double <-> float conversions
@@ -95,7 +97,6 @@ void draw3d(std::string str,float x,float y,float z, float scale, int fontType, 
     HUD::SET_TEXT_COLOUR(r, g, b, a);
     if (useOutline) HUD::SET_TEXT_OUTLINE();
     if (useDropshadow) HUD::SET_TEXT_DROP_SHADOW();
-
     HUD::END_TEXT_COMMAND_DISPLAY_TEXT(0, 0, 1);
     GRAPHICS::CLEAR_DRAW_ORIGIN();
 }
@@ -133,62 +134,21 @@ void main() //Frontend Tick.
             button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
             button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-
             int i = 0;
-                int j = 0;
+            int j = 0;
+            CTextUI newTextLul  = CTextUI(std::to_string(newTextLul.CharacterHeight(2)), CVector2(0.85, 0.15), 0.5f, 0,CRGBA(255, 255, 255, 255),CTextDropshadow(0,CRGBA(0,0,0,0)),new CLeftJustify(), false);
+            CTextUI newTextLul2 = CTextUI("A", CVector2(0.85, 0.15 + newTextLul.CharacterHeight(1.5)), CRGBA(255, 255, 255, 255));
+            CTextUI newTextLul3 = CTextUI("B", CVector2(0.85, newTextLul2.pos.y + newTextLul2.CharacterHeight(1)), CRGBA(255, 255, 255, 255));
 			while (isActive) {
-                if (IsKeyJustUp(VK_F16)) {
-                    ++j;
-                    b.GetText().text = b.EnumToStr(static_cast<CArrowButton::eArrowBtn>(j));
-                }
+                CMenuHView headerView = CMenuHView(); 
+                headerView.DrawCol(std::string(NETWORK::NETWORK_PLAYER_GET_NAME(PLAYER::PLAYER_ID())), std::string("Interaction Menu"), std::string("1/1"), CRGBA(0, 0, 128, 180), CVector2(0.25, 0.55));
                 CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
                 if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
                     b.GetBox().SetColour(CRGBA(255,255,255,180));
                     b.GetText().colour = (CRGBA(0, 0, 0, 255));
-
                 }
-                b.Update();
-                PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-                PAD::ENABLE_CONTROL_ACTION(0, 239, 0);
-                PAD::ENABLE_CONTROL_ACTION(0, 240, 0);
-
-                bool contll2 = false;
-                bool contrll1 = false;
-				CButtonMgr controller = CButtonMgr(button);
-                CButtonMgr controller2 = CButtonMgr(button2);
-                if (IsKeyJustUp(VK_F14)) {
-                    contrll1 = !contrll1;
-                    contll2 = !contll2;
-                }
-                if (IsKeyJustUp(VK_F15)) { 
-                    // Varying combinations of this font however the most important ones are that the arrows are in the first 4 characters. 
-                    i++;
-                    button.GetText(button.ETEXT_LEFT)->font = 3;
-                    button.GetText(button.ETEXT_LEFT)->text = std::to_string(i);
-                }
-
-                if (button.GetBox().GetIfPointIsInside(CVector2(PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240)))) {
-                    contrll1 = true;
-                }
-                if (button2.GetBox().GetIfPointIsInside(CVector2(PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240)))) {
-                    contll2 = true;
-                }
-                controller.FlagDebugSymbols(contrll1);
-                controller2.FlagDebugSymbols(contll2);
-                CMouse& mouseRef = CMouse::GetInstance();  mouseRef.Tick(CMouse::Activation::ACT_FRAME);
-
-                controller.handleMouse(CRGBA(0, 0, 0, 100), PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240));
-                controller2.handleMouse(CRGBA(0, 255, 0, 120), PAD::GET_CONTROL_NORMAL(0, 239), PAD::GET_CONTROL_NORMAL(0, 240));
                 if (IsKeyJustUp(VK_F13)) {
-                    controller.UpdateDrawPos(CVector2(0.25, 0.25));
-                    controller.SetHeight(button.GetBox().GetHeight() / 2.0F);
-                    controller.SetWidth(button.GetBox().GetWidth() / 2.0F);
-                    controller.SetNewColor(CRGBA(255, 255, 255, 10));
                 }
-				std::string str = "TOP:" + button.GetBox().GetCornerPos(button.GetBox().TOPLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().TOPRIGHT).toStr();
-				std::string btm = "BOT:";// + button.GetBox().GetCornerPos(button.GetBox().BOTTOMLEFT).toStr() + "~n~" + button.GetBox().GetCornerPos(button.GetBox().BOTTOMRIGHT).toStr() + "~n~" + button.GetBox().GetDrawPos().toStr();
-				CTextUI* text = new CTextUI(str, CVector2(0.2, 0.1), CRGBA(255, 255, 255, 200));
-				CTextUI* btmTxt = new CTextUI(btm, CVector2(0.2, text->pos.y + (text->size / 7.0F)), CRGBA(255, 255, 255, 200));
 				if (IsKeyJustUp(VK_DIVIDE)) {
                     isActive = false;
 				}

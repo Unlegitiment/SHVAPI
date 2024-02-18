@@ -37,7 +37,7 @@ void CButtonMgr::handleMouse(CRGBA highlightColour, float mousePosX, float mouse
 {
 	CVector2 mousePos = CVector2(mousePosX, mousePosY);
 	if (button.GetBox().GetIfPointIsInside(mousePos)) {
-		button.GetBox().SetColour(highlightColour);
+		button.GetBox().SetColour(highlightColour);		
 		return;
 	}
 	button.GetBox().SetColour(button.GetBox().GetOriginalColor());

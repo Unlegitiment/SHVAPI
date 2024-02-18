@@ -34,10 +34,12 @@ public: // functions
 	CTextUI(string text, CVector2 position, CRGBA colour);
 	CTextUI operator=(CTextUI & other);
 	~CTextUI();
+	float CharacterHeight(float iLead);
 	/// <summary>
 	/// Similar to Tick method in other functions. 
 	/// This goes within a thread main as it initalized every native call nessicary.
 	/// </summary>
+	/// 
 	void Draw();
 	bool getIsDrawn();
 	void SetTextJustification(TextJustify* newJustification);

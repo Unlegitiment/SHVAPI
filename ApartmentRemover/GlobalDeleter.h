@@ -1,5 +1,7 @@
 #pragma once
 #include "../GenericList/CList.h"
+#include <vector>
+#include <functional>
 /*
 * What I'm thinking for this is we have a LUT of Apartments that corrilate to functions.
 * These functions are then able to callback to a apartment and then we're able to just have that be easy.
@@ -16,9 +18,12 @@ public:
 		TINSEL,
 		DEL_PERRO,
 		RICHARD,
-		WHEAZEL
+		WHEAZEL,
+		PILLBOX_HILL,
+		AP_MAX
 	};
 	ApartmentDeleter(); 
+	void Init(); 
 	static ApartmentDeleter& GetInstance();
 	ApartRemoveFunc GetAtIndex(int index);
 	void Call(int index);
@@ -29,6 +34,7 @@ public:
 
 private:
 	bool BoundsCheck(int index); 
-	CList<ApartRemoveFunc>		func_Remove;
+
+	std::vector<void(*)()>		func_Remove;
 	static ApartmentDeleter*	m_Instance;
 };

@@ -8,4 +8,5 @@ public:
 	void SetArrowBlocked();
 private:
 	CList<CArrowButton> buttonArrow;
+	
 };

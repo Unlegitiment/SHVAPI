@@ -28,6 +28,7 @@
     <ClCompile Include="UIEditor\ButtonDraw\CButtonController.cpp" />
     <ClCompile Include="UIEditor\ButtonDraw\CButtonUI.cpp" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.cpp" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\MenuHeader.cpp" />
     <ClCompile Include="UIEditor\Menu\MenuItems\CMenuItem.h" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\CMTxd.cpp" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\CMTxd.h" />
