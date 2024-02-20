@@ -3,7 +3,7 @@
 using std::string;
 class CGamerTag { //Model
 public:
-	CGamerTag(int pedToAttach, string usrName, bool isRockstarClan, );
+	CGamerTag(int pedToAttach, string usrName, bool isRockstarClan);
 	void Init();
 private:
 	friend class CGamerTagMgr;

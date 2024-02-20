@@ -10,6 +10,7 @@
 #include "Logger/Logging.h"
 #include "UIEditor/Menu/Menu Dependancy(s)/ArrowButton.h"
 #include "UIEditor/Menu/Menu Dependancy(s)/MenuHeader.h"
+#include "UIEditor/Menu/Menu Dependancy(s)/MenuContext.h"
 #include "ApartmentRemover/GlobalDeleter.h"
 #include <string>
 #include <ctime>
@@ -19,86 +20,86 @@ void main();
 void THREAD_2();
 float square(float num) { return num * num; }
 float distanceTo(Vector3 vec1, Vector3 vec2) {
-    float xsub, ysub, zsub;
-    xsub = vec2.x - vec1.x;
-    ysub = vec2.y - vec1.y;
-    zsub = vec2.z - vec1.z;
-    float xsq, ysq, zsq;
-    xsq = square(xsub);
-    ysq = square(ysub);
-    zsq = square(zsub);
-    float tot = xsq + ysq + zsq;
-    return (float)sqrt(tot);
+	float xsub, ysub, zsub;
+	xsub = vec2.x - vec1.x;
+	ysub = vec2.y - vec1.y;
+	zsub = vec2.z - vec1.z;
+	float xsq, ysq, zsq;
+	xsq = square(xsub);
+	ysq = square(ysub);
+	zsq = square(zsub);
+	float tot = xsq + ysq + zsq;
+	return (float)sqrt(tot);
 }
-float distanceTo(float x1, float y1, float z1, float x2,float y2, float z2) {
-    float xsub, ysub, zsub;
-    xsub = x2 - x1;
-    ysub = y2 - y1;
-    zsub = z2 - z1;
-    float xsq, ysq, zsq;
-    xsq = square(xsub);
-    ysq = square(ysub);
-    zsq = square(zsub);
-    float tot = xsq + ysq + zsq;
-    return (float)sqrt(tot);
+float distanceTo(float x1, float y1, float z1, float x2, float y2, float z2) {
+	float xsub, ysub, zsub;
+	xsub = x2 - x1;
+	ysub = y2 - y1;
+	zsub = z2 - z1;
+	float xsq, ysq, zsq;
+	xsq = square(xsub);
+	ysq = square(ysub);
+	zsq = square(zsub);
+	float tot = xsq + ysq + zsq;
+	return (float)sqrt(tot);
 }
 float distanceTo(Vector3 vec1) {
-    Vector3 vec2 = { 0,0,0 };
-    float xsub, ysub, zsub;
-    xsub = vec2.x - vec1.x;
-    ysub = vec2.y - vec1.y;
-    zsub = vec2.z - vec1.z;
-    float xsq, ysq, zsq;
-    xsq = square(xsub);
-    ysq = square(ysub);
-    zsq = square(zsub);
-    float tot = xsq + ysq + zsq;
-    return (float)sqrt(tot);
+	Vector3 vec2 = { 0,0,0 };
+	float xsub, ysub, zsub;
+	xsub = vec2.x - vec1.x;
+	ysub = vec2.y - vec1.y;
+	zsub = vec2.z - vec1.z;
+	float xsq, ysq, zsq;
+	xsq = square(xsub);
+	ysq = square(ysub);
+	zsq = square(zsub);
+	float tot = xsq + ysq + zsq;
+	return (float)sqrt(tot);
 }
 int GET_MP_INT_CHARACTER_STAT(int iSlot = -1) {
-    int res = -1;
-    if (STATS::STAT_GET_INT(MISC::GET_HASH_KEY("MP0_CHAR_RANK_FM"), &res, -1)) {
-        return res;
-    }
-    return 0;
+	int res = -1;
+	if (STATS::STAT_GET_INT(MISC::GET_HASH_KEY("MP0_CHAR_RANK_FM"), &res, -1)) {
+		return res;
+	}
+	return 0;
 }
 void ButtonDraw(CButtonUI& b) {
-    b.GetBox().Draw();
-    for (int i = 0; i < b.ETEXT_MAX; i++) {
-        b.GetText(static_cast<CButtonUI::eText>(i))->Draw();
-    }
+	b.GetBox().Draw();
+	for (int i = 0; i < b.ETEXT_MAX; i++) {
+		b.GetText(static_cast<CButtonUI::eText>(i))->Draw();
+	}
 }
-void draw3d(std::string str,float x,float y,float z, float scale, int fontType, float r, float g, float b, float a, bool useOutline = true, bool useDropshadow = true, int layer = 0 ) {
-    //    native.setDrawOrigin(x, y, z, 0);
-    //    native.beginTextCommandDisplayText('STRING');
-    //    native.addTextComponentSubstringPlayerName(msg);
-    //    native.setTextFont(fontType);
-    //    native.setTextScale(1, scale);
-    //    native.setTextWrap(0.0, 1.0);
-    //    native.setTextCentre(true);
-    //    native.setTextColour(r, g, b, a);
-    //    if (useOutline) {
-    //        native.setTextOutline();
-    //    }
-    //    if (useDropShadow) {
-    //        native.setTextDropShadow();
-    //    }
-    //    native.endTextCommandDisplayText(0, 0, 0);
-    //    native.clearDrawOrigin();
-    //}
-    GRAPHICS::SET_DRAW_ORIGIN(x, y, z, 0);
-    GRAPHICS::DRAW_RECT(x, y, 0.1, 0.1, 255, 255, 255, 255, 0);
-    HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-    HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(str.c_str());
-    HUD::SET_TEXT_FONT(fontType);
-    HUD::SET_TEXT_SCALE(1, scale);
-    HUD::SET_TEXT_WRAP(0.0, 1.0);
-    //HUD::SET_TEXT_CENTRE(true);
-    HUD::SET_TEXT_COLOUR(r, g, b, a);
-    if (useOutline) HUD::SET_TEXT_OUTLINE();
-    if (useDropshadow) HUD::SET_TEXT_DROP_SHADOW();
-    HUD::END_TEXT_COMMAND_DISPLAY_TEXT(0, 0, 1);
-    GRAPHICS::CLEAR_DRAW_ORIGIN();
+void draw3d(std::string str, float x, float y, float z, float scale, int fontType, float r, float g, float b, float a, bool useOutline = true, bool useDropshadow = true, int layer = 0) {
+	//    native.setDrawOrigin(x, y, z, 0);
+	//    native.beginTextCommandDisplayText('STRING');
+	//    native.addTextComponentSubstringPlayerName(msg);
+	//    native.setTextFont(fontType);
+	//    native.setTextScale(1, scale);
+	//    native.setTextWrap(0.0, 1.0);
+	//    native.setTextCentre(true);
+	//    native.setTextColour(r, g, b, a);
+	//    if (useOutline) {
+	//        native.setTextOutline();
+	//    }
+	//    if (useDropShadow) {
+	//        native.setTextDropShadow();
+	//    }
+	//    native.endTextCommandDisplayText(0, 0, 0);
+	//    native.clearDrawOrigin();
+	//}
+	GRAPHICS::SET_DRAW_ORIGIN(x, y, z, 0);
+	GRAPHICS::DRAW_RECT(x, y, 0.1, 0.1, 255, 255, 255, 255, 0);
+	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(str.c_str());
+	HUD::SET_TEXT_FONT(fontType);
+	HUD::SET_TEXT_SCALE(1, scale);
+	HUD::SET_TEXT_WRAP(0.0, 1.0);
+	//HUD::SET_TEXT_CENTRE(true);
+	HUD::SET_TEXT_COLOUR(r, g, b, a);
+	if (useOutline) HUD::SET_TEXT_OUTLINE();
+	if (useDropshadow) HUD::SET_TEXT_DROP_SHADOW();
+	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(0, 0, 1);
+	GRAPHICS::CLEAR_DRAW_ORIGIN();
 }
 /*
 * StartRep = CurrentRepLocation
@@ -117,40 +118,41 @@ void main() //Frontend Tick.
 
 		if (IsKeyJustUp(VK_DIVIDE)) {
 			bool isActive = true;
-            CArrowButton b = CArrowButton(
-                //CBox(CVector2(0.1,0.1),CRGBA(0,0,0,120),0.1,0.1),
-                //CTextUI("1", CVector2(0.1,0.1),0.512,3,CRGBA(255,255,255,255),CTextDropshadow(0.1,CRGBA(0,0,0,180)),new CMiddleJustify(), false),
-                CVector2(0.1,0.1), CArrowButton::eArrowBtn::AB_DWN);
-            //CArrowView v = CArrowView();
-            
-            /*
-            * Predeclaring these objects allows us to effectively 
-            */
-            CButtonUI& button2 =  CButtonUI(CBox(CVector2(0.25, 0.7), CRGBA(000, 000, 000, 120), 0.25, 0.5));
-            CButtonUI& button =   CButtonUI(CBox(CVector2(0.71, 0.7), CRGBA(00, 255, 255, 120), 0.5, 0.5));
-            button.SetText(button.ETEXT_LEFT, new CTextUI("A", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-            button.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-            button.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT",CVector2(0.2,0.2), CRGBA(255, 255, 255, 255)));
-            button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-            button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-            button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-            int i = 0;
-            int j = 0;
-            CTextUI newTextLul  = CTextUI(std::to_string(newTextLul.CharacterHeight(2)), CVector2(0.85, 0.15), 0.5f, 0,CRGBA(255, 255, 255, 255),CTextDropshadow(0,CRGBA(0,0,0,0)),new CLeftJustify(), false);
-            CTextUI newTextLul2 = CTextUI("A", CVector2(0.85, 0.15 + newTextLul.CharacterHeight(1.5)), CRGBA(255, 255, 255, 255));
-            CTextUI newTextLul3 = CTextUI("B", CVector2(0.85, newTextLul2.pos.y + newTextLul2.CharacterHeight(1)), CRGBA(255, 255, 255, 255));
+			CArrowButton b = CArrowButton(
+				CVector2(0.1, 0.1), CArrowButton::eArrowBtn::AB_DWN);
+			/*
+			* Predeclaring these objects allows us to effectively
+			*/
+
+			CButtonUI& button2 = CButtonUI(CBox(CVector2(0.25, 0.7), CRGBA(000, 000, 000, 120), 0.25, 0.5));
+			CButtonUI& button = CButtonUI(CBox(CVector2(0.71, 0.7), CRGBA(00, 255, 255, 120), 0.5, 0.5));
+			button.SetText(button.ETEXT_LEFT, new CTextUI("A", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			button.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			button.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+			int i = 0;
+			int j = 0;
+			CTextUI newTextLul = CTextUI(std::to_string(newTextLul.CharacterHeight(2)), CVector2(0.85, 0.15), 0.5f, 0, CRGBA(255, 255, 255, 255), CTextDropshadow(0, CRGBA(0, 0, 0, 0)), new CLeftJustify(), false);
+			CTextUI newTextLul2 = CTextUI("A", CVector2(0.85, 0.15 + newTextLul.CharacterHeight(1.5)), CRGBA(255, 255, 255, 255));
+			CTextUI newTextLul3 = CTextUI("B", CVector2(0.85, newTextLul2.pos.y + newTextLul2.CharacterHeight(1)), CRGBA(255, 255, 255, 255));
+			MenuContextMgr m_Context = MenuContextMgr();
 			while (isActive) {
-                CMenuHView headerView = CMenuHView(); 
-                headerView.DrawCol(std::string(NETWORK::NETWORK_PLAYER_GET_NAME(PLAYER::PLAYER_ID())), std::string("Interaction Menu"), std::string("1/1"), CRGBA(0, 0, 128, 180), CVector2(0.25, 0.55));
-                CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
-                if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
-                    b.GetBox().SetColour(CRGBA(255,255,255,180));
-                    b.GetText().colour = (CRGBA(0, 0, 0, 255));
-                }
-                if (IsKeyJustUp(VK_F13)) {
-                }
+				m_Context.Update();
+				CMenuHView headerView = CMenuHView();
+				headerView.DrawCol(std::string(NETWORK::NETWORK_PLAYER_GET_NAME(PLAYER::PLAYER_ID())), std::string("INTERACTION MENU"), std::string("1/1"), CRGBA(45, 110, 185, 255), CVector2(0.25, 0.55));
+				m_Context.SetText(new CTextUI(std::string("This is a sample of the context text used in Menu API v 0.1 BETA"), CVector2(0, 0), CRGBA(255, 255, 255, 255)));
+				m_Context.SetBox(new CBox(CVector2(0.25,0.55+0.12),CRGBA(0,0,0,120),0.2, 0.07125));//0.13
+				CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
+				if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
+					b.GetBox().SetColour(CRGBA(255, 255, 255, 180));
+					b.GetText().colour = (CRGBA(0, 0, 0, 255));
+				}
+				if (IsKeyJustUp(VK_F13)) {
+				}
 				if (IsKeyJustUp(VK_DIVIDE)) {
-                    isActive = false;
+					isActive = false;
 				}
 				WAIT(0);
 			}
@@ -159,87 +161,87 @@ void main() //Frontend Tick.
 	}
 }
 
-void THREAD_2() { 
-    while (true) {
-        WAIT(0);
-    }
+void THREAD_2() {
+	while (true) {
+		WAIT(0);
+	}
 }
 
 void THREAD_MAIN_2() {
-    srand(GetTickCount());
-    THREAD_2();
+	srand(GetTickCount64());
+	THREAD_2();
 }
 void ScriptMain()
 {
-    srand(GetTickCount());
-    main();
+	srand(GetTickCount64());
+	main();
 }
 /*
 *  t_Draw(t_Create(util_IntToStr(switchIndex), 0, { 0.17F, 0UL, 0.2F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        t_Draw(t_Create(util_IntToStr(SCL_HANDLE), 0, { 0.17F, 0UL, 0.23F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        t_Draw(t_Create(util_IntToStr(timer), 0, { 0.17F, 0UL, 0.26F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
-        if (IsKeyJustUp(VK_ACCEPT)) {
-            switchIndex = 0 ;
-        } 
-        switch (switchIndex)
-        {
-        case 0: //Set up Draw
-            SCL_HANDLE = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
-            timer = MISC::GET_GAME_TIMER() + 3000;
-            switchIndex = 1;
-            break;
+		t_Draw(t_Create(util_IntToStr(SCL_HANDLE), 0, { 0.17F, 0UL, 0.23F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+		t_Draw(t_Create(util_IntToStr(timer), 0, { 0.17F, 0UL, 0.26F, 0UL }, rgb_Create(255, 255, 255, 255), 0.5, FALSE, FALSE, FALSE));
+		if (IsKeyJustUp(VK_ACCEPT)) {
+			switchIndex = 0 ;
+		}
+		switch (switchIndex)
+		{
+		case 0: //Set up Draw
+			SCL_HANDLE = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
+			timer = MISC::GET_GAME_TIMER() + 3000;
+			switchIndex = 1;
+			break;
 
-        case 1: //Set up SCL
-            if (MISC::GET_GAME_TIMER() > timer)
-            {
-                if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-                {
-                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "SHOW_MISSION_PASSED_MESSAGE");
-                    PUSH_GFX("M_FB4P3_P" /* GXT: ~y~Mission Passed );
-                    PUSH_GFX("M_FB4P3" /* GXT: Getaway Vehicle );
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(100);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);
-                    GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
-                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-                    timer = MISC::GET_GAME_TIMER() + 10000;
-                    switchIndex = 2;
-                }
-            }
-            break;
+		case 1: //Set up SCL
+			if (MISC::GET_GAME_TIMER() > timer)
+			{
+				if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+				{
+					GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "SHOW_MISSION_PASSED_MESSAGE");
+					PUSH_GFX("M_FB4P3_P" /* GXT: ~y~Mission Passed );
+					PUSH_GFX("M_FB4P3" /* GXT: Getaway Vehicle );
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(100);
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(TRUE);
+					GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+					timer = MISC::GET_GAME_TIMER() + 10000;
+					switchIndex = 2;
+				}
+			}
+			break;
 
-        case 2: // Draw
-            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-            {
-                if (MISC::GET_GAME_TIMER() < timer)
-                {
-                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
-                }
-                else if (MISC::GET_GAME_TIMER() < timer + 100)
-                {
-                    GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "TRANSITION_OUT");
-                    GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-                    timer = (timer - 100);
-                }
-                else if (MISC::GET_GAME_TIMER() < timer + 500)
-                {
-                    GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
-                }
-                else
-                {
-                    switchIndex = 3;
-                }
-            }
-            break;
+		case 2: // Draw
+			if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+			{
+				if (MISC::GET_GAME_TIMER() < timer)
+				{
+					GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+				}
+				else if (MISC::GET_GAME_TIMER() < timer + 100)
+				{
+					GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(SCL_HANDLE, "TRANSITION_OUT");
+					GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+					timer = (timer - 100);
+				}
+				else if (MISC::GET_GAME_TIMER() < timer + 500)
+				{
+					GRAPHICS::DRAW_SCALEFORM_MOVIE(SCL_HANDLE, 0.5f, 0.3f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+				}
+				else
+				{
+					switchIndex = 3;
+				}
+			}
+			break;
 
-        case 3: // CleanUp
+		case 3: // CleanUp
 
-            if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
-            {
-                GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&SCL_HANDLE);
-            }
-            break;
-        }
+			if (GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(SCL_HANDLE))
+			{
+				GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&SCL_HANDLE);
+			}
+			break;
+		}
 */
 //void menu_Tick() {
 //    while (true) {
