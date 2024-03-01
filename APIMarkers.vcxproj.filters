@@ -55,6 +55,8 @@
     <ClCompile Include="ApartmentRemover\GlobalDeleter.cpp" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\MenuHeader.cpp" />
     <ClCompile Include="UIEditor\Menu\Menu Dependancy(s)\MenuContext.cpp" />
+    <ClCompile Include="UIEditor\Menu\Menu Dependancy%28s%29\Header\SolidHeader.cpp" />
+    <ClCompile Include="ScratchRemake\PlayerList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -114,6 +116,9 @@
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\ArrowButton.h" />
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\MouseHandlable.h" />
     <ClInclude Include="ApartmentRemover\GlobalDeleter.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy%28s%29\Header\SolidHeader.h" />
+    <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\Header\StylizedSolidHeader.h" />
+    <ClInclude Include="ScratchRemake\PlayerList.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

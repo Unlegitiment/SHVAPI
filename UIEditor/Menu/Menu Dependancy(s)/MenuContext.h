@@ -6,11 +6,9 @@ class MenuContext {
 public:
 	MenuContext();
 	void SetMenuCtxStr(std::string& text);
-	void SetMenuContext(CTextUI& text);
-	void SetNewBox(CBox& newBox);
+	void SetMenuContext(CTextUI* text);
+	void SetNewBox(CBox* newBox);
 	void SetInfo(bool _newInstance);
-	
-	
 	
 	CBox& GetBox();
 	CTextUI& GetText();
@@ -37,6 +35,7 @@ public:
 	void SetBox(CBox* box);
 	void SetUsePadding(bool _newBool);
 	void SetUseInfo(bool useInfo);
+	void SetUpDefaults(CVector2 drawPos, float len, float height);
 private:
 	void Attach();
 	bool useGTAPadding;

@@ -12,9 +12,9 @@ CMenuHeader::CMenuHeader(CRGBA* solidBackground)
 
 CMenuHeader::CMenuHeader(std::string txd):
     MH_OPTIONS{ new CMTxd(txd) },
-    mainStr(std::string("")),
-    currentMenu(std::string("")),
-    menuItems(std::string(""))
+    mainStr(std::string(" ")),
+    currentMenu(std::string(" ")),
+    menuItems(std::string(" "))
 {
 }
 
@@ -67,6 +67,16 @@ void CMenuHView::DrawTxd(std::string& mainStr, std::string& currentMenu, std::st
 {
 }
 
+/*
+* I'd advise rewriting some of this so that you can just take like two parameters like a subheader and a primary header model(s) so that you can actually have this be better.
+* Ideally create two objects one for a subheader and another for a primary header and have both do different things.
+* The primary header will be the colored in like major header and the subheader will be like the small little thing that tells you your spot in a menu and what menu you are in. 
+* Just so that we have the difficiation between the two. Like in general its not that big of a deal however it would be nice to just combine those two into one mega and just be able to draw it via that. 
+* Way easier    +
+* More Modular  +
+* Rewriting     -
+* 
+*/
 void CMenuHView::DrawCol(std::string& mainStr, std::string& currentMenu, std::string& menuIndex, CRGBA& color, CVector2& drawPos)
 {
     constexpr float WIDTH = 0.2;

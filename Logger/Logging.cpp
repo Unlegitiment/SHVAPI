@@ -1,70 +1,61 @@
 #include "Logging.h"
+#include "../ScriptHookV/natives.h"
 #include "../UI.h"
 #include <string>
-Logger Logger::sm_Instance = Logger(); 
+#define CHECK_NULL(fName) do{WAIT(0); } while(fName==nullptr); 
+Logger* Logger::sm_Instance = new Logger(); 
 Logger& Logger::GetInstance()
 {
-
-	return sm_Instance;
+	return *sm_Instance;
 }
-Logger::Logger() :
-	m_LogFile(std::ofstream(__logName__, std::ios::in | std::ios::out | std::ios::app))
+Logger::Logger()
 {
-	
 	Init();
 }
-
 Logger::~Logger()
 {
 }
 
 void Logger::Init()
 {
-
-	//try {
-	//	m_LogFile.open(__logName__);
-	//	if (!m_LogFile.is_open()) {
-	//		throw std::exception();
-	//	}
-	//	m_LogFile.clear();
-	//}
-	//catch (std::exception()) {
-	//	std::string s = "~r~" + std::string(__logName__) + ": Failed To Load!";
-	//	UI_DrawNotificationSTR(const_cast<char*>(s.c_str()));
-	//}
-
+	m_LogFile = fopen(__logName__, "a");
 }
-
 void Logger::InfoLog(std::string loggerInfo)
 {
-	
-	UI_DrawNotificationSTR("Log Attempted Open");
-	m_LogFile.open(__logName__ ,std::ios::out | std::ios::in | std::ios::app); //crashes here
-
-	if (m_LogFile.is_open()) {
-		m_LogFile << GetEnumString(LogSeverity::LG_INFO) << loggerInfo;
-		m_LogFile.close();
-	}
-	else {
-		m_LogFile.close();
-
-		return;
-	}
-	m_LogFile.close();
-
-	
+	UI_DrawNotificationF(1.f);
+	Log(LG_INFO, loggerInfo);
+	return;
 }
 
 void Logger::Log(LogSeverity importance, std::string loggedInfo)
 {	
-	m_LogFile.open(__logName__);
-	if (!m_LogFile.is_open()) {
+	if (m_LogFile == nullptr) {
+		Init();
+		Log(importance, loggedInfo);
 		return;
 	}
-	m_LogFile << GetEnumString(importance) << loggedInfo;
+	fprintf(m_LogFile, (GetEnumString(importance) + loggedInfo).c_str());
+	fprintf(m_LogFile, "\n");
+	fflush(m_LogFile);
+	return;
 	
-	m_LogFile.close();
 }
+
+//void Logger::FileClose() {
+//	if (m_LogFile == nullptr) {
+//		return;
+//	}
+//	fclose(m_LogFile);
+//	return;
+//}
+//
+//void Logger::FileOpen() {
+//	if (m_LogFile == nullptr) {
+//		m_LogFile = fopen(__logName__, "w");
+//	} else {
+//		m_LogFile = freopen(__logName__ , "a", m_LogFile);
+//	}
+//}
 
 std::string Logger::GetEnumString(LogSeverity s)
 {

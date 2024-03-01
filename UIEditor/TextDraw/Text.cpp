@@ -42,9 +42,10 @@ float CTextUI::CharacterHeight(float iLead)
 
 void CTextUI::Draw() 
 {
+	
 	this->textJustification->SetupText();
 	HUD::SET_TEXT_FONT(this->font);
-	HUD::SET_TEXT_SCALE(0.48f, this->size);
+	HUD::SET_TEXT_SCALE(1, this->size);
 	this->dropShadow.NativeCall();
 	if (this->hasOutline) HUD::SET_TEXT_OUTLINE();
 	HUD::SET_TEXT_LEADING(1);

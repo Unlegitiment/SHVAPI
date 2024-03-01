@@ -1,6 +1,7 @@
 #include "PlayerList.h"
 #include "../ScriptHookV/natives.h"
 #include "../UI.h"
+#include "PlayerList.h"
 CList<CListPlayer> CPlayerList::m_Players = CList<CListPlayer>();
 
 //CPlayerList& CPlayerList::GetInstance()
@@ -42,4 +43,5 @@ void CPlayerList::i_Draw()
 	GRAPHICS::DRAW_SCALEFORM_MOVIE(this->m_UIPlayerList->getHandle(), 0.16,0.4,0.32,0.68,255,255,255,255,0);
 	return;
 }
+
 

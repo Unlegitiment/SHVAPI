@@ -11,6 +11,7 @@
 #include "UIEditor/Menu/Menu Dependancy(s)/ArrowButton.h"
 #include "UIEditor/Menu/Menu Dependancy(s)/MenuHeader.h"
 #include "UIEditor/Menu/Menu Dependancy(s)/MenuContext.h"
+#include "UIEditor/Menu/Menu Dependancy(s)/Header/SolidHeader.h"
 #include "ApartmentRemover/GlobalDeleter.h"
 #include <string>
 #include <ctime>
@@ -101,6 +102,65 @@ void draw3d(std::string str, float x, float y, float z, float scale, int fontTyp
 	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(0, 0, 1);
 	GRAPHICS::CLEAR_DRAW_ORIGIN();
 }
+void Toggle(DWORD key, bool* ptr) {
+	if (IsKeyJustUp(key)) {
+		*ptr = false;
+	}
+}
+void CheckMouseIntersect(CArrowButton& b) {
+	if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
+		b.GetBox().SetColour(CRGBA(255, 255, 255, 180));
+		b.GetText().colour = (CRGBA(0, 0, 0, 255));
+	}
+}
+void TestMenu() {
+	bool isActive = true;
+	CArrowButton b = CArrowButton(CVector2(0.1, 0.1), CArrowButton::eArrowBtn::AB_DWN);
+	/*
+	* Predeclaring these objects allows us to effectively
+	*/
+	//CButtonUI& button2 = CButtonUI(CBox(CVector2(0.25, 0.7), CRGBA(000, 000, 000, 120), 0.25, 0.5));
+	//CButtonUI& button = CButtonUI(CBox(CVector2(0.71, 0.7), CRGBA(00, 255, 255, 120), 0.5, 0.5));
+	//button.SetText(button.ETEXT_LEFT, new CTextUI("A", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	//button.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	//button.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	//button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	//button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	//button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
+	int i = 0;
+	int j = 0;
+	//CTextUI newTextLul = CTextUI(std::to_string(newTextLul.CharacterHeight(2)), CVector2(0.85, 0.15), 0.5f, 0, CRGBA(255, 255, 255, 255), CTextDropshadow(0, CRGBA(0, 0, 0, 0)), new CLeftJustify(), false);
+	//CTextUI newTextLul2 = CTextUI("A", CVector2(0.85, 0.15 + newTextLul.CharacterHeight(1.5)), CRGBA(255, 255, 255, 255));
+	//CTextUI newTextLul3 = CTextUI("B", CVector2(0.85, newTextLul2.pos.y + newTextLul2.CharacterHeight(1)), CRGBA(255, 255, 255, 255));
+	//MenuContextMgr m_Context = MenuContextMgr();
+	SSHeaderController cntrl = SSHeaderController(new SSHeader(), new SSHeaderView());
+	cntrl.SetBox(new CBox(CVector2(0.5, 0.5), CRGBA(0, 0, 0, 180), 0.2, 0.04));
+	
+	cntrl.SetTextLeft(new CTextUI("TEXT", CVector2(0.003f, 0), CRGBA(255, 255, 255, 255)));
+	cntrl.SetTextRight(new CTextUI("TEXT", CVector2(0.003f, 0), CRGBA(255, 255, 255, 255)));
+	cntrl.SetPadding(0.003f,0);
+	while (isActive) {
+	cntrl.GetTextLeft().DrawDebugInfo(0.01, 17);
+	cntrl.GetTextRight().DrawDebugInfo(0.31,17);
+	cntrl.GetBox().ShowDebugInfo(0.6f, 17);
+		cntrl.Update();
+		
+
+		if (IsKeyJustUp(VK_F13)) {
+			cntrl.SetTextLeft(new CTextUI("NEWTEXT", CVector2(0.003f, 0), CRGBA(255, 255, 255, 255)));
+		}
+		//m_Context.Update();
+		//CMenuHView headerView = CMenuHView();
+		//headerView.DrawCol(std::string("Kroneru"), std::string("INTERACTION MENU"), std::string("1/1"), CRGBA(45, 110, 185, 255), CVector2(0.25, 0.55));
+		////m_Context.SetText(new CTextUI(std::string("This is a sample of the context text used in Menu API v 0.1 BETA"), CVector2(0, 0), CRGBA(255, 255, 255, 255)));
+		////m_Context.SetBox(new CBox(CVector2(0.25,0.55+0.12),CRGBA(0,0,0,120),0.2, 0.07125));//0.13
+		//m_Context.SetUpDefaults(CVector2(0.25, 0.55 + 0.14), 0.2, 0.07125);
+		//CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
+		CheckMouseIntersect(b);
+		Toggle(VK_DIVIDE,&isActive);
+		WAIT(0);
+	}
+}
 /*
 * StartRep = CurrentRepLocation
 * CurrentRank = the Rank You're Currently on
@@ -115,54 +175,28 @@ void main() //Frontend Tick.
 	// Tick. 
 	while (true)
 	{
-
 		if (IsKeyJustUp(VK_DIVIDE)) {
-			bool isActive = true;
-			CArrowButton b = CArrowButton(
-				CVector2(0.1, 0.1), CArrowButton::eArrowBtn::AB_DWN);
-			/*
-			* Predeclaring these objects allows us to effectively
-			*/
-
-			CButtonUI& button2 = CButtonUI(CBox(CVector2(0.25, 0.7), CRGBA(000, 000, 000, 120), 0.25, 0.5));
-			CButtonUI& button = CButtonUI(CBox(CVector2(0.71, 0.7), CRGBA(00, 255, 255, 120), 0.5, 0.5));
-			button.SetText(button.ETEXT_LEFT, new CTextUI("A", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			button.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			button.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			button2.SetText(button.ETEXT_LEFT, new CTextUI("LEFT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			button2.SetText(button.ETEXT_MIDDLE, new CTextUI("MIDDLE", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			button2.SetText(button.ETEXT_RIGHT, new CTextUI("RIGHT", CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255)));
-			int i = 0;
-			int j = 0;
-			CTextUI newTextLul = CTextUI(std::to_string(newTextLul.CharacterHeight(2)), CVector2(0.85, 0.15), 0.5f, 0, CRGBA(255, 255, 255, 255), CTextDropshadow(0, CRGBA(0, 0, 0, 0)), new CLeftJustify(), false);
-			CTextUI newTextLul2 = CTextUI("A", CVector2(0.85, 0.15 + newTextLul.CharacterHeight(1.5)), CRGBA(255, 255, 255, 255));
-			CTextUI newTextLul3 = CTextUI("B", CVector2(0.85, newTextLul2.pos.y + newTextLul2.CharacterHeight(1)), CRGBA(255, 255, 255, 255));
-			MenuContextMgr m_Context = MenuContextMgr();
-			while (isActive) {
-				m_Context.Update();
-				CMenuHView headerView = CMenuHView();
-				headerView.DrawCol(std::string(NETWORK::NETWORK_PLAYER_GET_NAME(PLAYER::PLAYER_ID())), std::string("INTERACTION MENU"), std::string("1/1"), CRGBA(45, 110, 185, 255), CVector2(0.25, 0.55));
-				m_Context.SetText(new CTextUI(std::string("This is a sample of the context text used in Menu API v 0.1 BETA"), CVector2(0, 0), CRGBA(255, 255, 255, 255)));
-				m_Context.SetBox(new CBox(CVector2(0.25,0.55+0.12),CRGBA(0,0,0,120),0.2, 0.07125));//0.13
-				CMouse::GetInstance().Tick(CMouse::ACT_FRAME);
-				if (b.GetPointIntersect(CMouse::GetInstance().GetMousePos())) {
-					b.GetBox().SetColour(CRGBA(255, 255, 255, 180));
-					b.GetText().colour = (CRGBA(0, 0, 0, 255));
-				}
-				if (IsKeyJustUp(VK_F13)) {
-				}
-				if (IsKeyJustUp(VK_DIVIDE)) {
-					isActive = false;
-				}
-				WAIT(0);
-			}
+			TestMenu();
 		}
 		WAIT(0);
 	}
 }
 
+#include "./ScratchRemake/PlayerList.h"
 void THREAD_2() {
+	ClanTag t = ClanTag("yehhhhh");
+	
 	while (true) {
+		if (IsKeyJustUp(VK_ADD)) {
+			for (int i = 0; i < 4; i++) {
+				LOGGER_INSTANCE.Log(static_cast<Logger::LogSeverity>(i),std::to_string(i));
+			}
+		}
+		if (IsKeyJustUp(VK_MULTIPLY)) {
+			t.m_BIsActive = !t.m_BIsActive;
+		}
+		t.Draw(.1);
+
 		WAIT(0);
 	}
 }
