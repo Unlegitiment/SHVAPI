@@ -119,6 +119,8 @@
     <ClInclude Include="UIEditor\Menu\Menu Dependancy%28s%29\Header\SolidHeader.h" />
     <ClInclude Include="UIEditor\Menu\Menu Dependancy(s)\Header\StylizedSolidHeader.h" />
     <ClInclude Include="ScratchRemake\PlayerList.h" />
+    <ClInclude Include="Logger\FileHandling.h" />
+    <ClInclude Include="Logger\XML_HANDLER.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

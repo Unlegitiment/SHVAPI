@@ -21,28 +21,25 @@ private:
 	{
 	};
 	const char* m_ClanTag;
-
 };
 class ListPlayer {
 public: 
 	ListPlayer();
+
 private:
 	std::string& userName;
-	int rank;
+	int rank; // txd: mprankbadge.ytd
 	int jp;
 	ClanTag* tag; //Can be null run check.
+
+
 	bool isRankVisible;
 	bool isJPVisible;
 	bool isUserNameVisible;
 	bool isUserNameSanitized;
 	bool CanPlayerChangeColor;
-	
 	bool DoesPlayerHaveStylizedBox;
 	bool isPlayerInClan;
-	
-	
-	
-
 };
 class PlayerListHeader {
 public:

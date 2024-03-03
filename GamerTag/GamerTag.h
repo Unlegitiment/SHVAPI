@@ -24,4 +24,4 @@ public:
 	void Draw(CGamerTag& gamerTag);
 private:
 
-};
+}; 

@@ -18,7 +18,8 @@ Logger::~Logger()
 
 void Logger::Init()
 {
-	m_LogFile = fopen(__logName__, "a");
+	m_LogFile = fopen(__logName__, "w");
+	m_LogFile = freopen(__logName__, "a",m_LogFile);
 }
 void Logger::InfoLog(std::string loggerInfo)
 {

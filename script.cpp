@@ -17,7 +17,7 @@
 #include <ctime>
 #pragma warning(disable : 4244 4305) // double <-> float conversions
 
-void main();
+void main();   
 void THREAD_2();
 float square(float num) { return num * num; }
 float distanceTo(Vector3 vec1, Vector3 vec2) {
@@ -161,6 +161,75 @@ void TestMenu() {
 		WAIT(0);
 	}
 }
+void Normalize(Vector3* v) {
+	int x = 0, y = 0;
+	GRAPHICS::GET_SCREEN_RESOLUTION(&x, &y);
+	v->x /= x;
+	v->y /= y;
+	return;
+}
+#define doOnce(x, __VA_ARG__) static int  x_##__VA_ARG__## = 0; if(x_##__VA_ARG__## == 0) { x; x_##__VA_ARG__##++;}
+/*
+* For context I am Trying to recreate the 2013 CrewTag looks. 
+* This is very challenging because of the fact that theres not much evidence of these existing
+* The outline should be toggled and way less bolded than it is right now image for clarification: https://imgur.com/a/sHLOVvI
+* Also since we're mentioning it I need some way to track the crew's heiarchy. 
+* 
+* However what would be cool is if we reused the weapon wheel asset removed some of the text elements and only made it have like 5 circles
+* and one could be "selected" for each crew.
+* Maybe for like a crews pausemenu?
+* 0.35f is the scale factor for the player list.
+* As a final comment I wish to use less random variables which I'll likely define when the class gets put into use. 
+*/
+void drawCrewTag(const char* crewTag, float SCALE_FACTOR) {
+	CTextUI text = CTextUI(std::string(crewTag), CVector2(0.0, 0.0), CRGBA(0, 0, 0, 255));
+	CBox b = CBox(CVector2(0.2, 0.2), CRGBA(255, 255, 255, 255), .075f * SCALE_FACTOR, .1f * SCALE_FACTOR);
+	CBox backDrop = CBox(CVector2(0.2,0.2),CRGBA(0,0,0,255), b.GetWidth() + 0.002, b.GetHeight() + 0.0001);
+	GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT("mpmissmarkers256",1);
+	while (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED("mpmissmarkers256")) {
+		WAIT(0);
+	}
+	Vector3 v = Vector3(GRAPHICS::GET_TEXTURE_RESOLUTION("mpmissmarkers256", "corona_shade"));
+	Normalize(&v);
+	doOnce(LOGGER_INSTANCE.InfoLog(std::to_string(v.x) + std::to_string(v.y)),WAHS);
+	//Attach
+	text.size = SCALE_FACTOR; //text size /100 is the actual value of the characters for each segment from my own testing 
+	//CBox Iwannadie = CBox(CVector2((b.GetCornerPos(b.BOTTOMRIGHT).x + b.GetDrawPos().x + 0.031f)/2, b.GetDrawPos().y+0.0002f), CRGBA(140, 0, 0, 255), 0.003f, 0.038f);
+	text.font = 2;
+	b.SetHeight(text.size * 0.05f);
+	backDrop.SetHeight(b.GetHeight() + 0.003f);
+	
+	text.pos = CVector2(b.GetCornerPos(b.TOPLEFT).x, b.GetDrawPos().y - text.CharacterHeight(SCALE_FACTOR >= 0.35 ? text.size / 0.75f : text.size / 0.625f));
+	text.SetTextJustification(new CRightJustify(0.0, b.GetCornerPos(b.BOTTOMRIGHT).x - 0.0001f));
+
+	text.Draw();
+	backDrop.Draw();
+	b.Draw();
+	float divX =  b.GetHeight() * 0.175 ;
+	doOnce(LOGGER_INSTANCE.InfoLog(std::to_string(divX));, WAH);
+	float f = b.GetCornerPos(b.BOTTOMRIGHT).x - (text.size / 100.0f) * (text.text.length());
+	doOnce(LOGGER_INSTANCE.InfoLog(std::to_string(f)); , WAH4);
+
+	//Iwannadie.Draw();
+	GRAPHICS::DRAW_SPRITE(
+		"mpmissmarkers256",
+		"corona_shade",
+		//f - text.CharacterHeight(text.size * 1.3) - (0.00025f * text.text.length()) + (text.text.length() < 6 ? 0.01f : 0.001f),
+		b.GetCornerPos(b.BOTTOMLEFT).x + 0.0045f,
+		b.GetDrawPos().y, 
+		v.x * 0.025f, // Fix however this should scale WITH the box rather than against it. 
+		v.y * 0.025f,
+		0, //heading
+		0, //r
+		0, //g
+		0, //b
+		255,//a
+		0, // random
+		1); // random
+}
+
+
+
 /*
 * StartRep = CurrentRepLocation
 * CurrentRank = the Rank You're Currently on
@@ -172,12 +241,15 @@ void TestMenu() {
 */
 void main() //Frontend Tick. 
 {
+	
 	// Tick. 
 	while (true)
 	{
 		if (IsKeyJustUp(VK_DIVIDE)) {
 			TestMenu();
 		}
+
+
 		WAIT(0);
 	}
 }
@@ -185,17 +257,20 @@ void main() //Frontend Tick.
 #include "./ScratchRemake/PlayerList.h"
 void THREAD_2() {
 	ClanTag t = ClanTag("yehhhhh");
-	
+	bool ScreenshotHudElement = false;
 	while (true) {
-		if (IsKeyJustUp(VK_ADD)) {
-			for (int i = 0; i < 4; i++) {
-				LOGGER_INSTANCE.Log(static_cast<Logger::LogSeverity>(i),std::to_string(i));
-			}
+		if (IsKeyJustUp(VK_F13)) {
+			ScreenshotHudElement = !ScreenshotHudElement;
+		}
+		if (ScreenshotHudElement) {
+			GRAPHICS::DRAW_RECT(0.5, 0.5, 1, 1, 0, 140, 0, 255, 1);
 		}
 		if (IsKeyJustUp(VK_MULTIPLY)) {
 			t.m_BIsActive = !t.m_BIsActive;
 		}
-		t.Draw(.1);
+		if (t.m_BIsActive) {
+			drawCrewTag("WOLF",0.4);
+		}
 
 		WAIT(0);
 	}

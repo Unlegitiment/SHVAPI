@@ -79,7 +79,9 @@
     <ClInclude Include="GenericList\CList.h" />
     <ClInclude Include="GTAThread\ThreadMgr.h" />
     <ClInclude Include="keyboard.h" />
+    <ClInclude Include="Logger\FileHandling.h" />
     <ClInclude Include="Logger\Logging.h" />
+    <ClInclude Include="Logger\XML_HANDLER.h" />
     <ClInclude Include="Markers.h" />
     <ClInclude Include="Markers\m_Markers_internal.h" />
     <ClInclude Include="Menu.h" />
